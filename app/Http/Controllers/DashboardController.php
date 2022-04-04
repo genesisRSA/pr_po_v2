@@ -103,7 +103,7 @@ class DashboardController extends Controller
         }
         else
         {
-           return response()->json(!Auth::user()->permission ? 'has no permission' : 'has permission');
+           return response()->json(Auth::user()->permission->count() > 0 ? 'has permission' : 'has no permission');
         }
     }
 
@@ -133,21 +133,59 @@ class DashboardController extends Controller
         }
 
         $crow = array();
-        foreach($arr as $amp){
-            foreach($amp as $cool){
-                $crow[] = json_decode($cool);
+        foreach($arr as $key => $amp){
+            foreach($amp as $idx => $cool){
+                $crow[$key][$idx] = json_decode($cool);
             }
         }
-
-        $chunk = array_chunk($crow,4);
-
+        
         $result = array();
-        foreach($chunk as $k => $v){
-            $result[$k] = array_combine($modules[$k],$chunk[$k]);
+        foreach($crow as $k => $v){
+            $result[$k] = array_combine($modules[$k],$crow[$k]);
         }
         
 
-        return response()->json($result);
+        return response()->json($result ? $result : 'none');
+    }
+
+    public function addOrEditUserPermission(Request $request){
+        $user = User::where('email',$request['params']['email'])->first();
+
+        $collection = array();
+        foreach($request->params['chk'] as $key => $chk){
+            foreach($chk as $kk => $el){
+                $collection[$key][$kk] = json_encode($el);
+            }
+        }
+
+        $val = array();
+        foreach($collection as $v){
+            $val[] = implode(',',array_values($v));
+        }
+
+        if($user->permission->count() > 0){
+
+           $user->permission()->where('module','RFQ')->update(['permission'=>$val[0]]);
+           $user->permission()->where('module','PR')->update(['permission'=>$val[1]]);
+
+        } else {
+            $user->permission()->create(['module'=>'RFQ', 'permission'=>$val[0]]);
+            $user->permission()->create(['module'=>'PR', 'permission'=>$val[1]]);
+        }
+
+        return response()->json('success');
+    }
+
+    public function deleteUser(Request $request){
+        $user = User::where('email',$request->email)->first();
+        
+        if($user->permission->count() > 0){
+            $user->permission()->delete();
+        }
+
+        $user->delete();
+
+        return response()->json('deleted successfully!');
     }
 
     /**

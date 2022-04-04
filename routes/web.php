@@ -11,6 +11,7 @@ use App\Models\EmployeeCertification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SitePermission;
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +22,15 @@ use App\Models\SitePermission;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/test', function(){
+
+    $user = User::find(2);
+
+    $as = $user->permission()->where('module','RFQ')->update(['permission'=>'true,true,true,true']);
+    dd($as);
+});
+
 
 Route::get('/send-mail', function () {
 
@@ -56,6 +66,8 @@ Route::get('/getRandomRFQCode', [DashboardController::class, 'getRandomRFQCode']
 Route::get('/submitRFQ', [DashboardController::class, 'submitRFQ'])->name('submitRFQ');
 Route::get('/getSitePermission', [DashboardController::class, 'getSitePermission'])->name('getSitePermission');
 Route::get('/getEmpUser', [DashboardController::class, 'getEmpUser'])->name('getEmpUser');
+Route::post('/addOrEditUserPermission', [DashboardController::class, 'addOrEditUserPermission'])->name('addOrEditUserPermission');
+Route::post('/deleteUser', [DashboardController::class, 'deleteUser'])->name('deleteUser');
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

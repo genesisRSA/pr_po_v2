@@ -236,7 +236,7 @@
                     name: '',
                     email: '',
                 },
-
+                selectedUserPerm : '',
     }),
 
     created: function(){
@@ -278,17 +278,19 @@
         //this.editedItem = Object.assign({}, item)
         //console.log(item.email)
         this.getUserPermission(item.email)
+        this.selectedUserPerm = item.email
         this.dialog = true
       },
 
       deleteItem (item) {
         this.editedIndex = this.users.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        //this.editedItem = Object.assign({}, item)
+        this.selectedUserPerm = item.email
         this.dialogDelete = true
       },
 
       deleteItemConfirm () {
-        this.users.splice(this.editedIndex, 1)
+        this.deleteUser(this.selectedUserPerm)
         this.closeDelete()
       },
 
@@ -297,6 +299,7 @@
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
+          this.selectedUserPerm = ''
         })
       },
 
@@ -305,15 +308,17 @@
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
+          this.selectedUserPerm = ''
         })
       },
 
       save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.users[this.editedIndex], this.editedItem)
-        } else {
-          this.users.push(this.editedItem)
-        }
+        // if (this.editedIndex > -1) {
+        //   Object.assign(this.users[this.editedIndex], this.editedItem)
+        // } else {
+        //   this.users.push(this.editedItem)
+        // }
+        this.addOrEditUserPermission(this.selectedUserPerm)
         this.close()
       },
 
@@ -322,7 +327,11 @@
       getUserPermission(email){
           axios.get('/getUserAuthorization',{params : {'email': email}})
               .then(response =>{
-                this.checkbox = response.data
+                if(response.data == 'none'){
+                  this.defaultChkBox()
+                } else {
+                  this.checkbox = response.data
+                }
               })
               .catch(error =>{
                     console.log(error.response);
@@ -330,7 +339,49 @@
               .finally(() => {
                   
           });
-      }
+      },
+
+      addOrEditUserPermission(email){
+        let params = {
+          'email' : email,
+          'chk' : this.checkbox,
+        }
+              axios.post('/addOrEditUserPermission',{ params })
+              .then(response =>{
+
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+                  
+          });
+      },
+
+      defaultChkBox(){
+        this.checkbox[0].view_rfq = false;
+        this.checkbox[0].add_rfq= false;
+        this.checkbox[0].update_rfq = false;
+        this.checkbox[0].delete_rfq = false;
+
+        this.checkbox[1].view_pr = false;
+        this.checkbox[1].add_pr = false;
+        this.checkbox[1].update_pr = false;
+        this.checkbox[1].delete_pr = false;
+      },
+       
+       deleteUser(email){
+              axios.post('/deleteUser',{ email })
+              .then(response =>{
+                     this.initialize()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+                  
+          });
+       }
     },
     }
 </script>

@@ -3942,7 +3942,8 @@ __webpack_require__.r(__webpack_exports__);
       defaultItem: {
         name: '',
         email: ''
-      }
+      },
+      selectedUserPerm: ''
     };
   },
   created: function created() {
@@ -3976,15 +3977,17 @@ __webpack_require__.r(__webpack_exports__);
       //console.log(item.email)
 
       this.getUserPermission(item.email);
+      this.selectedUserPerm = item.email;
       this.dialog = true;
     },
     deleteItem: function deleteItem(item) {
-      this.editedIndex = this.users.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.editedIndex = this.users.indexOf(item); //this.editedItem = Object.assign({}, item)
+
+      this.selectedUserPerm = item.email;
       this.dialogDelete = true;
     },
     deleteItemConfirm: function deleteItemConfirm() {
-      this.users.splice(this.editedIndex, 1);
+      this.deleteUser(this.selectedUserPerm);
       this.closeDelete();
     },
     close: function close() {
@@ -3994,6 +3997,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$nextTick(function () {
         _this2.editedItem = Object.assign({}, _this2.defaultItem);
         _this2.editedIndex = -1;
+        _this2.selectedUserPerm = '';
       });
     },
     closeDelete: function closeDelete() {
@@ -4003,15 +4007,16 @@ __webpack_require__.r(__webpack_exports__);
       this.$nextTick(function () {
         _this3.editedItem = Object.assign({}, _this3.defaultItem);
         _this3.editedIndex = -1;
+        _this3.selectedUserPerm = '';
       });
     },
     save: function save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.users[this.editedIndex], this.editedItem);
-      } else {
-        this.users.push(this.editedItem);
-      }
-
+      // if (this.editedIndex > -1) {
+      //   Object.assign(this.users[this.editedIndex], this.editedItem)
+      // } else {
+      //   this.users.push(this.editedItem)
+      // }
+      this.addOrEditUserPermission(this.selectedUserPerm);
       this.close();
     },
     /////////////////////////////////////////////////////
@@ -4023,7 +4028,43 @@ __webpack_require__.r(__webpack_exports__);
           'email': email
         }
       }).then(function (response) {
-        _this4.checkbox = response.data;
+        if (response.data == 'none') {
+          _this4.defaultChkBox();
+        } else {
+          _this4.checkbox = response.data;
+        }
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    addOrEditUserPermission: function addOrEditUserPermission(email) {
+      var params = {
+        'email': email,
+        'chk': this.checkbox
+      };
+      axios.post('/addOrEditUserPermission', {
+        params: params
+      }).then(function (response) {})["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    defaultChkBox: function defaultChkBox() {
+      this.checkbox[0].view_rfq = false;
+      this.checkbox[0].add_rfq = false;
+      this.checkbox[0].update_rfq = false;
+      this.checkbox[0].delete_rfq = false;
+      this.checkbox[1].view_pr = false;
+      this.checkbox[1].add_pr = false;
+      this.checkbox[1].update_pr = false;
+      this.checkbox[1].delete_pr = false;
+    },
+    deleteUser: function deleteUser(email) {
+      var _this5 = this;
+
+      axios.post('/deleteUser', {
+        email: email
+      }).then(function (response) {
+        _this5.initialize();
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
