@@ -60,6 +60,24 @@ class DashboardController extends Controller
             }
         }
     }
+    public function purch_order() {
+        if(Auth::user()->role_as == '1'){
+            return Inertia::render('PurchaseOrder');
+        }
+        else{
+            $canView = SitePermission::where('requestor',Auth::id())->where('module','PO')->first();
+            if($canView){
+                $getCanView = explode(',',$canView->permission);
+                if($getCanView[0]=="true"){
+                    return Inertia::render('PurchaseOrder');
+                }
+                return back();
+            }
+            else{
+                return back();
+            }
+        }
+    }
     public function getRandomRFQCode() {
         $randomCode = 'RSA-RFQ' . hexdec(uniqid());
         return response()->json($randomCode);
@@ -115,6 +133,7 @@ class DashboardController extends Controller
        $getEmp =  User::where('role_as','!=',1)->get()->map( function($query){
            return [
                'name' => $query->name,
+               'emp_id' => $query->emp_id,
                'email' => $query->email,
                'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
                'updated_at' => Carbon::parse($query->updated_at)->format('Y-m-d'),
@@ -126,7 +145,11 @@ class DashboardController extends Controller
     public function getUserAuthorization(Request $request){
         $user = User::where('email',$request->email)->first();
 
-        $modules = [['view_rfq','add_rfq','update_rfq','delete_rfq'],['view_pr','add_pr','update_pr','delete_pr']];
+        $modules = [
+                        ['view_rfq','add_rfq','update_rfq','delete_rfq'],
+                        ['view_pr','add_pr','update_pr','delete_pr'],
+                        ['view_po','add_po','update_po','delete_po']
+                   ];
         $arr = array();
         foreach($user->permission as $perm){
             $arr[] = explode(',',$perm->permission);
@@ -167,10 +190,12 @@ class DashboardController extends Controller
 
            $user->permission()->where('module','RFQ')->update(['permission'=>$val[0]]);
            $user->permission()->where('module','PR')->update(['permission'=>$val[1]]);
+           $user->permission()->where('module','PO')->update(['permission'=>$val[2]]);
 
         } else {
             $user->permission()->create(['module'=>'RFQ', 'permission'=>$val[0]]);
             $user->permission()->create(['module'=>'PR', 'permission'=>$val[1]]);
+            $user->permission()->create(['module'=>'PO', 'permission'=>$val[2]]);
         }
 
         return response()->json('success');
@@ -186,6 +211,12 @@ class DashboardController extends Controller
         $user->delete();
 
         return response()->json('deleted successfully!');
+    }
+
+    public function voidUser(Request $request){
+        $user = User::where('email',$request->user)->first();
+        $user->permission()->delete();
+        return response()->json('user permission has been voided successfully.');
     }
 
     /**

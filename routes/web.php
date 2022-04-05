@@ -58,6 +58,7 @@ Route::middleware(['auth:sanctum','isAdmin'])->group(function() {
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/admin/rfqs', [DashboardController::class, 'req_for_quotation'])->name('req_for_quotation');
     Route::get('/admin/purchase_request', [DashboardController::class, 'purchase_request'])->name('purch_req');
+    Route::get('/admin/purchase_order', [DashboardController::class, 'purch_order'])->name('purch_order');
     Route::get('/admin/authorization', [DashboardController::class, 'admin_authorization'])->name('admin_authorization');
     Route::get('/getUserAuthorization',[DashboardController::class, 'getUserAuthorization'])->name('getUserAuthorization');
 });
@@ -68,10 +69,13 @@ Route::get('/getSitePermission', [DashboardController::class, 'getSitePermission
 Route::get('/getEmpUser', [DashboardController::class, 'getEmpUser'])->name('getEmpUser');
 Route::post('/addOrEditUserPermission', [DashboardController::class, 'addOrEditUserPermission'])->name('addOrEditUserPermission');
 Route::post('/deleteUser', [DashboardController::class, 'deleteUser'])->name('deleteUser');
+Route::post('/voidUser', [DashboardController::class, 'voidUser'])->name('voidUser');
+
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/rfqs', [DashboardController::class, 'req_for_quotation'])->name('req_for_quotation_reg_user');
     Route::get('/purchase_request', [DashboardController::class, 'purchase_request'])->name('purch_req_reg_user');
+    Route::get('/purchase_order', [DashboardController::class, 'purch_order'])->name('purch_order_reg_user');
 });
 

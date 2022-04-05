@@ -20,6 +20,14 @@
                             </v-list>
                         </span>
                         <v-form ref="form" v-model="valid">
+
+                           <v-text-field
+                                v-model="form.emp_id"
+                                :counter="50"
+                                label="Employee ID"
+                                :rules="emp_id_Rules"
+                            ></v-text-field>
+
                             <v-text-field
                                 v-model="form.name"
                                 :counter="50"
@@ -78,6 +86,7 @@
             return {
                 valid : true,
                 form: this.$inertia.form({
+                    emp_id: '',
                     name: '',
                     email: '',
                     password: '',
@@ -85,6 +94,9 @@
                 }),
                 show1: false,
                 show2: false,
+                emp_id_Rules: [
+                    v => !!v || 'Employee ID is required',
+                ],
                 nameRules: [
                     v => !!v || 'Name is required',
                     v => (v && v.length <= 50) || 'Name must be less than 50 characters',

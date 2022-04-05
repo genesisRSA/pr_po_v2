@@ -82,6 +82,17 @@
                 </form>
             </v-list-item>
             <v-divider></v-divider>
+            <v-list-item>
+                <form class="d-inline-flex align-center">
+                    <v-hover v-slot="{ hover }">
+                        <v-btn text type="submit" class="purchase_order" :href="is_Admin==true ? route('purch_order') : route('purch_order_reg_user')" color="gray" x-large :style="{ 'background-color': hover ? 'gold' : '' }">
+                            <v-icon color="gray" left small>mdi-order-bool-ascending</v-icon>
+                            Purchase Order
+                        </v-btn>
+                    </v-hover>
+                </form>
+            </v-list-item>
+            <v-divider></v-divider> 
             <div v-if="is_Admin==true">
                     <v-list-item>
                         <form class="d-inline-flex align-center">
@@ -165,6 +176,11 @@
         width: 300%;
         background-color: white;
         right: 260px;
+    }
+    .purchase_order{
+        width: 150%;
+        background-color: white;
+        right: 70px;
     }
     .admin_autho{
         width: 300%;

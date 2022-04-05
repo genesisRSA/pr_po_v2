@@ -21,6 +21,7 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input)
     {
         Validator::make($input, [
+            'emp_id' => ['required','string','max:255','unique:users'],
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -33,6 +34,7 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         return User::create([
+            'emp_id' => $input['emp_id'],
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),

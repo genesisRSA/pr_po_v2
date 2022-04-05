@@ -12,10 +12,30 @@
               <v-subheader><h1 class="mt-5">{{ card }}</h1></v-subheader>
               <v-card-text>
               <v-divider></v-divider>
+                    <v-row justify="end">
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="3"
+                        >
+                    <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        hide-details
+                        class="mb-10"
+                      ></v-text-field>
+                      </v-col>
+                    </v-row>
                       <v-data-table
                         :headers="headers"
                         :items="users"
                         hide-default-footer
+                        :search="search"
+                        :page.sync="page"
+                        :items-per-page="itemsPerPage"
+                        @page-count="pageCount = $event"
                         sort-by="name"
                         class="elevation-1"
                     >
@@ -133,6 +153,55 @@
                                     ></v-checkbox>
                                     </v-col>
                                     </v-row>
+                                    <v-row>
+                                        <v-col cols="12" md="12">
+                                              <div style="background-color: #2196F3; padding:10px;">
+                                                  <span style="color:white; font-weight:bold; letter-spacing: 2px;">Purchase Order module</span>
+                                              </div> 
+                                        </v-col>  
+                                    </v-row>
+                                    <v-row>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="3"
+                                    >
+                                    <v-checkbox
+                                      v-model="checkbox[2].view_po"
+                                      label="Can View?"
+                                    ></v-checkbox>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="3"
+                                    >
+                                    <v-checkbox
+                                      v-model="checkbox[2].add_po"
+                                      label="Can Add?"
+                                    ></v-checkbox>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="3"
+                                    >
+                                    <v-checkbox
+                                      v-model="checkbox[2].update_po"
+                                      label="Can Update?"
+                                    ></v-checkbox>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="3"
+                                    >
+                                    <v-checkbox
+                                      v-model="checkbox[2].delete_po"
+                                      label="Can Delete?"
+                                    ></v-checkbox>
+                                    </v-col>
+                                    </v-row>
                                 </v-container>
                                 </v-card-text>
 
@@ -166,28 +235,80 @@
                                 </v-card-actions>
                             </v-card>
                             </v-dialog>
+                            <v-dialog v-model="dialogVoid" max-width="500px">
+                            <v-card>
+                                <v-card-title class="justify-center void-text"><h5>This user's <span style="color : red !important;">all</span> permission would be reverted.</h5><br><h5> Do you wish to continue?</h5></v-card-title>
+                                <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" text @click="closeVoid">Cancel</v-btn>
+                                <v-btn color="blue darken-1" text @click="voidItemConfirm">OK</v-btn>
+                                <v-spacer></v-spacer>
+                                </v-card-actions>
+                            </v-card>
+                            </v-dialog>
                         </v-toolbar>
                         </template>
                         <template v-slot:item.actions="{ item }">
-                        <v-icon
-                            small
-                            class="mr-2"
-                            @click="editItem(item)"
-                        >
-                            mdi-pencil
-                        </v-icon>
-                        <v-icon
-                            small
-                            @click="deleteItem(item)"
-                        >
-                            mdi-delete
-                        </v-icon>
+
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on, attrs }">
+                              <v-icon
+                                  small
+                                  class="mr-2"
+                                  @click="editItem(item)"
+                                  v-bind="attrs"
+                                  v-on="on"
+                              >
+                                  mdi-pencil
+                              </v-icon>
+                          </template>
+                          <span>Edit Permission</span>
+                        </v-tooltip>
+
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on, attrs }">
+                              <v-icon
+                                  small
+                                  class="mr-2"
+                                  @click="voidItem(item)"
+                                  v-bind="attrs"
+                                  v-on="on"
+                              >
+                                  mdi-lock-reset
+                              </v-icon>
+                          </template>
+                          <span>Void Permission</span>
+                        </v-tooltip>
+
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on, attrs }">
+                              <v-icon
+                                  small
+                                  @click="deleteItem(item)"
+                                  v-bind="attrs"
+                                  v-on="on"
+                              >
+                                  mdi-delete
+                              </v-icon>
+                          </template>
+                          <span>Delete User</span>
+                        </v-tooltip>
+
                         </template>
                     </v-data-table>
+                    <div class="text-center pt-2">
+                    <v-pagination
+                        v-model="page"
+                        :length="pageCount"
+                        circle
+                        :total-visible="7"
+                    ></v-pagination>
+                    </div>
                </v-card-text>
             </v-card>
           </v-col>
         </v-row>
+
     </app-layout>
 </template>
 
@@ -201,7 +322,13 @@
                 cards: ["Employee's Permission"],
                 dialog: false,
                 dialogDelete: false,
+                dialogVoid: false,
+                page: 1,
+                pageCount: 0,
+                itemsPerPage: 10,
+                search: '',
                 headers: [
+                    { text: 'Employee ID', value: 'emp_id' },
                     {
                     text: 'Employee Name',
                     align: 'start',
@@ -225,7 +352,13 @@
                     add_pr: false,
                     update_pr: false,
                     delete_pr: false,
-                  }
+                  },
+                  {
+                    view_po: false,
+                    add_po: false,
+                    update_po: false,
+                    delete_po: false,
+                  },
                 ],
                 editedIndex: -1,
                 editedItem: {
@@ -256,6 +389,9 @@
       dialogDelete (val) {
         val || this.closeDelete()
       },
+      dialogVoid (val) {
+        val || this.closeVoid()
+      }
     },
 
     methods: {
@@ -313,11 +449,6 @@
       },
 
       save () {
-        // if (this.editedIndex > -1) {
-        //   Object.assign(this.users[this.editedIndex], this.editedItem)
-        // } else {
-        //   this.users.push(this.editedItem)
-        // }
         this.addOrEditUserPermission(this.selectedUserPerm)
         this.close()
       },
@@ -337,7 +468,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
           });
       },
 
@@ -368,6 +499,11 @@
         this.checkbox[1].add_pr = false;
         this.checkbox[1].update_pr = false;
         this.checkbox[1].delete_pr = false;
+
+        this.checkbox[2].view_po = false;
+        this.checkbox[2].add_po = false;
+        this.checkbox[2].update_po = false;
+        this.checkbox[2].delete_po = false;
       },
        
        deleteUser(email){
@@ -381,11 +517,51 @@
               .finally(() => {
                   
           });
-       }
+       },
+
+      voidItem(item){
+        this.editedIndex = this.users.indexOf(item)
+        //this.editedItem = Object.assign({}, item)
+        this.selectedUserPerm = item.email
+        this.dialogVoid = true
+       },
+       
+      voidItemConfirm () {
+        this.voidSelectedUser(this.selectedUserPerm)
+        this.closeVoid()
+      },
+
+
+      closeVoid(){
+        this.dialogVoid = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+          this.selectedUserPerm = ''
+        })
+      },
+
+      voidSelectedUser(user){
+                axios.post('/voidUser',{ user })
+              .then(response =>{
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+                  
+          });
+      }
+
     },
     }
 </script>
 
 <style>
-
+  tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, .05);
+  }
+  .void-text{
+   font-size: 150% !important;
+  }
 </style>
