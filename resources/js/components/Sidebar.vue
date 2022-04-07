@@ -60,6 +60,8 @@
                 </form>
             </v-list-item>
             <v-divider></v-divider>
+            <!-- /////////////////////////////////////////////////////////////////// -->
+            <div v-if="canViewRFQS == 'true'">
             <v-list-item>
                 <form class="d-inline-flex align-center">
                     <v-hover v-slot="{ hover }">
@@ -71,6 +73,9 @@
                 </form>
             </v-list-item>
             <v-divider></v-divider>
+            </div>
+            <!-- /////////////////////////////////////////////////////////////////// -->
+            <div v-if="canViewPR == 'true'">
             <v-list-item>
                 <form class="d-inline-flex align-center">
                     <v-hover v-slot="{ hover }">
@@ -82,6 +87,9 @@
                 </form>
             </v-list-item>
             <v-divider></v-divider>
+            </div>
+            <!-- /////////////////////////////////////////////////////////////////// -->
+            <div v-if="canViewPO == 'true'">
             <v-list-item>
                 <form class="d-inline-flex align-center">
                     <v-hover v-slot="{ hover }">
@@ -92,7 +100,23 @@
                     </v-hover>
                 </form>
             </v-list-item>
+            <v-divider></v-divider>
+            </div>
+            <!-- /////////////////////////////////////////////////////////////////// -->
+            <div v-if="canViewDM == 'true'">
+            <v-list-item>
+                <form class="d-inline-flex align-center">
+                    <v-hover v-slot="{ hover }">
+                        <v-btn text type="submit" class="data_mngt" :href="is_Admin==true ? route('data_management') : route('data_management_reg_user')" color="gray" x-large :style="{ 'background-color': hover ? 'gold' : '' }">
+                            <v-icon color="gray" left small>mdi-file-document</v-icon>
+                            Data Management
+                        </v-btn>
+                    </v-hover>
+                </form>
+            </v-list-item>
             <v-divider></v-divider> 
+            </div>
+            <!-- /////////////////////////////////////////////////////////////////// -->
             <div v-if="is_Admin==true">
                     <v-list-item>
                         <form class="d-inline-flex align-center">
@@ -134,10 +158,15 @@
         ['mdi-logout', 'Logout'],
       ],
       is_Admin : null,
+      canViewRFQS : '',
+      canViewPR : '',
+      canViewPO : '',
+      canViewDM : '',
     }),
 
     created: function(){
         this.is_admin()
+        this.canView()
     },
 
     methods: {
@@ -151,6 +180,21 @@
             if(url_result == true){
                 this.is_Admin = true;
             }
+        },
+        canView() {
+               axios.get('/canViewSideBar')
+              .then(response =>{
+                    this.canViewRFQS = response.data[0]
+                    this.canViewPR = response.data[1]
+                    this.canViewPO = response.data[2]
+                    this.canViewDM = response.data[3]
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+                  
+              });
         }
     },
   }
@@ -186,6 +230,11 @@
         width: 300%;
         background-color: white;
         right: 236px;
+    }
+    .data_mngt{
+        width: 300%;
+        background-color: white;
+        right: 259px;
     }
 </style>
 

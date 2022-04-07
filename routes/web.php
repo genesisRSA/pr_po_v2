@@ -59,6 +59,7 @@ Route::middleware(['auth:sanctum','isAdmin'])->group(function() {
     Route::get('/admin/rfqs', [DashboardController::class, 'req_for_quotation'])->name('req_for_quotation');
     Route::get('/admin/purchase_request', [DashboardController::class, 'purchase_request'])->name('purch_req');
     Route::get('/admin/purchase_order', [DashboardController::class, 'purch_order'])->name('purch_order');
+    Route::get('/admin/data_management', [DashboardController::class, 'data_management'])->name('data_management');
     Route::get('/admin/authorization', [DashboardController::class, 'admin_authorization'])->name('admin_authorization');
     Route::get('/getUserAuthorization',[DashboardController::class, 'getUserAuthorization'])->name('getUserAuthorization');
 });
@@ -66,10 +67,17 @@ Route::middleware(['auth:sanctum','isAdmin'])->group(function() {
 Route::get('/getRandomRFQCode', [DashboardController::class, 'getRandomRFQCode'])->name('getRandomRFQCode');
 Route::get('/submitRFQ', [DashboardController::class, 'submitRFQ'])->name('submitRFQ');
 Route::get('/getSitePermission', [DashboardController::class, 'getSitePermission'])->name('getSitePermission');
+Route::get('/canViewSideBar', [DashboardController::class, 'canViewSideBar'])->name('canView');
+Route::get('/viewCatItem', [DashboardController::class, 'viewCatItem'])->name('viewCatItem');
 Route::get('/getEmpUser', [DashboardController::class, 'getEmpUser'])->name('getEmpUser');
+
 Route::post('/addOrEditUserPermission', [DashboardController::class, 'addOrEditUserPermission'])->name('addOrEditUserPermission');
 Route::post('/deleteUser', [DashboardController::class, 'deleteUser'])->name('deleteUser');
 Route::post('/voidUser', [DashboardController::class, 'voidUser'])->name('voidUser');
+Route::post('/addCategory', [DashboardController::class, 'addCategory'])->name('addCategory');
+Route::post('/addSubCategory', [DashboardController::class, 'addSubCategory'])->name('addSubCategory');
+Route::post('/deleteItemCategory',[DashboardController::class, 'deleteItemCategory'])->name('deleteItemCategory');
+Route::post('/updateSubCategory',[DashboardController::class, 'updateSubCategory'])->name('updateSubCategory');
 
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {
@@ -77,5 +85,6 @@ Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {
     Route::get('/rfqs', [DashboardController::class, 'req_for_quotation'])->name('req_for_quotation_reg_user');
     Route::get('/purchase_request', [DashboardController::class, 'purchase_request'])->name('purch_req_reg_user');
     Route::get('/purchase_order', [DashboardController::class, 'purch_order'])->name('purch_order_reg_user');
+    Route::get('/data_management', [DashboardController::class, 'data_management'])->name('data_management_reg_user');
 });
 

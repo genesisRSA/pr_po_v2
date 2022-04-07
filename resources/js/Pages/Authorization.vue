@@ -202,6 +202,55 @@
                                     ></v-checkbox>
                                     </v-col>
                                     </v-row>
+                                    <v-row>
+                                        <v-col cols="12" md="12">
+                                              <div style="background-color: #2196F3; padding:10px;">
+                                                  <span style="color:white; font-weight:bold; letter-spacing: 2px;">Data Management module</span>
+                                              </div> 
+                                        </v-col>  
+                                    </v-row>
+                                    <v-row>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="3"
+                                    >
+                                    <v-checkbox
+                                      v-model="checkbox[3].view_dm"
+                                      label="Can View?"
+                                    ></v-checkbox>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="3"
+                                    >
+                                    <v-checkbox
+                                      v-model="checkbox[3].add_dm"
+                                      label="Can Add?"
+                                    ></v-checkbox>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="3"
+                                    >
+                                    <v-checkbox
+                                      v-model="checkbox[3].update_dm"
+                                      label="Can Update?"
+                                    ></v-checkbox>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="3"
+                                    >
+                                    <v-checkbox
+                                      v-model="checkbox[3].delete_dm"
+                                      label="Can Delete?"
+                                    ></v-checkbox>
+                                    </v-col>
+                                    </v-row>
                                 </v-container>
                                 </v-card-text>
 
@@ -328,16 +377,17 @@
                 itemsPerPage: 10,
                 search: '',
                 headers: [
-                    { text: 'Employee ID', value: 'emp_id' },
+                    { text: 'Employee ID', value: 'emp_id', class: "yellow" },
                     {
                     text: 'Employee Name',
                     align: 'start',
                     value: 'name',
+                    class: "yellow"
                     },
-                    { text: 'Email', value: 'email' },
-                    { text: 'Created at', value: 'created_at' },
-                    { text: 'Updated at', value: 'updated_at' },
-                    { text: 'Actions', value: 'actions', sortable: false },
+                    { text: 'Email', value: 'email', class: "yellow"},
+                    { text: 'Created at', value: 'created_at', class: "yellow" },
+                    { text: 'Updated at', value: 'updated_at', class: "yellow" },
+                    { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
                 ],
                 users: [],
                 checkbox:[ 
@@ -358,6 +408,12 @@
                     add_po: false,
                     update_po: false,
                     delete_po: false,
+                  },
+                  {
+                    view_dm: false,
+                    add_dm: false,
+                    update_dm: false,
+                    delete_dm: false,
                   },
                 ],
                 editedIndex: -1,
@@ -504,6 +560,11 @@
         this.checkbox[2].add_po = false;
         this.checkbox[2].update_po = false;
         this.checkbox[2].delete_po = false;
+
+        this.checkbox[3].view_dm = false;
+        this.checkbox[3].add_dm = false;
+        this.checkbox[3].update_dm = false;
+        this.checkbox[3].delete_dm = false;
       },
        
        deleteUser(email){
@@ -558,7 +619,7 @@
 </script>
 
 <style>
-  tbody tr:nth-of-type(odd) {
+  tbody tr:nth-of-type(even) {
     background-color: rgba(0, 0, 0, .05);
   }
   .void-text{

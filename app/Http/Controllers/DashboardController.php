@@ -9,13 +9,15 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Rfq_record;
 use App\Models\SitePermission;
+use App\Models\CategoryItem;
+use App\Models\SubCategoryItem;
 use PDF;
 use Auth;
 
 class DashboardController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource
      *
      * @return \Illuminate\Http\Response
      */
@@ -78,10 +80,31 @@ class DashboardController extends Controller
             }
         }
     }
+
+    public function data_management() {
+        if(Auth::user()->role_as == '1'){
+            return Inertia::render('DataManagement');
+        }
+        else{
+            $canView = SitePermission::where('requestor',Auth::id())->where('module','DM')->first();
+            if($canView){
+                $getCanView = explode(',',$canView->permission);
+                if($getCanView[0]=="true"){
+                    return Inertia::render('DataManagement');
+                }
+                return back();
+            }
+            else{
+                return back();
+            }
+        }
+    }
+
     public function getRandomRFQCode() {
         $randomCode = 'RSA-RFQ' . hexdec(uniqid());
         return response()->json($randomCode);
     }
+
     public function submitRFQ(Request $request) {
         $arr = array();
 
@@ -148,7 +171,8 @@ class DashboardController extends Controller
         $modules = [
                         ['view_rfq','add_rfq','update_rfq','delete_rfq'],
                         ['view_pr','add_pr','update_pr','delete_pr'],
-                        ['view_po','add_po','update_po','delete_po']
+                        ['view_po','add_po','update_po','delete_po'],
+                        ['view_dm','add_dm','update_dm','delete_dm'],
                    ];
         $arr = array();
         foreach($user->permission as $perm){
@@ -191,11 +215,24 @@ class DashboardController extends Controller
            $user->permission()->where('module','RFQ')->update(['permission'=>$val[0]]);
            $user->permission()->where('module','PR')->update(['permission'=>$val[1]]);
            $user->permission()->where('module','PO')->update(['permission'=>$val[2]]);
+           $user->permission()->where('module','DM')->update(['permission'=>$val[3]]);
+
+           if($val[0] =='false,false,false,false' && $val[1] =='false,false,false,false' && $val[2] =='false,false,false,false' && $val[3] =='false,false,false,false'){
+            $user = User::where('email',$request['params']['email'])->first();
+            $user->permission()->delete();
+           }
 
         } else {
+
             $user->permission()->create(['module'=>'RFQ', 'permission'=>$val[0]]);
             $user->permission()->create(['module'=>'PR', 'permission'=>$val[1]]);
             $user->permission()->create(['module'=>'PO', 'permission'=>$val[2]]);
+            $user->permission()->create(['module'=>'DM', 'permission'=>$val[3]]);
+
+            if($val[0] =='false,false,false,false' && $val[1] =='false,false,false,false' && $val[2] =='false,false,false,false' && $val[3] =='false,false,false,false'){
+             $user = User::where('email',$request['params']['email'])->first();
+             $user->permission()->delete();
+            }
         }
 
         return response()->json('success');
@@ -219,6 +256,123 @@ class DashboardController extends Controller
         return response()->json('user permission has been voided successfully.');
     }
 
+    public function canViewSideBar(){
+        if(Auth::user()->role_as == '1'){
+             return response()->json(['true','true','true','true']);
+             
+        } else {
+
+             $user = User::find(Auth::id())->permission;
+
+             if($user->count() > 0)
+             {
+                $arr = array();
+                foreach($user as $val){
+                       $arr[] = $val->permission;
+                }
+                $col = array();
+                foreach($arr as $data){
+                   $col[] = explode(',',$data);
+                }
+   
+   
+                return response()->json([$col[0][0],
+                                         $col[1][0],
+                                         $col[2][0],
+                                         $col[3][0]]);
+             }
+             else{
+                return response()->json(['false','false','false','false']);
+             }
+        }
+    }
+
+    public function addCategory(Request $request){
+
+        CategoryItem::updateOrCreate(
+            ['category_name'=>ucwords($request->cat_name)],
+            ['category_name'=>ucwords($request->cat_name)]
+        );
+
+        return response()->json('Successfully Added');
+    }
+
+    public function viewCatItem(){
+        $getCatItem =  CategoryItem::orderBy('category_name','ASC')->get()->map( function($query){
+            return [
+                'value' => $query->id,
+                'text' => $query->category_name,
+            ];
+        })->toArray();
+
+        $hasSubCatItem =  SubCategoryItem::all()->map( function($query){
+            return [
+                'category_name' => $query->category_item->category_name,
+                'subcategory_name' => $query->subcategory_name
+            ];
+        })->toArray();
+        $noSubcat = CategoryItem::has('subcategory_items', '0')->get()->map( function($query){
+            return[
+                'category_name' => $query->category_name,
+                'subcategory_name' => 'N/A'
+            ];
+        })->toArray();
+
+
+        return response()->json([$getCatItem,array_merge($noSubcat,$hasSubCatItem)]);
+    }
+
+    public function addSubCategory(Request $request){
+        $catval = CategoryItem::findOrFail($request->cat_name);
+        $catval->subcategory_items()->updateOrCreate(['subcategory_name'=>ucwords($request->subcat_name)],['subcategory_name'=>ucwords($request->subcat_name)]);
+
+        return response()->json('success');
+    }
+
+    public function deleteItemCategory(Request $request){
+
+        $category = CategoryItem::where('category_name',$request->params['category_name'])->first();
+
+        if($request->params['subcategory_name'] == "N/A"){
+            $category->delete();
+        } else {
+           $category->subcategory_items()->where('subcategory_name',$request->params['subcategory_name'])->first()->delete();
+        }
+        
+        return response()->json('success');
+    }
+
+    public function updateSubCategory(Request $request){
+
+        $detection_for_cat_name = '';
+        if($request->selected_val['subcategory_name'] == 'N/A'){
+            $cat_item = CategoryItem::all()->pluck('category_name')->toArray();
+    
+            if(in_array(ucwords($request->updated_val['category_name']),$cat_item)){
+                
+            } else {
+                CategoryItem::where('category_name',$request->selected_val['category_name'])->update(['category_name'=>ucwords($request->updated_val['category_name'])]);
+            }
+    
+        } else {
+            $cat_item = CategoryItem::where('category_name',$request->selected_val['category_name'])->first()->subcategory_items->pluck('subcategory_name')->toArray();
+            if(in_array(ucwords($request->updated_val['subcategory_name']),$cat_item)){
+                
+            } else {
+                $how = CategoryItem::where('category_name',ucwords($request->selected_val['category_name']))->first();
+                $how->subcategory_items->where('subcategory_name',ucwords($request->selected_val['subcategory_name']))->first()->update(['subcategory_name'=>ucwords($request->updated_val['subcategory_name'])]);
+            }
+
+            $categ= CategoryItem::all()->pluck('category_name')->toArray();
+    
+            if(in_array(ucwords($request->updated_val['category_name']),$categ)){
+                
+            } else {
+                CategoryItem::where('category_name',$request->selected_val['category_name'])->update(['category_name'=>ucwords($request->updated_val['category_name'])]);
+            }
+        }
+        return response()->json();
+    }
     /**
      * Show the form for creating a new resource.
      *
