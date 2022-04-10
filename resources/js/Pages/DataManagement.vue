@@ -54,13 +54,13 @@
 <!-- /////////////////////tab_item_for_item_categories /////////////////////-->
                         <v-tab-item
                         >
-                            
+
                             <v-card
                             color="basil"
                             flat
                             >
                             <v-card-text>
-                                
+
                                 <v-row justify="end">
                                 <v-col
                                 cols="12"
@@ -108,7 +108,7 @@
                                             mdi-delete
                                         </v-icon>
                                     </template>
-                                </v-data-table>                
+                                </v-data-table>
                                 <div class="text-center pt-2">
                                 <v-pagination
                                     v-model="page"
@@ -127,7 +127,78 @@
                             color="basil"
                             flat
                             >
-                            <v-card-text></v-card-text>
+                                <v-card-text>
+                                    <v-row justify="end">
+                                    <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="3"
+                                    >
+                                    <v-text-field
+                                        v-model="search"
+                                        append-icon="mdi-magnify"
+                                        label="Search"
+                                        single-line
+                                        hide-details
+                                    ></v-text-field>
+                                    </v-col>
+                                    </v-row>
+                                    <v-data-table
+                                    :headers="headersForItemList"
+                                    :items="item_list"
+                                    :search="search"
+                                    hide-default-footer
+                                    :page.sync="page"
+                                    :items-per-page="itemsPerPage"
+                                    @page-count="pageCount = $event"
+                                    class="mt-5"
+                                    >
+                                    <template v-slot:item.part_name="{ item }">
+                                        <span
+                                        :class="getColor(item.part_name)"
+                                        >
+                                        {{ item.part_name }}
+                                        </span>
+                                    </template>
+                                    <template v-slot:item.material="{ item }">
+                                        <span
+                                        :class="getColor(item.material)"
+                                        >
+                                        {{ item.material }}
+                                        </span>
+                                    </template>
+                                    <template v-slot:item.dimension="{ item }">
+                                        <span
+                                        :class="getColor(item.dimension)"
+                                        >
+                                        {{ item.dimension }}
+                                        </span>
+                                    </template>
+                                        <template v-slot:item.actions="{ item }">
+                                            <v-icon
+                                                small
+                                                class="mr-2"
+                                                @click="editItemList(item)"
+                                            >
+                                                mdi-pencil
+                                            </v-icon>
+                                            <v-icon
+                                                small
+                                                @click="deleteItem(item)"
+                                            >
+                                                mdi-delete
+                                            </v-icon>
+                                        </template>
+                                    </v-data-table>
+                                    <div class="text-center pt-2">
+                                    <v-pagination
+                                        v-model="page"
+                                        :length="pageCount"
+                                        circle
+                                        :total-visible="7"
+                                    ></v-pagination>
+                                    </div>
+                                </v-card-text>
                             </v-card>
                         </v-tab-item>
                         <v-tab-item
@@ -199,8 +270,8 @@
                             <v-col cols="12" md="12">
                                     <div style="background-color: #2196F3; padding:10px;">
                                         <span style="color:white; font-weight:bold; letter-spacing: 2px;">Add a Category</span>
-                                    </div> 
-                            </v-col>  
+                                    </div>
+                            </v-col>
                         </v-row>
                         <v-row>
                             <v-form class="width"
@@ -242,8 +313,8 @@
                             <v-col cols="12" md="12">
                                     <div style="background-color: #2196F3; padding:10px;">
                                         <span style="color:white; font-weight:bold; letter-spacing: 2px;">Add a Sub-Category</span>
-                                    </div> 
-                            </v-col>  
+                                    </div>
+                            </v-col>
                         </v-row>
                         <v-row>
                             <v-form class="width"
@@ -310,19 +381,96 @@
                     </v-btn>
                 </v-card-actions>
                 </div>
-                
+
                 <div v-if="tab == 1">
                 <v-toolbar
                 color="primary"
                 dark
-                >Add Item List
+                >Add Item
                 </v-toolbar>
                 <v-card-text>
-
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" md="12">
+                                    <div style="background-color: #2196F3; padding:10px;">
+                                        <span style="color:white; font-weight:bold; letter-spacing: 2px;">Add an Item List</span>
+                                    </div>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-select
+                            label='Category Name'
+                            clearable
+                            :items="category_name_for_add_itemList"
+                            :item-text="category_name_for_add_itemList.text"
+                            :item-value="category_name_for_add_itemList.value"
+                            v-model="category_val_for_list_item"
+                            @input="selectingCategoryNameListForAdd($event)">
+                            </v-select>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-select
+                            label='Sub-Category Name'
+                            clearable
+                            :items="subcategory_name_for_add_itemList"
+                            :item-text="subcategory_name_for_add_itemList.text"
+                            :item-value="subcategory_name_for_add_itemList.value"
+                            v-model="subcategory_val_for_list_item"
+                            :disabled="!category_val_for_list_item">
+                            </v-select>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Part Name'
+                            clearable
+                            v-model="part_name_for_list_item">
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Material'
+                            clearable
+                            v-model="material_for_list_item">
+                            </v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Dimension'
+                            clearable
+                            v-model="dimension_for_list_item">
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-container>
                 </v-card-text>
                 <v-card-actions class="justify-end">
                     <v-btn
                          color="primary"
+                         :disabled ="!category_val_for_list_item || !subcategory_val_for_list_item"
+                         @click="addItemList()"
                         >Save
                         </v-btn>
                         <v-btn
@@ -393,7 +541,7 @@
                         </v-btn>
                         <v-btn
                             text
-                            @click="close()"
+                            @click="close_for_add_itemList()"
                         >Close
                     </v-btn>
                 </v-card-actions>
@@ -433,12 +581,12 @@
                                 <v-col cols="12" md="12">
                                         <div style="background-color: #2196F3; padding:10px;">
                                             <span style="color:white; font-weight:bold; letter-spacing: 2px;">Edit Data</span>
-                                        </div> 
-                                </v-col>  
+                                        </div>
+                                </v-col>
                             </v-row>
                             <v-row>
                                 <v-form class="width"
-                                    ref="category_form"                              
+                                    ref="category_form"
                                     lazy-validation>
                                 <div class='d-flex'>
                                 <v-col
@@ -467,7 +615,7 @@
                                  >
                                 </v-text-field>
                                 </v-col>
-                                </div>                                    
+                                </div>
                                 <v-col
                                     cols="12"
                                     sm="6"
@@ -499,6 +647,130 @@
             </v-card>
         </v-dialog>
         <!-- //////end_dialog////// -->
+
+        <v-dialog v-model="dialogEditItemList" transition="dialog-top-transition"
+            max-width="800">
+            <v-card>
+                <v-toolbar
+                color="primary"
+                dark>
+                Edit Item Category
+                </v-toolbar>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                        <div style="background-color: #2196F3; padding:10px;">
+                                            <span style="color:white; font-weight:bold; letter-spacing: 2px;">Edit Data</span>
+                                        </div>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                <v-select
+                                label='Category Name'
+                                clearable
+                                :items="categoryNameList"
+                                :item-text="categoryNameList.text"
+                                :item-value="categoryNameList.value"
+                                v-model="selectedItemList.cat_val"
+                                @input="selectingCategoryNameList()"
+                                >
+                                </v-select>
+                                </v-col>
+
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                <v-select
+                                label='Sub-Category Name'
+                                clearable
+                                :items="subCategoryNameList"
+                                :item-text="subCategoryNameList.text"
+                                :item-value="subCategoryNameList.value"
+                                v-model="selectedItemList.subcat_val"
+                                 >
+                                </v-select>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                <v-text-field
+                                label='Part Name'
+                                clearable
+                                v-model="selectedItemList.part_name == 'N/A' ? selectedItemList.part_name = null : selectedItemList.part_name"
+                                 >
+                                </v-text-field>
+                                </v-col>
+
+                            </v-row>
+                                <!------- row 2 ---------->
+
+                            <v-row>
+
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                <v-text-field
+                                label='Material'
+                                clearable
+                                v-model="selectedItemList.material == 'N/A' ? selectedItemList.material = null : selectedItemList.material"
+                                >
+                                </v-text-field>
+                                </v-col>
+
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                <v-text-field
+                                label='Dimension'
+                                clearable
+                                v-model="selectedItemList.dimension == 'N/A' ? selectedItemList.dimension = null : selectedItemList.dimension"
+                                 >
+                                </v-text-field>
+                                </v-col>
+
+                             </v-row>
+
+
+                                <!-------end of row 2 ---------->
+
+
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions class="justify-end">
+                        <v-btn
+                         color="primary"
+                        @click="updateItemList()"
+                        :disabled ="(selectedItemList.cat_val==null || selectedItemList.subcat_val==null) ||
+                                    ((selectedItemList.cat_val == compareToSelectedItemList.cat_val || selectedItemList.cat_val == compareToSelectedItemList.cat_val.value)&&
+                                    (selectedItemList.subcat_val == compareToSelectedItemList.subcat_val || selectedItemList.subcat_val == compareToSelectedItemList.subcat_val.value) &&
+                                    selectedItemList.material == compareToSelectedItemList.material &&
+                                    selectedItemList.part_name == compareToSelectedItemList.part_name &&
+                                    selectedItemList.dimension == compareToSelectedItemList.dimension)
+                                    "
+                        >Save Changes</v-btn>
+                        <v-btn
+                                text
+                                @click="dialogEditCategoryItem=false"
+                            >Close
+                        </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
    </app-layout>
 </template>
@@ -552,12 +824,47 @@
             selectedCategoryItem:{
                 category_name: '',
                 subcategory_name: '',
-            }
-        
+            },
+
+//-------------------- for item list section------------------------------------
+
+            headersForItemList: [
+                {
+                text: 'Category Name',
+                align: 'start',
+                value: 'category_name',
+                class: "yellow"
+                },
+                { text: 'Sub-Category Name', value: 'subcategory_name', class: "yellow"},
+                { text: 'Part Name', value: 'part_name', class: "yellow"},
+                { text: 'Material', value: 'material', class: "yellow"},
+                { text: 'Dimension', value: 'dimension', class: "yellow"},
+                { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
+            ],
+
+            category_val_for_list_item : null,
+            subcategory_val_for_list_item : null,
+            part_name_for_list_item : null,
+            material_for_list_item : null,
+            dimension_for_list_item : null,
+
+            item_list : [],
+            dialogEditItemList : false,
+
+            selectedItemList : {},
+            compareToSelectedItemList : {},
+            categoryNameList : [],
+            subCategoryNameList : [],
+
+            category_name_for_add_itemList : [],
+            subcategory_name_for_add_itemList : [],
+
+            deleteIndex : null,
     }),
 
     created: function(){
         this.getAvailableCateogryItems()
+        this.getAvailableItemList()
     },
 
     computed: {
@@ -571,15 +878,17 @@
 
         dialogDelete(val) {
             val || this.closeDelete()
-        }
+        },
+
     },
 
     methods: {
-        
+
          addCategory(){
             axios.post('/addCategory', {cat_name : this.category_val})
               .then(response =>{
                     this.getAvailableCateogryItems()
+                    this.getAvailableItemList()
                     this.successSnackbar = true
                     this.$refs.category_form.reset()
                     this.category_val=''
@@ -588,28 +897,59 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
               });
          },
-
-         deleteItemCategory(params){
-              axios.post('/deleteItemCategory', {params : this.defaultCategoryItem})
+         addItemList(){
+            axios.post('/addItemList', {cat_val : this.category_val_for_list_item,
+                                        subcat_val : this.subcategory_val_for_list_item,
+                                        partname_val : this.part_name_for_list_item,
+                                        material_val : this.material_for_list_item,
+                                        dimension : this.dimension_for_list_item})
               .then(response =>{
-                    //console.log(response.data)
-                    this.getAvailableCateogryItems()
+                    this.getAvailableItemList()
+                    this.close();
               })
               .catch(error =>{
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
+              });
+         },
+         deleteItemCategory(params){
+              axios.post('/deleteItemCategory', {params : this.defaultCategoryItem})
+              .then(response =>{
+                    //console.log(response.data)
+                    this.getAvailableCateogryItems()
+                    this.getAvailableItemList()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+         },
+
+         deleteItemList(params){
+              axios.post('/deleteItemList', {params : params})
+              .then(response =>{
+                    this.deleteIndex = null
+                    this.getAvailableItemList()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
               });
          },
 
          addSubCat(){
               axios.post('/addSubCategory', {cat_name : this.category_name_selected , subcat_name : this.subcategory_val})
               .then(response =>{
-                    console.log(response.data)
+                    //console.log(response.data)
                     this.successSnackbar = true
                     this.$refs.subcategory_form.reset()
                     this.category_name_selected=''
@@ -619,7 +959,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
               });
          },
 
@@ -632,17 +972,23 @@
               this.getAvailableCateogryItems()
             //   this.rfqs=[],
               this.$nextTick(() => {
-                //    this.$refs.form.reset()
-                //    this.data_items = [];
-                this.$refs.category_form.reset()
-                this.$refs.subcategory_form.reset()
+                this.category_val_for_list_item  = null
+                this.subcategory_val_for_list_item  = null
+                this.part_name_for_list_item  = null
+                this.material_for_list_item  = null
+                this.dimension_for_list_item  = null
+
+                this.tab == 0 ? this.$refs.category_form.reset() : false
+                this.tab == 0 ? this.$refs.subcategory_form.reset() : false
                 this.category_val=''
                 this.category_name_selected=''
                 this.subcategory_val=''
+
               })
           },
 
         getAvailableCateogryItems(){
+
               axios.get('/viewCatItem')
               .then(response =>{
                     this.item_categories = response.data[1]
@@ -652,9 +998,82 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
+              });
+
+              if(this.tab == 1){
+              axios.get('/getcat_subcat_for_add_ItemList')
+              .then(response =>{
+                 this.category_name_for_add_itemList = response.data
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+              }
+
+        },
+
+        getAvailableItemList(){
+              axios.get('/getAvailableItemList')
+              .then(response =>{
+                 this.item_list = response.data
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
               });
         },
+
+        getcat_subcat_ItemList(params){
+              axios.get('/getcat_subcat_ItemList', { params : params})
+              .then(response =>{
+                 this.categoryNameList = response.data[0]
+                 this.subCategoryNameList = response.data[1]
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        selectingCategoryNameList(){
+              axios.get('/selectingCategoryNameList', { params : this.selectedItemList})
+              .then(response =>{
+                  this.selectedItemList.subcat_val = null
+                  this.subCategoryNameList = response.data
+                 //console.log(response.data)
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        selectingCategoryNameListForAdd(val){
+              axios.get('/selectingCategoryNameListForAdd', { params : val})
+              .then(response =>{
+                this.subcategory_val_for_list_item = null
+                 this.subcategory_name_for_add_itemList = response.data
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+
+
         getColor (calories) {
             if (calories == 'N/A') return 'red--text'
             else return
@@ -665,14 +1084,25 @@
         },
 
         deleteItem(item){
-            this.defaultCategoryItem = Object.assign({},item)
-            this.dialogDelete = true
+            if(this.tab == 0){
+                this.defaultCategoryItem = Object.assign({},item)
+                this.dialogDelete = true
+            }
+            if(this.tab == 1){
+                this.deleteIndex = item.id
+                this.dialogDelete = true
+            }
         },
 
         deleteItemConfirm(){
-            //console.log(this.defaultCategoryItem)
-            this.deleteItemCategory(this.defaultCategoryItem)
-            this.closeDelete()
+            if(this.tab == 0){
+                this.deleteItemCategory(this.defaultCategoryItem)
+                this.closeDelete()
+            }
+            if(this.tab == 1){
+                this.deleteItemList(this.deleteIndex)
+                this.closeDelete()
+            }
         },
 
         editCategoryItem(item){
@@ -685,16 +1115,42 @@
               axios.post('/updateSubCategory', {updated_val : this.defaultCategoryItem , selected_val : this.selectedCategoryItem})
               .then(response =>{
                     this.getAvailableCateogryItems()
+                    this.getAvailableItemList()
                     this.dialogEditCategoryItem = false
               })
               .catch(error =>{
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
               });
+        },
+
+        updateItemList(){
+              axios.post('/updateItemList', {params : this.selectedItemList})
+              .then(response =>{
+                  this.getAvailableItemList()
+                  this.dialogEditItemList = false
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+
+        },
+
+        editItemList(item){
+            this.dialogEditItemList = true
+            this.getcat_subcat_ItemList(item)
+            this.selectedItemList = Object.assign({},item)
+            this.compareToSelectedItemList = Object.assign({},item)
+            //console.log(this.compareToSelectedItemList)
         }
-        
+
+
+
         },
     }
 </script>

@@ -11,6 +11,7 @@ use App\Models\Rfq_record;
 use App\Models\SitePermission;
 use App\Models\CategoryItem;
 use App\Models\SubCategoryItem;
+use App\Models\ItemList;
 use PDF;
 use Auth;
 
@@ -22,7 +23,7 @@ class DashboardController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        
+
         return Inertia::render('Dashboard');
     }
     public function req_for_quotation() {
@@ -110,7 +111,7 @@ class DashboardController extends Controller
 
         foreach(request()->all() as $req){
             $arr[] = json_decode($req);
-            
+
         }
 
         foreach($arr as $a){
@@ -129,11 +130,11 @@ class DashboardController extends Controller
             'date' => date('m/d/Y'),
             'rfqs' => $all
         ];
-          
+
         $pdf = PDF::loadView('rfq', $data);
-    
+
         return $pdf->download('RFQ.pdf');
-        
+
 
     }
 
@@ -185,12 +186,12 @@ class DashboardController extends Controller
                 $crow[$key][$idx] = json_decode($cool);
             }
         }
-        
+
         $result = array();
         foreach($crow as $k => $v){
             $result[$k] = array_combine($modules[$k],$crow[$k]);
         }
-        
+
 
         return response()->json($result ? $result : 'none');
     }
@@ -240,7 +241,7 @@ class DashboardController extends Controller
 
     public function deleteUser(Request $request){
         $user = User::where('email',$request->email)->first();
-        
+
         if($user->permission->count() > 0){
             $user->permission()->delete();
         }
@@ -259,7 +260,7 @@ class DashboardController extends Controller
     public function canViewSideBar(){
         if(Auth::user()->role_as == '1'){
              return response()->json(['true','true','true','true']);
-             
+
         } else {
 
              $user = User::find(Auth::id())->permission;
@@ -274,8 +275,8 @@ class DashboardController extends Controller
                 foreach($arr as $data){
                    $col[] = explode(',',$data);
                 }
-   
-   
+
+
                 return response()->json([$col[0][0],
                                          $col[1][0],
                                          $col[2][0],
@@ -336,10 +337,12 @@ class DashboardController extends Controller
         if($request->params['subcategory_name'] == "N/A"){
             $category->delete();
         } else {
-           $category->subcategory_items()->where('subcategory_name',$request->params['subcategory_name'])->first()->delete();
+           $id = $category->subcategory_items()->where('subcategory_name',$request->params['subcategory_name'])->first();
+           ItemList::where('sub_category_item_id',$id->id)->delete();
+           $id->delete();
         }
-        
-        return response()->json('success');
+
+        return response()->json('deleting success');
     }
 
     public function updateSubCategory(Request $request){
@@ -347,30 +350,165 @@ class DashboardController extends Controller
         $detection_for_cat_name = '';
         if($request->selected_val['subcategory_name'] == 'N/A'){
             $cat_item = CategoryItem::all()->pluck('category_name')->toArray();
-    
+
             if(in_array(ucwords($request->updated_val['category_name']),$cat_item)){
-                
+
             } else {
                 CategoryItem::where('category_name',$request->selected_val['category_name'])->update(['category_name'=>ucwords($request->updated_val['category_name'])]);
             }
-    
+
         } else {
             $cat_item = CategoryItem::where('category_name',$request->selected_val['category_name'])->first()->subcategory_items->pluck('subcategory_name')->toArray();
             if(in_array(ucwords($request->updated_val['subcategory_name']),$cat_item)){
-                
+
             } else {
                 $how = CategoryItem::where('category_name',ucwords($request->selected_val['category_name']))->first();
                 $how->subcategory_items->where('subcategory_name',ucwords($request->selected_val['subcategory_name']))->first()->update(['subcategory_name'=>ucwords($request->updated_val['subcategory_name'])]);
             }
 
             $categ= CategoryItem::all()->pluck('category_name')->toArray();
-    
+
             if(in_array(ucwords($request->updated_val['category_name']),$categ)){
-                
+
             } else {
                 CategoryItem::where('category_name',$request->selected_val['category_name'])->update(['category_name'=>ucwords($request->updated_val['category_name'])]);
             }
         }
+        return response()->json();
+    }
+
+    public function getAvailableItemList(){
+        $allItems = ItemList::all()->map( function($query){
+            return [
+                'id' => $query->id,
+                'category_name' => $query->category_item->category_name,
+                'subcategory_name' => $query->subcategory_item->subcategory_name,
+                'part_name' => $query->part_name == '' ? 'N/A' : $query->part_name,
+                'material' => $query->material == '' ? 'N/A' : $query->material,
+                'dimension' => $query->dimension == '' ? 'N/A' : $query->dimension,
+                'cat_val' => ['text'=>$query->category_item->category_name,'value'=>$query->category_item_id],
+                'subcat_val' => ['text'=>$query->subcategory_item->subcategory_name,'value'=>$query->sub_category_item_id]
+            ];
+        });
+        return response()->json($allItems);
+    }
+
+    public function getcat_subcat_ItemList(Request $request){
+        $cat_id = json_decode($request->cat_val);
+        $cat_val = CategoryItem::all()->map(function ($query){
+            return [
+                'text' => $query->category_name,
+                'value' => $query->id
+            ];
+        });
+        $subcat_val = SubCategoryItem::where('category_item_id',$cat_id->value)->get()
+        ->map( function($query){
+            return [
+                'text' => $query->subcategory_name,
+                'value' => $query->id
+            ];
+        });
+
+
+        return response()->json([$cat_val,$subcat_val]);
+    }
+
+    public function selectingCategoryNameList(Request $request){
+        $cat_val = $request->cat_val;
+
+        $sub_cat = SubCategoryItem::where('category_item_id',$cat_val)->get()
+        ->map( function($query){
+            return [
+                'text' => $query->subcategory_name,
+                'value' => $query->id
+            ];
+        });
+
+        return response()->json($sub_cat);
+    }
+
+    public function updateItemList(Request $request){
+
+        $cat_val = isset($request->params['cat_val']['value']) ? $request->params['cat_val']['value'] : $request->params['cat_val'];
+        $subcat_val = isset($request->params['subcat_val']['value']) ? $request->params['subcat_val']['value'] : $request->params['subcat_val'];
+
+        $detection = 0;
+
+        foreach (ItemList::all() as $item) {
+            if (in_array(strtolower($request->params['part_name']), [strtolower($item->part_name)]) &&
+               in_array(strtolower($request->params['material']), [strtolower($item->material)]) &&
+               in_array(strtolower($request->params['dimension']), [strtolower($item->dimension)]) &&
+               in_array(strtolower($cat_val), [strtolower($item->category_item_id)]) &&
+               in_array(strtolower($subcat_val), [strtolower($item->sub_category_item_id)])) {
+                $detection += 1;
+            }
+        }
+
+        if($detection == 0){
+            ItemList::where('id',$request->params['id'])->update([
+                'category_item_id' => $cat_val,
+                'sub_category_item_id' => $subcat_val,
+                'part_name' => $request->params['part_name'] == null ? '' : $request->params['part_name'],
+                'material' => $request->params['material'] == null ? '' : $request->params['material'],
+                'dimension' => $request->params['dimension'] == null ? '' : $request->params['dimension'],
+            ]);
+        }
+
+
+        return response()->json('successfully updated');
+    }
+
+    public function addItemList(Request $request){
+
+        $detection = 0;
+
+        foreach (ItemList::all() as $item) {
+            if (in_array(strtolower($request->partname_val), [strtolower($item->part_name)]) &&
+               in_array(strtolower($request->material_val), [strtolower($item->material)]) &&
+               in_array(strtolower($request->dimension), [strtolower($item->dimension)]) &&
+               in_array(strtolower($request->cat_val), [strtolower($item->category_item_id)]) &&
+               in_array(strtolower($request->subcat_val), [strtolower($item->sub_category_item_id)])) {
+                $detection += 1;
+            }
+        }
+
+            if($detection == 0){
+                    ItemList::create([
+                    'category_item_id' => $request->cat_val,
+                    'sub_category_item_id' => $request->subcat_val,
+                    'part_name' => $request->partname_val == null ? '' : $request->partname_val,
+                    'material' => $request->material_val == null ? '' : $request->material_val,
+                    'dimension' => $request->dimension == null ? '' : $request->dimension
+                ]);
+            }
+
+
+        return response()->json();
+    }
+
+    public function getcat_subcat_for_add_ItemList(){
+        $cat_val = CategoryItem::all()->map(function ($query){
+            return [
+                'text' => $query->category_name,
+                'value' => $query->id
+            ];
+        });
+        return response()->json($cat_val);
+    }
+
+    public function selectingCategoryNameListForAdd(Request $request){
+        $subcat = SubCategoryItem::where('category_item_id', $request[0])->get()
+        ->map(function($query) {
+            return [
+                'text' => $query->subcategory_name,
+                'value' => $query->id
+            ];
+        });
+        return response()->json($subcat);
+    }
+
+    public function deleteItemList(Request $request){
+        ItemList::findOrFail($request->params)->delete();
         return response()->json();
     }
     /**

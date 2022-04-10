@@ -36,19 +36,19 @@ Route::get('/send-mail', function () {
 
 
     $notices = EmployeeCertification::where('cert_expiration_date',Carbon::now()->addMonth()->format('Y-m-d'))->get();
-   
+
     foreach($notices as $notice){
 
         $details = [
             'title' => 'Expiration Notice',
             'body' => 'The TNR certificate of '.$notice->employee_name.' '.$notice->employee_id.' will be expired at ' . Carbon::now()->addMonth()->format('Y-m-d')
         ];
-       
+
      Mail::to(Auth::user()->email)->send(new App\Mail\NoticeMail($details));
 
     }
 
-   
+
     dd('email sent.');
 });
 
@@ -70,6 +70,11 @@ Route::get('/getSitePermission', [DashboardController::class, 'getSitePermission
 Route::get('/canViewSideBar', [DashboardController::class, 'canViewSideBar'])->name('canView');
 Route::get('/viewCatItem', [DashboardController::class, 'viewCatItem'])->name('viewCatItem');
 Route::get('/getEmpUser', [DashboardController::class, 'getEmpUser'])->name('getEmpUser');
+Route::get('/getAvailableItemList', [DashboardController::class, 'getAvailableItemList'])->name('getAvailableItemList');
+Route::get('/getcat_subcat_ItemList', [DashboardController::class, 'getcat_subcat_ItemList'])->name('getcat_subcat_ItemList');
+Route::get('/selectingCategoryNameList', [DashboardController::class, 'selectingCategoryNameList'])->name('selectingCategoryNameList');
+Route::get('/getcat_subcat_for_add_ItemList', [DashboardController::class, 'getcat_subcat_for_add_ItemList'])->name('getcat_subcat_for_add_ItemList');
+Route::get('/selectingCategoryNameListForAdd', [DashboardController::class, 'selectingCategoryNameListForAdd'])->name('selectingCategoryNameListForAdd');
 
 Route::post('/addOrEditUserPermission', [DashboardController::class, 'addOrEditUserPermission'])->name('addOrEditUserPermission');
 Route::post('/deleteUser', [DashboardController::class, 'deleteUser'])->name('deleteUser');
@@ -78,6 +83,9 @@ Route::post('/addCategory', [DashboardController::class, 'addCategory'])->name('
 Route::post('/addSubCategory', [DashboardController::class, 'addSubCategory'])->name('addSubCategory');
 Route::post('/deleteItemCategory',[DashboardController::class, 'deleteItemCategory'])->name('deleteItemCategory');
 Route::post('/updateSubCategory',[DashboardController::class, 'updateSubCategory'])->name('updateSubCategory');
+Route::post('/updateItemList', [DashboardController::class, 'updateItemList'])->name('updateItemList');
+Route::post('/addItemList', [DashboardController::class, 'addItemList'])->name('addItemList');
+Route::post('/deleteItemList', [DashboardController::class, 'deleteItemList'])->name('deleteItemList');
 
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {

@@ -3122,7 +3122,7 @@ module.exports = {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"_args":[["axios@0.21.4","C:\\\\Users\\\\Software Developer\\\\code\\\\cert_tracking_v2"]],"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/","/@inertiajs/inertia"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"C:\\\\Users\\\\Software Developer\\\\code\\\\cert_tracking_v2","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
+module.exports = JSON.parse('{"_args":[["axios@0.21.4","C:\\\\Users\\\\ADMIN\\\\Desktop\\\\code\\\\pr_po"]],"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/","/@inertiajs/inertia"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"C:\\\\Users\\\\ADMIN\\\\Desktop\\\\code\\\\pr_po","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ }),
 
@@ -4648,8 +4648,282 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Layouts/AppLayout */ "./resources/js/Layouts/AppLayout.vue");
+var _methods;
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5202,11 +5476,54 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       selectedCategoryItem: {
         category_name: '',
         subcategory_name: ''
-      }
+      },
+      //-------------------- for item list section------------------------------------
+      headersForItemList: [{
+        text: 'Category Name',
+        align: 'start',
+        value: 'category_name',
+        "class": "yellow"
+      }, {
+        text: 'Sub-Category Name',
+        value: 'subcategory_name',
+        "class": "yellow"
+      }, {
+        text: 'Part Name',
+        value: 'part_name',
+        "class": "yellow"
+      }, {
+        text: 'Material',
+        value: 'material',
+        "class": "yellow"
+      }, {
+        text: 'Dimension',
+        value: 'dimension',
+        "class": "yellow"
+      }, {
+        text: 'Actions',
+        value: 'actions',
+        sortable: false,
+        "class": "yellow"
+      }],
+      category_val_for_list_item: null,
+      subcategory_val_for_list_item: null,
+      part_name_for_list_item: null,
+      material_for_list_item: null,
+      dimension_for_list_item: null,
+      item_list: [],
+      dialogEditItemList: false,
+      selectedItemList: {},
+      compareToSelectedItemList: {},
+      categoryNameList: [],
+      subCategoryNameList: [],
+      category_name_for_add_itemList: [],
+      subcategory_name_for_add_itemList: [],
+      deleteIndex: null
     };
   },
   created: function created() {
     this.getAvailableCateogryItems();
+    this.getAvailableItemList();
   },
   computed: {},
   watch: {
@@ -5217,7 +5534,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       val || this.closeDelete();
     }
   },
-  methods: _defineProperty({
+  methods: (_methods = {
     addCategory: function addCategory() {
       var _this = this;
 
@@ -5225,6 +5542,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         cat_name: this.category_val
       }).then(function (response) {
         _this.getAvailableCateogryItems();
+
+        _this.getAvailableItemList();
 
         _this.successSnackbar = true;
 
@@ -5235,32 +5554,64 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(error.response);
       })["finally"](function () {});
     },
-    deleteItemCategory: function deleteItemCategory(params) {
+    addItemList: function addItemList() {
       var _this2 = this;
+
+      axios.post('/addItemList', {
+        cat_val: this.category_val_for_list_item,
+        subcat_val: this.subcategory_val_for_list_item,
+        partname_val: this.part_name_for_list_item,
+        material_val: this.material_for_list_item,
+        dimension: this.dimension_for_list_item
+      }).then(function (response) {
+        _this2.getAvailableItemList();
+
+        _this2.close();
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    deleteItemCategory: function deleteItemCategory(params) {
+      var _this3 = this;
 
       axios.post('/deleteItemCategory', {
         params: this.defaultCategoryItem
       }).then(function (response) {
         //console.log(response.data)
-        _this2.getAvailableCateogryItems();
+        _this3.getAvailableCateogryItems();
+
+        _this3.getAvailableItemList();
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    deleteItemList: function deleteItemList(params) {
+      var _this4 = this;
+
+      axios.post('/deleteItemList', {
+        params: params
+      }).then(function (response) {
+        _this4.deleteIndex = null;
+
+        _this4.getAvailableItemList();
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     addSubCat: function addSubCat() {
-      var _this3 = this;
+      var _this5 = this;
 
       axios.post('/addSubCategory', {
         cat_name: this.category_name_selected,
         subcat_name: this.subcategory_val
       }).then(function (response) {
-        console.log(response.data);
-        _this3.successSnackbar = true;
+        //console.log(response.data)
+        _this5.successSnackbar = true;
 
-        _this3.$refs.subcategory_form.reset();
+        _this5.$refs.subcategory_form.reset();
 
-        _this3.category_name_selected = '';
-        _this3.subcategory_val = '';
+        _this5.category_name_selected = '';
+        _this5.subcategory_val = '';
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
@@ -5269,29 +5620,83 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log(this.defaultCategoryItem);
     },
     close: function close() {
-      var _this4 = this;
+      var _this6 = this;
 
       this.dialog = false;
       this.getAvailableCateogryItems(); //   this.rfqs=[],
 
       this.$nextTick(function () {
-        //    this.$refs.form.reset()
-        //    this.data_items = [];
-        _this4.$refs.category_form.reset();
-
-        _this4.$refs.subcategory_form.reset();
-
-        _this4.category_val = '';
-        _this4.category_name_selected = '';
-        _this4.subcategory_val = '';
+        _this6.category_val_for_list_item = null;
+        _this6.subcategory_val_for_list_item = null;
+        _this6.part_name_for_list_item = null;
+        _this6.material_for_list_item = null;
+        _this6.dimension_for_list_item = null;
+        _this6.tab == 0 ? _this6.$refs.category_form.reset() : false;
+        _this6.tab == 0 ? _this6.$refs.subcategory_form.reset() : false;
+        _this6.category_val = '';
+        _this6.category_name_selected = '';
+        _this6.subcategory_val = '';
       });
     },
     getAvailableCateogryItems: function getAvailableCateogryItems() {
-      var _this5 = this;
+      var _this7 = this;
 
       axios.get('/viewCatItem').then(function (response) {
-        _this5.item_categories = response.data[1];
-        _this5.category_name_items = response.data[0];
+        _this7.item_categories = response.data[1];
+        _this7.category_name_items = response.data[0];
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+
+      if (this.tab == 1) {
+        axios.get('/getcat_subcat_for_add_ItemList').then(function (response) {
+          _this7.category_name_for_add_itemList = response.data;
+        })["catch"](function (error) {
+          console.log(error.response);
+        })["finally"](function () {});
+      }
+    },
+    getAvailableItemList: function getAvailableItemList() {
+      var _this8 = this;
+
+      axios.get('/getAvailableItemList').then(function (response) {
+        _this8.item_list = response.data;
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    getcat_subcat_ItemList: function getcat_subcat_ItemList(params) {
+      var _this9 = this;
+
+      axios.get('/getcat_subcat_ItemList', {
+        params: params
+      }).then(function (response) {
+        _this9.categoryNameList = response.data[0];
+        _this9.subCategoryNameList = response.data[1];
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    selectingCategoryNameList: function selectingCategoryNameList() {
+      var _this10 = this;
+
+      axios.get('/selectingCategoryNameList', {
+        params: this.selectedItemList
+      }).then(function (response) {
+        _this10.selectedItemList.subcat_val = null;
+        _this10.subCategoryNameList = response.data; //console.log(response.data)
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    selectingCategoryNameListForAdd: function selectingCategoryNameListForAdd(val) {
+      var _this11 = this;
+
+      axios.get('/selectingCategoryNameListForAdd', {
+        params: val
+      }).then(function (response) {
+        _this11.subcategory_val_for_list_item = null;
+        _this11.subcategory_name_for_add_itemList = response.data;
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
@@ -5303,33 +5708,65 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.dialogDelete = false;
     },
     deleteItem: function deleteItem(item) {
-      this.defaultCategoryItem = Object.assign({}, item);
-      this.dialogDelete = true;
+      if (this.tab == 0) {
+        this.defaultCategoryItem = Object.assign({}, item);
+        this.dialogDelete = true;
+      }
+
+      if (this.tab == 1) {
+        this.deleteIndex = item.id;
+        this.dialogDelete = true;
+      }
     },
     deleteItemConfirm: function deleteItemConfirm() {
-      //console.log(this.defaultCategoryItem)
-      this.deleteItemCategory(this.defaultCategoryItem);
-      this.closeDelete();
+      if (this.tab == 0) {
+        this.deleteItemCategory(this.defaultCategoryItem);
+        this.closeDelete();
+      }
+
+      if (this.tab == 1) {
+        this.deleteItemList(this.deleteIndex);
+        this.closeDelete();
+      }
     },
     editCategoryItem: function editCategoryItem(item) {
       this.dialogEditCategoryItem = true;
       this.defaultCategoryItem = Object.assign({}, item);
       this.selectedCategoryItem = Object.assign({}, item);
     }
-  }, "updateCategoryItem", function updateCategoryItem() {
-    var _this6 = this;
+  }, _defineProperty(_methods, "updateCategoryItem", function updateCategoryItem() {
+    var _this12 = this;
 
     axios.post('/updateSubCategory', {
       updated_val: this.defaultCategoryItem,
       selected_val: this.selectedCategoryItem
     }).then(function (response) {
-      _this6.getAvailableCateogryItems();
+      _this12.getAvailableCateogryItems();
 
-      _this6.dialogEditCategoryItem = false;
+      _this12.getAvailableItemList();
+
+      _this12.dialogEditCategoryItem = false;
     })["catch"](function (error) {
       console.log(error.response);
     })["finally"](function () {});
-  })
+  }), _defineProperty(_methods, "updateItemList", function updateItemList() {
+    var _this13 = this;
+
+    axios.post('/updateItemList', {
+      params: this.selectedItemList
+    }).then(function (response) {
+      _this13.getAvailableItemList();
+
+      _this13.dialogEditItemList = false;
+    })["catch"](function (error) {
+      console.log(error.response);
+    })["finally"](function () {});
+  }), _defineProperty(_methods, "editItemList", function editItemList(item) {
+    this.dialogEditItemList = true;
+    this.getcat_subcat_ItemList(item);
+    this.selectedItemList = Object.assign({}, item);
+    this.compareToSelectedItemList = Object.assign({}, item); //console.log(this.compareToSelectedItemList)
+  }), _methods)
 });
 
 /***/ }),
@@ -48729,7 +49166,223 @@ var render = function() {
                                   _c(
                                     "v-card",
                                     { attrs: { color: "basil", flat: "" } },
-                                    [_c("v-card-text")],
+                                    [
+                                      _c(
+                                        "v-card-text",
+                                        [
+                                          _c(
+                                            "v-row",
+                                            { attrs: { justify: "end" } },
+                                            [
+                                              _c(
+                                                "v-col",
+                                                {
+                                                  attrs: {
+                                                    cols: "12",
+                                                    sm: "6",
+                                                    md: "3"
+                                                  }
+                                                },
+                                                [
+                                                  _c("v-text-field", {
+                                                    attrs: {
+                                                      "append-icon":
+                                                        "mdi-magnify",
+                                                      label: "Search",
+                                                      "single-line": "",
+                                                      "hide-details": ""
+                                                    },
+                                                    model: {
+                                                      value: _vm.search,
+                                                      callback: function($$v) {
+                                                        _vm.search = $$v
+                                                      },
+                                                      expression: "search"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("v-data-table", {
+                                            staticClass: "mt-5",
+                                            attrs: {
+                                              headers: _vm.headersForItemList,
+                                              items: _vm.item_list,
+                                              search: _vm.search,
+                                              "hide-default-footer": "",
+                                              page: _vm.page,
+                                              "items-per-page": _vm.itemsPerPage
+                                            },
+                                            on: {
+                                              "update:page": function($event) {
+                                                _vm.page = $event
+                                              },
+                                              "page-count": function($event) {
+                                                _vm.pageCount = $event
+                                              }
+                                            },
+                                            scopedSlots: _vm._u(
+                                              [
+                                                {
+                                                  key: "item.part_name",
+                                                  fn: function(ref) {
+                                                    var item = ref.item
+                                                    return [
+                                                      _c(
+                                                        "span",
+                                                        {
+                                                          class: _vm.getColor(
+                                                            item.part_name
+                                                          )
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                        " +
+                                                              _vm._s(
+                                                                item.part_name
+                                                              ) +
+                                                              "\n                                        "
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  key: "item.material",
+                                                  fn: function(ref) {
+                                                    var item = ref.item
+                                                    return [
+                                                      _c(
+                                                        "span",
+                                                        {
+                                                          class: _vm.getColor(
+                                                            item.material
+                                                          )
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                        " +
+                                                              _vm._s(
+                                                                item.material
+                                                              ) +
+                                                              "\n                                        "
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  key: "item.dimension",
+                                                  fn: function(ref) {
+                                                    var item = ref.item
+                                                    return [
+                                                      _c(
+                                                        "span",
+                                                        {
+                                                          class: _vm.getColor(
+                                                            item.dimension
+                                                          )
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                        " +
+                                                              _vm._s(
+                                                                item.dimension
+                                                              ) +
+                                                              "\n                                        "
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  key: "item.actions",
+                                                  fn: function(ref) {
+                                                    var item = ref.item
+                                                    return [
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          staticClass: "mr-2",
+                                                          attrs: { small: "" },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.editItemList(
+                                                                item
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                mdi-pencil\n                                            "
+                                                          )
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          attrs: { small: "" },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.deleteItem(
+                                                                item
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                mdi-delete\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  }
+                                                }
+                                              ],
+                                              null,
+                                              true
+                                            )
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "text-center pt-2" },
+                                            [
+                                              _c("v-pagination", {
+                                                attrs: {
+                                                  length: _vm.pageCount,
+                                                  circle: "",
+                                                  "total-visible": 7
+                                                },
+                                                model: {
+                                                  value: _vm.page,
+                                                  callback: function($$v) {
+                                                    _vm.page = $$v
+                                                  },
+                                                  expression: "page"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
                                     1
                                   )
                                 ],
@@ -49226,18 +49879,261 @@ var render = function() {
                           _c(
                             "v-toolbar",
                             { attrs: { color: "primary", dark: "" } },
-                            [_vm._v("Add Item List\n                ")]
+                            [_vm._v("Add Item\n                ")]
                           ),
                           _vm._v(" "),
-                          _c("v-card-text"),
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-container",
+                                [
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c(
+                                        "v-col",
+                                        { attrs: { cols: "12", md: "12" } },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticStyle: {
+                                                "background-color": "#2196F3",
+                                                padding: "10px"
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticStyle: {
+                                                    color: "white",
+                                                    "font-weight": "bold",
+                                                    "letter-spacing": "2px"
+                                                  }
+                                                },
+                                                [_vm._v("Add an Item List")]
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-select", {
+                                            attrs: {
+                                              label: "Category Name",
+                                              clearable: "",
+                                              items:
+                                                _vm.category_name_for_add_itemList,
+                                              "item-text":
+                                                _vm
+                                                  .category_name_for_add_itemList
+                                                  .text,
+                                              "item-value":
+                                                _vm
+                                                  .category_name_for_add_itemList
+                                                  .value
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                return _vm.selectingCategoryNameListForAdd(
+                                                  $event
+                                                )
+                                              }
+                                            },
+                                            model: {
+                                              value:
+                                                _vm.category_val_for_list_item,
+                                              callback: function($$v) {
+                                                _vm.category_val_for_list_item = $$v
+                                              },
+                                              expression:
+                                                "category_val_for_list_item"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-select", {
+                                            attrs: {
+                                              label: "Sub-Category Name",
+                                              clearable: "",
+                                              items:
+                                                _vm.subcategory_name_for_add_itemList,
+                                              "item-text":
+                                                _vm
+                                                  .subcategory_name_for_add_itemList
+                                                  .text,
+                                              "item-value":
+                                                _vm
+                                                  .subcategory_name_for_add_itemList
+                                                  .value,
+                                              disabled: !_vm.category_val_for_list_item
+                                            },
+                                            model: {
+                                              value:
+                                                _vm.subcategory_val_for_list_item,
+                                              callback: function($$v) {
+                                                _vm.subcategory_val_for_list_item = $$v
+                                              },
+                                              expression:
+                                                "subcategory_val_for_list_item"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "Part Name",
+                                              clearable: ""
+                                            },
+                                            model: {
+                                              value:
+                                                _vm.part_name_for_list_item,
+                                              callback: function($$v) {
+                                                _vm.part_name_for_list_item = $$v
+                                              },
+                                              expression:
+                                                "part_name_for_list_item"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "Material",
+                                              clearable: ""
+                                            },
+                                            model: {
+                                              value: _vm.material_for_list_item,
+                                              callback: function($$v) {
+                                                _vm.material_for_list_item = $$v
+                                              },
+                                              expression:
+                                                "material_for_list_item"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "Dimension",
+                                              clearable: ""
+                                            },
+                                            model: {
+                                              value:
+                                                _vm.dimension_for_list_item,
+                                              callback: function($$v) {
+                                                _vm.dimension_for_list_item = $$v
+                                              },
+                                              expression:
+                                                "dimension_for_list_item"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c(
                             "v-card-actions",
                             { staticClass: "justify-end" },
                             [
-                              _c("v-btn", { attrs: { color: "primary" } }, [
-                                _vm._v("Save\n                        ")
-                              ]),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    color: "primary",
+                                    disabled:
+                                      !_vm.category_val_for_list_item ||
+                                      !_vm.subcategory_val_for_list_item
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.addItemList()
+                                    }
+                                  }
+                                },
+                                [_vm._v("Save\n                        ")]
+                              ),
                               _vm._v(" "),
                               _c(
                                 "v-btn",
@@ -49365,7 +50261,7 @@ var render = function() {
                                   attrs: { text: "" },
                                   on: {
                                     click: function($event) {
-                                      return _vm.close()
+                                      return _vm.close_for_add_itemList()
                                     }
                                   }
                                 },
@@ -49648,6 +50544,285 @@ var render = function() {
                       }
                     },
                     [_vm._v("Close\n                    ")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { transition: "dialog-top-transition", "max-width": "800" },
+          model: {
+            value: _vm.dialogEditItemList,
+            callback: function($$v) {
+              _vm.dialogEditItemList = $$v
+            },
+            expression: "dialogEditItemList"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-toolbar", { attrs: { color: "primary", dark: "" } }, [
+                _vm._v("\n                Edit Item Category\n                ")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-row",
+                        [
+                          _c("v-col", { attrs: { cols: "12", md: "12" } }, [
+                            _c(
+                              "div",
+                              {
+                                staticStyle: {
+                                  "background-color": "#2196F3",
+                                  padding: "10px"
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticStyle: {
+                                      color: "white",
+                                      "font-weight": "bold",
+                                      "letter-spacing": "2px"
+                                    }
+                                  },
+                                  [_vm._v("Edit Data")]
+                                )
+                              ]
+                            )
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  label: "Category Name",
+                                  clearable: "",
+                                  items: _vm.categoryNameList,
+                                  "item-text": _vm.categoryNameList.text,
+                                  "item-value": _vm.categoryNameList.value
+                                },
+                                on: {
+                                  input: function($event) {
+                                    return _vm.selectingCategoryNameList()
+                                  }
+                                },
+                                model: {
+                                  value: _vm.selectedItemList.cat_val,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.selectedItemList,
+                                      "cat_val",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "selectedItemList.cat_val"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  label: "Sub-Category Name",
+                                  clearable: "",
+                                  items: _vm.subCategoryNameList,
+                                  "item-text": _vm.subCategoryNameList.text,
+                                  "item-value": _vm.subCategoryNameList.value
+                                },
+                                model: {
+                                  value: _vm.selectedItemList.subcat_val,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.selectedItemList,
+                                      "subcat_val",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "selectedItemList.subcat_val"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Part Name", clearable: "" },
+                                model: {
+                                  value:
+                                    _vm.selectedItemList.part_name == "N/A"
+                                      ? (_vm.selectedItemList.part_name = null)
+                                      : _vm.selectedItemList.part_name,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.selectedItemList.part_name == "N/A"
+                                        ? (_vm.selectedItemList.part_name = null)
+                                        : _vm.selectedItemList,
+                                      "part_name",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "selectedItemList.part_name == 'N/A' ? selectedItemList.part_name = null : selectedItemList.part_name"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Material", clearable: "" },
+                                model: {
+                                  value:
+                                    _vm.selectedItemList.material == "N/A"
+                                      ? (_vm.selectedItemList.material = null)
+                                      : _vm.selectedItemList.material,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.selectedItemList.material == "N/A"
+                                        ? (_vm.selectedItemList.material = null)
+                                        : _vm.selectedItemList,
+                                      "material",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "selectedItemList.material == 'N/A' ? selectedItemList.material = null : selectedItemList.material"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Dimension", clearable: "" },
+                                model: {
+                                  value:
+                                    _vm.selectedItemList.dimension == "N/A"
+                                      ? (_vm.selectedItemList.dimension = null)
+                                      : _vm.selectedItemList.dimension,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.selectedItemList.dimension == "N/A"
+                                        ? (_vm.selectedItemList.dimension = null)
+                                        : _vm.selectedItemList,
+                                      "dimension",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "selectedItemList.dimension == 'N/A' ? selectedItemList.dimension = null : selectedItemList.dimension"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                { staticClass: "justify-end" },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        color: "primary",
+                        disabled:
+                          _vm.selectedItemList.cat_val == null ||
+                          _vm.selectedItemList.subcat_val == null ||
+                          ((_vm.selectedItemList.cat_val ==
+                            _vm.compareToSelectedItemList.cat_val ||
+                            _vm.selectedItemList.cat_val ==
+                              _vm.compareToSelectedItemList.cat_val.value) &&
+                            (_vm.selectedItemList.subcat_val ==
+                              _vm.compareToSelectedItemList.subcat_val ||
+                              _vm.selectedItemList.subcat_val ==
+                                _vm.compareToSelectedItemList.subcat_val
+                                  .value) &&
+                            _vm.selectedItemList.material ==
+                              _vm.compareToSelectedItemList.material &&
+                            _vm.selectedItemList.part_name ==
+                              _vm.compareToSelectedItemList.part_name &&
+                            _vm.selectedItemList.dimension ==
+                              _vm.compareToSelectedItemList.dimension)
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.updateItemList()
+                        }
+                      }
+                    },
+                    [_vm._v("Save Changes")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { text: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialogEditCategoryItem = false
+                        }
+                      }
+                    },
+                    [_vm._v("Close\n                        ")]
                   )
                 ],
                 1
