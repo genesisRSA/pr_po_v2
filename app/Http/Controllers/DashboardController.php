@@ -12,8 +12,11 @@ use App\Models\SitePermission;
 use App\Models\CategoryItem;
 use App\Models\SubCategoryItem;
 use App\Models\ItemList;
+use App\Models\PlatingProcess;
 use PDF;
 use Auth;
+use Akaunting\Money\Currency;
+use Akaunting\Money\Money;
 
 class DashboardController extends Controller
 {
@@ -510,6 +513,78 @@ class DashboardController extends Controller
     public function deleteItemList(Request $request){
         ItemList::findOrFail($request->params)->delete();
         return response()->json();
+    }
+
+    public function getAvailablePlatingProcesses(){
+        
+        $all = PlatingProcess::all()
+        ->map( function($query){
+            return [
+                'id' => $query->id,
+                'plating_process' => $query->plating_process,
+                'type' => $query->type == '' ? 'N/A' : $query->type,
+                'price_per_square_inch' => $query->price_per_square_inch,
+                'raw_price' => str_replace(',','',mb_substr($query->price_per_square_inch,2))
+            ];
+        });
+        return response()->json($all);
+    }
+
+    public function addPlatingProcess(Request $request){
+        $price = '₱ '.number_format($request->params['price_per_square_inch'],2, '.', ',');
+
+        $detection = 0;
+
+        foreach (PlatingProcess::all() as $item) {
+            if (in_array(strtoupper($request->params['plating_process']), [strtoupper($item->plating_process)]) &&
+                in_array($price, [$item->price_per_square_inch]) &&
+                in_array(strtoupper($request->params['type']), [strtoupper($item->type)])) {
+                $detection += 1;
+            }
+        }
+
+        if($detection==0){
+
+            PlatingProcess::create([
+                'plating_process' => strtoupper($request->params['plating_process']),
+                'type'            => $request->params['type'] == null ? '' : strtoupper($request->params['type']),
+                'price_per_square_inch' => $price
+            ]);
+
+        }
+
+        
+        return response()->json( 'success' );
+    }
+
+    public function updatePlatingProcess(Request $request){
+
+        $detection = 0;
+        $price = '₱ '.number_format($request->params['raw_price'],2, '.', ',');
+
+        foreach (PlatingProcess::all() as $item) {
+            if (in_array(strtoupper($request->params['plating_process']), [strtoupper($item->plating_process)]) &&
+                in_array($price, [$item->price_per_square_inch]) &&
+                in_array(strtoupper($request->params['type']), [strtoupper($item->type)])) {
+                $detection += 1;
+            }
+        }
+
+        if($detection==0){
+            PlatingProcess::findOrFail($request->params['id'])->update([
+                'plating_process' => strtoupper($request->params['plating_process']),
+                'type' => $request->params['type'] == null ? '' : strtoupper($request->params['type']),
+                'price_per_square_inch' => $price 
+            ]);
+        }
+
+        return response()->json('success');
+    }
+
+    public function deletePlatingProcess(Request $request){
+        PlatingProcess::findOrFail($request->params)
+        ->delete();
+       return response()->json('success');
     }
     /**
      * Show the form for creating a new resource.

@@ -3122,7 +3122,7 @@ module.exports = {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"_args":[["axios@0.21.4","C:\\\\Users\\\\ADMIN\\\\Desktop\\\\code\\\\pr_po"]],"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/","/@inertiajs/inertia"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"C:\\\\Users\\\\ADMIN\\\\Desktop\\\\code\\\\pr_po","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
+module.exports = JSON.parse('{"_args":[["axios@0.21.4","C:\\\\Users\\\\Software Developer\\\\code\\\\pr_po_v2"]],"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/","/@inertiajs/inertia"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"C:\\\\Users\\\\Software Developer\\\\code\\\\pr_po_v2","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ }),
 
@@ -5429,6 +5429,211 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -5436,6 +5641,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
+      deleteIndex: null,
       successSnackbar: false,
       cards: ['Data Management'],
       tab: 0,
@@ -5518,12 +5724,49 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       subCategoryNameList: [],
       category_name_for_add_itemList: [],
       subcategory_name_for_add_itemList: [],
-      deleteIndex: null
+      //-------------------- for plating process section------------------------------------
+      dialogEditProcessPlating: false,
+      headersForItemProcessingPlate: [{
+        text: 'Plating Process',
+        align: 'start',
+        value: 'plating_process',
+        "class": "yellow"
+      }, {
+        text: 'Type',
+        value: 'type',
+        "class": "yellow"
+      }, {
+        text: 'Price per Sq. Inch',
+        value: 'price_per_square_inch',
+        "class": "yellow"
+      }, {
+        text: 'Actions',
+        value: 'actions',
+        sortable: false,
+        "class": "yellow"
+      }],
+      itemsForPlatingProcess: [],
+      modelForPlatingProcesses: {
+        plating_process: null,
+        type: null,
+        price_per_square_inch: null,
+        raw_price: null
+      },
+      selectedPlatingProcesses: {},
+      clearable: true,
+      options: {
+        locale: "en-US",
+        prefix: "₱",
+        suffix: "",
+        length: 11,
+        precision: 2
+      }
     };
   },
   created: function created() {
     this.getAvailableCateogryItems();
     this.getAvailableItemList();
+    this.getAvailablePlatingProcesses();
   },
   computed: {},
   watch: {
@@ -5532,6 +5775,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     dialogDelete: function dialogDelete(val) {
       val || this.closeDelete();
+    },
+    dialogEditProcessPlating: function dialogEditProcessPlating(val) {
+      val || this.closeDialogEditProcessPlating();
     }
   },
   methods: (_methods = {
@@ -5571,47 +5817,73 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(error.response);
       })["finally"](function () {});
     },
-    deleteItemCategory: function deleteItemCategory(params) {
+    addPlatingProcess: function addPlatingProcess() {
       var _this3 = this;
+
+      axios.post('/addPlatingProcess', {
+        params: this.modelForPlatingProcesses
+      }).then(function (response) {
+        _this3.getAvailablePlatingProcesses();
+
+        _this3.close();
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    deleteItemCategory: function deleteItemCategory(params) {
+      var _this4 = this;
 
       axios.post('/deleteItemCategory', {
         params: this.defaultCategoryItem
       }).then(function (response) {
         //console.log(response.data)
-        _this3.getAvailableCateogryItems();
-
-        _this3.getAvailableItemList();
-      })["catch"](function (error) {
-        console.log(error.response);
-      })["finally"](function () {});
-    },
-    deleteItemList: function deleteItemList(params) {
-      var _this4 = this;
-
-      axios.post('/deleteItemList', {
-        params: params
-      }).then(function (response) {
-        _this4.deleteIndex = null;
+        _this4.getAvailableCateogryItems();
 
         _this4.getAvailableItemList();
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
-    addSubCat: function addSubCat() {
+    deleteItemList: function deleteItemList(params) {
       var _this5 = this;
+
+      axios.post('/deleteItemList', {
+        params: params
+      }).then(function (response) {
+        _this5.deleteIndex = null;
+
+        _this5.getAvailableItemList();
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    deletePlatingProcess: function deletePlatingProcess(params) {
+      var _this6 = this;
+
+      axios.post('/deletePlatingProcess', {
+        params: params
+      }).then(function (response) {
+        _this6.deleteIndex = null;
+
+        _this6.getAvailablePlatingProcesses();
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    addSubCat: function addSubCat() {
+      var _this7 = this;
 
       axios.post('/addSubCategory', {
         cat_name: this.category_name_selected,
         subcat_name: this.subcategory_val
       }).then(function (response) {
         //console.log(response.data)
-        _this5.successSnackbar = true;
+        _this7.successSnackbar = true;
 
-        _this5.$refs.subcategory_form.reset();
+        _this7.$refs.subcategory_form.reset();
 
-        _this5.category_name_selected = '';
-        _this5.subcategory_val = '';
+        _this7.category_name_selected = '';
+        _this7.subcategory_val = '';
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
@@ -5620,83 +5892,94 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log(this.defaultCategoryItem);
     },
     close: function close() {
-      var _this6 = this;
+      var _this8 = this;
 
       this.dialog = false;
       this.getAvailableCateogryItems(); //   this.rfqs=[],
 
       this.$nextTick(function () {
-        _this6.category_val_for_list_item = null;
-        _this6.subcategory_val_for_list_item = null;
-        _this6.part_name_for_list_item = null;
-        _this6.material_for_list_item = null;
-        _this6.dimension_for_list_item = null;
-        _this6.tab == 0 ? _this6.$refs.category_form.reset() : false;
-        _this6.tab == 0 ? _this6.$refs.subcategory_form.reset() : false;
-        _this6.category_val = '';
-        _this6.category_name_selected = '';
-        _this6.subcategory_val = '';
+        _this8.category_val_for_list_item = null;
+        _this8.subcategory_val_for_list_item = null;
+        _this8.part_name_for_list_item = null;
+        _this8.material_for_list_item = null;
+        _this8.dimension_for_list_item = null;
+        _this8.tab == 0 ? _this8.$refs.category_form.reset() : false;
+        _this8.tab == 0 ? _this8.$refs.subcategory_form.reset() : false;
+        _this8.category_val = '';
+        _this8.category_name_selected = '';
+        _this8.subcategory_val = '';
+        _this8.modelForPlatingProcesses.plating_process = null, _this8.modelForPlatingProcesses.type = null, _this8.modelForPlatingProcesses.price_per_square_inch = null;
+        _this8.raw_price = null;
       });
     },
     getAvailableCateogryItems: function getAvailableCateogryItems() {
-      var _this7 = this;
+      var _this9 = this;
 
       axios.get('/viewCatItem').then(function (response) {
-        _this7.item_categories = response.data[1];
-        _this7.category_name_items = response.data[0];
+        _this9.item_categories = response.data[1];
+        _this9.category_name_items = response.data[0];
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
 
       if (this.tab == 1) {
         axios.get('/getcat_subcat_for_add_ItemList').then(function (response) {
-          _this7.category_name_for_add_itemList = response.data;
+          _this9.category_name_for_add_itemList = response.data;
         })["catch"](function (error) {
           console.log(error.response);
         })["finally"](function () {});
       }
     },
     getAvailableItemList: function getAvailableItemList() {
-      var _this8 = this;
+      var _this10 = this;
 
       axios.get('/getAvailableItemList').then(function (response) {
-        _this8.item_list = response.data;
+        _this10.item_list = response.data;
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    getAvailablePlatingProcesses: function getAvailablePlatingProcesses() {
+      var _this11 = this;
+
+      axios.get('/getAvailablePlatingProcesses').then(function (response) {
+        _this11.itemsForPlatingProcess = response.data;
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     getcat_subcat_ItemList: function getcat_subcat_ItemList(params) {
-      var _this9 = this;
+      var _this12 = this;
 
       axios.get('/getcat_subcat_ItemList', {
         params: params
       }).then(function (response) {
-        _this9.categoryNameList = response.data[0];
-        _this9.subCategoryNameList = response.data[1];
+        _this12.categoryNameList = response.data[0];
+        _this12.subCategoryNameList = response.data[1];
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     selectingCategoryNameList: function selectingCategoryNameList() {
-      var _this10 = this;
+      var _this13 = this;
 
       axios.get('/selectingCategoryNameList', {
         params: this.selectedItemList
       }).then(function (response) {
-        _this10.selectedItemList.subcat_val = null;
-        _this10.subCategoryNameList = response.data; //console.log(response.data)
+        _this13.selectedItemList.subcat_val = null;
+        _this13.subCategoryNameList = response.data; //console.log(response.data)
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     selectingCategoryNameListForAdd: function selectingCategoryNameListForAdd(val) {
-      var _this11 = this;
+      var _this14 = this;
 
       axios.get('/selectingCategoryNameListForAdd', {
         params: val
       }).then(function (response) {
-        _this11.subcategory_val_for_list_item = null;
-        _this11.subcategory_name_for_add_itemList = response.data;
+        _this14.subcategory_val_for_list_item = null;
+        _this14.subcategory_name_for_add_itemList = response.data;
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
@@ -5707,6 +5990,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     closeDelete: function closeDelete() {
       this.dialogDelete = false;
     },
+    closeDialogEditProcessPlating: function closeDialogEditProcessPlating() {
+      this.dialogEditProcessPlating = false;
+      this.modelForPlatingProcesses.plating_process = null, this.modelForPlatingProcesses.type = null, this.modelForPlatingProcesses.price_per_square_inch = null;
+      this.modelForPlatingProcesses.raw_price = null;
+    },
     deleteItem: function deleteItem(item) {
       if (this.tab == 0) {
         this.defaultCategoryItem = Object.assign({}, item);
@@ -5714,6 +6002,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       if (this.tab == 1) {
+        this.deleteIndex = item.id;
+        this.dialogDelete = true;
+      }
+
+      if (this.tab == 2) {
         this.deleteIndex = item.id;
         this.dialogDelete = true;
       }
@@ -5728,6 +6021,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.deleteItemList(this.deleteIndex);
         this.closeDelete();
       }
+
+      if (this.tab == 2) {
+        this.deletePlatingProcess(this.deleteIndex);
+        this.closeDelete();
+      }
     },
     editCategoryItem: function editCategoryItem(item) {
       this.dialogEditCategoryItem = true;
@@ -5735,29 +6033,43 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.selectedCategoryItem = Object.assign({}, item);
     }
   }, _defineProperty(_methods, "updateCategoryItem", function updateCategoryItem() {
-    var _this12 = this;
+    var _this15 = this;
 
     axios.post('/updateSubCategory', {
       updated_val: this.defaultCategoryItem,
       selected_val: this.selectedCategoryItem
     }).then(function (response) {
-      _this12.getAvailableCateogryItems();
+      _this15.getAvailableCateogryItems();
 
-      _this12.getAvailableItemList();
+      _this15.getAvailableItemList();
 
-      _this12.dialogEditCategoryItem = false;
+      _this15.dialogEditCategoryItem = false;
     })["catch"](function (error) {
       console.log(error.response);
     })["finally"](function () {});
   }), _defineProperty(_methods, "updateItemList", function updateItemList() {
-    var _this13 = this;
+    var _this16 = this;
 
     axios.post('/updateItemList', {
       params: this.selectedItemList
     }).then(function (response) {
-      _this13.getAvailableItemList();
+      _this16.getAvailableItemList();
 
-      _this13.dialogEditItemList = false;
+      _this16.dialogEditItemList = false;
+    })["catch"](function (error) {
+      console.log(error.response);
+    })["finally"](function () {});
+  }), _defineProperty(_methods, "updatePlatingProcess", function updatePlatingProcess() {
+    var _this17 = this;
+
+    axios.post('/updatePlatingProcess', {
+      params: this.modelForPlatingProcesses
+    }).then(function (response) {
+      _this17.getAvailablePlatingProcesses();
+
+      _this17.closeDialogEditProcessPlating();
+
+      console.log(response.data);
     })["catch"](function (error) {
       console.log(error.response);
     })["finally"](function () {});
@@ -5766,6 +6078,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.getcat_subcat_ItemList(item);
     this.selectedItemList = Object.assign({}, item);
     this.compareToSelectedItemList = Object.assign({}, item); //console.log(this.compareToSelectedItemList)
+  }), _defineProperty(_methods, "editPlatingProcess", function editPlatingProcess(item) {
+    this.dialogEditProcessPlating = true;
+    this.modelForPlatingProcesses = Object.assign({}, item);
+    this.selectedPlatingProcesses = Object.assign({}, item);
+    console.log(item);
+  }), _defineProperty(_methods, "isNumber", function isNumber(event, quantity) {
+    if (!/\d/.test(event.key) && (event.key !== "." || /\./.test(quantity))) return event.preventDefault();
   }), _methods)
 });
 
@@ -6732,26 +7051,33 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 /* harmony import */ var _inertiajs_inertia_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-vue */ "./node_modules/@inertiajs/inertia-vue/dist/index.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
+/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var vuetify_money__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuetify-money */ "./node_modules/vuetify-money/index.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_1__.default.mixin({
+
+vue__WEBPACK_IMPORTED_MODULE_2__.default.mixin({
   methods: {
     route: route
   }
 });
-vue__WEBPACK_IMPORTED_MODULE_1__.default.use(_inertiajs_inertia_vue__WEBPACK_IMPORTED_MODULE_0__.plugin);
-vue__WEBPACK_IMPORTED_MODULE_1__.default.use((vuetify__WEBPACK_IMPORTED_MODULE_2___default()));
+vue__WEBPACK_IMPORTED_MODULE_2__.default.use(_inertiajs_inertia_vue__WEBPACK_IMPORTED_MODULE_0__.plugin);
+vue__WEBPACK_IMPORTED_MODULE_2__.default.use((vuetify__WEBPACK_IMPORTED_MODULE_3___default()));
+vue__WEBPACK_IMPORTED_MODULE_2__.default.use(vuetify_money__WEBPACK_IMPORTED_MODULE_1__.default);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (vuetify_money__WEBPACK_IMPORTED_MODULE_1__.default);
 var el = document.getElementById('app');
-new vue__WEBPACK_IMPORTED_MODULE_1__.default({
-  vuetify: new (vuetify__WEBPACK_IMPORTED_MODULE_2___default())({
+new vue__WEBPACK_IMPORTED_MODULE_2__.default({
+  vuetify: new (vuetify__WEBPACK_IMPORTED_MODULE_3___default())({
     theme: {
       dark: false
     }
@@ -44356,6 +44682,305 @@ module.exports = function (list, options) {
 
 /***/ }),
 
+/***/ "./node_modules/vuetify-money/VuetifyMoney.vue":
+/*!*****************************************************!*\
+  !*** ./node_modules/vuetify-money/VuetifyMoney.vue ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _VuetifyMoney_vue_vue_type_template_id_7c7eb272___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VuetifyMoney.vue?vue&type=template&id=7c7eb272& */ "./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=template&id=7c7eb272&");
+/* harmony import */ var _VuetifyMoney_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VuetifyMoney.vue?vue&type=script&lang=js& */ "./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=script&lang=js&");
+/* harmony import */ var _vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _VuetifyMoney_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _VuetifyMoney_vue_vue_type_template_id_7c7eb272___WEBPACK_IMPORTED_MODULE_0__.render,
+  _VuetifyMoney_vue_vue_type_template_id_7c7eb272___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "node_modules/vuetify-money/VuetifyMoney.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/index.js??vue-loader-options!./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/index.js??vue-loader-options!./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  model: { prop: "value", event: "input" },
+  props: {
+    value: {
+      // type: String,
+      type: [String, Number],
+      default: "0"
+    },
+    label: {
+      type: String,
+      default: ""
+    },
+    placeholder: {
+      type: String,
+      default: undefined
+    },
+    readonly: {
+      type: Boolean,
+      default: false
+    },
+    dense: {
+      type: Boolean,
+      default: false
+    },
+    error: {
+      type: Boolean,
+      default: false
+    },
+    hideDetails: {
+      type: [Boolean, String],
+      default: false
+    },
+    errorMessages: {
+      type: [Array, String],
+      default: () => []
+    },
+    rules: {
+      type: [Array, String],
+      default: () => []
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    outlined: {
+      type: Boolean,
+      default: false
+    },
+    clearable: {
+      type: Boolean,
+      default: false
+    },
+    backgroundColor: {
+      type: String,
+      default: "white"
+    },
+    valueWhenIsEmpty: {
+      type: String,
+      default: "" // "0" or "" or null
+    },
+    valueOptions: {
+      type: Object,
+      default: function() {
+        return {
+          min: 0,
+          minEvent: "SetValueMin"
+        };
+      }
+    },
+    options: {
+      type: Object,
+      default: function() {
+        return {
+          locale: "pt-BR",
+          prefix: "",
+          suffix: "",
+          length: 11,
+          precision: 2
+        };
+      }
+    },
+    // Other v-text-field properties
+    properties: {
+      type: Object,
+      default: function() {
+        return {};
+      }
+    }
+  },
+  data: () => ({}),
+  /*
+   v-model="cmpValue": Dessa forma, ao digitar, o valor é atualizado automaticamente no componente pai.
+   O valor digitado entra pelo newValue do Set e é emitido para o componente pai.
+   the-vue-mask nao funciona corretamente ao incluir valores existentes no componente pai.
+  */
+  computed: {
+    cmpValue: {
+      get: function() {
+        return this.value !== null && this.value !== ""
+          ? this.humanFormat(this.value.toString())
+          : this.valueWhenIsEmpty;
+      },
+      set: function(newValue) {
+        this.$emit("input", this.machineFormat(newValue));
+      }
+    }
+  },
+  methods: {
+    humanFormat: function(number) {
+      if (isNaN(number)) {
+        number = "";
+      } else {
+        // number = Number(number).toLocaleString(this.options.locale, {maximumFractionDigits: 2, minimumFractionDigits: 2, style: 'currency', currency: 'BRL'});
+        number = Number(number).toLocaleString(this.options.locale, {
+          maximumFractionDigits: this.options.precision,
+          minimumFractionDigits: this.options.precision
+        });
+      }
+      return number;
+    },
+    machineFormat(number) {
+      if (number) {
+        number = this.cleanNumber(number);
+        // Ajustar quantidade de zeros à esquerda
+        number = number.padStart(parseInt(this.options.precision) + 1, "0");
+        // Incluir ponto na casa correta, conforme a precisão configurada
+        number =
+          number.substring(
+            0,
+            number.length - parseInt(this.options.precision)
+          ) +
+          "." +
+          number.substring(
+            number.length - parseInt(this.options.precision),
+            number.length
+          );
+        if (isNaN(number)) {
+          number = this.valueWhenIsEmpty;
+        }
+      } else {
+        number = this.valueWhenIsEmpty;
+      }
+      if (this.options.precision === 0) {
+        number = this.cleanNumber(number);
+      }
+      return number;
+    },
+    keyPress($event) {
+      // console.log($event.keyCode); //keyCodes value
+      let keyCode = $event.keyCode ? $event.keyCode : $event.which;
+      // if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+      if (keyCode < 48 || keyCode > 57) {
+        // 46 is dot
+        $event.preventDefault();
+      }
+      if (this.targetLength()) {
+        $event.preventDefault();
+      }
+    },
+    // Retira todos os caracteres não numéricos e zeros à esquerda
+    cleanNumber: function(value) {
+      let result = "";
+      if (value) {
+        let flag = false;
+        let arrayValue = value.toString().split("");
+        for (var i = 0; i < arrayValue.length; i++) {
+          if (this.isInteger(arrayValue[i])) {
+            if (!flag) {
+              // Retirar zeros à esquerda
+              if (arrayValue[i] !== "0") {
+                result = result + arrayValue[i];
+                flag = true;
+              }
+            } else {
+              result = result + arrayValue[i];
+            }
+          }
+        }
+      }
+      return result;
+    },
+    isInteger(value) {
+      let result = false;
+      if (Number.isInteger(parseInt(value))) {
+        result = true;
+      }
+      return result;
+    },
+    targetLength() {
+      if (
+        Number(this.cleanNumber(this.value).length) >=
+        Number(this.options.length)
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    onBlur() {
+      if (
+        this.value.length === 0 ||
+        parseFloat(this.value) <= this.valueOptions.min
+      )
+        this.$emit(
+          this.valueOptions.minEvent || "SetValueMin",
+          this.valueOptions.min
+        );
+
+      if (
+        this.valueOptions.max &&
+        parseFloat(this.value) >= this.valueOptions.max
+      )
+        this.$emit(
+          this.valueOptions.maxEvent || "SetValueMax",
+          this.valueOptions.max
+        );
+    }
+  }
+});
+
+
+/***/ }),
+
 /***/ "./resources/js/Layouts/AppLayout.vue":
 /*!********************************************!*\
   !*** ./resources/js/Layouts/AppLayout.vue ***!
@@ -45380,6 +46005,39 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vue_loader_lib_index_js_vue_loader_options_VuetifyMoney_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../vue-loader/lib/index.js??vue-loader-options!./VuetifyMoney.vue?vue&type=script&lang=js& */ "./node_modules/vue-loader/lib/index.js??vue-loader-options!./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_vue_loader_lib_index_js_vue_loader_options_VuetifyMoney_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=template&id=7c7eb272&":
+/*!************************************************************************************!*\
+  !*** ./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=template&id=7c7eb272& ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _vue_loader_lib_loaders_templateLoader_js_vue_loader_options_vue_loader_lib_index_js_vue_loader_options_VuetifyMoney_vue_vue_type_template_id_7c7eb272___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _vue_loader_lib_loaders_templateLoader_js_vue_loader_options_vue_loader_lib_index_js_vue_loader_options_VuetifyMoney_vue_vue_type_template_id_7c7eb272___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _vue_loader_lib_loaders_templateLoader_js_vue_loader_options_vue_loader_lib_index_js_vue_loader_options_VuetifyMoney_vue_vue_type_template_id_7c7eb272___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../vue-loader/lib/index.js??vue-loader-options!./VuetifyMoney.vue?vue&type=template&id=7c7eb272& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=template&id=7c7eb272&");
+
+
+/***/ }),
+
 /***/ "./resources/js/Layouts/AppLayout.vue?vue&type=template&id=5663af57&":
 /*!***************************************************************************!*\
   !*** ./resources/js/Layouts/AppLayout.vue?vue&type=template&id=5663af57& ***!
@@ -45648,6 +46306,70 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_template_id_81fbb27e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_template_id_81fbb27e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Sidebar.vue?vue&type=template&id=81fbb27e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Sidebar.vue?vue&type=template&id=81fbb27e&");
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=template&id=7c7eb272&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./node_modules/vuetify-money/VuetifyMoney.vue?vue&type=template&id=7c7eb272& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-text-field",
+        _vm._b(
+          {
+            attrs: {
+              label: _vm.label,
+              placeholder: _vm.placeholder,
+              readonly: _vm.readonly,
+              disabled: _vm.disabled,
+              outlined: _vm.outlined,
+              dense: _vm.dense,
+              "hide-details": _vm.hideDetails,
+              error: _vm.error,
+              "error-messages": _vm.errorMessages,
+              rules: _vm.rules,
+              clearable: _vm.clearable,
+              backgroundColor: _vm.backgroundColor,
+              prefix: _vm.options.prefix,
+              suffix: _vm.options.suffix
+            },
+            on: { keypress: _vm.keyPress, blur: _vm.onBlur },
+            model: {
+              value: _vm.cmpValue,
+              callback: function($$v) {
+                _vm.cmpValue = $$v
+              },
+              expression: "cmpValue"
+            }
+          },
+          "v-text-field",
+          _vm.properties,
+          false
+        )
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
 
 
 /***/ }),
@@ -49395,7 +50117,174 @@ var render = function() {
                                   _c(
                                     "v-card",
                                     { attrs: { color: "basil", flat: "" } },
-                                    [_c("v-card-text")],
+                                    [
+                                      _c(
+                                        "v-card-text",
+                                        [
+                                          _c(
+                                            "v-row",
+                                            { attrs: { justify: "end" } },
+                                            [
+                                              _c(
+                                                "v-col",
+                                                {
+                                                  attrs: {
+                                                    cols: "12",
+                                                    sm: "6",
+                                                    md: "3"
+                                                  }
+                                                },
+                                                [
+                                                  _c("v-text-field", {
+                                                    attrs: {
+                                                      "append-icon":
+                                                        "mdi-magnify",
+                                                      label: "Search",
+                                                      "single-line": "",
+                                                      "hide-details": ""
+                                                    },
+                                                    model: {
+                                                      value: _vm.search,
+                                                      callback: function($$v) {
+                                                        _vm.search = $$v
+                                                      },
+                                                      expression: "search"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("v-data-table", {
+                                            staticClass: "mt-5",
+                                            attrs: {
+                                              headers:
+                                                _vm.headersForItemProcessingPlate,
+                                              search: _vm.search,
+                                              items: _vm.itemsForPlatingProcess,
+                                              "hide-default-footer": "",
+                                              page: _vm.page,
+                                              "items-per-page": _vm.itemsPerPage
+                                            },
+                                            on: {
+                                              "update:page": function($event) {
+                                                _vm.page = $event
+                                              },
+                                              "page-count": function($event) {
+                                                _vm.pageCount = $event
+                                              }
+                                            },
+                                            scopedSlots: _vm._u(
+                                              [
+                                                {
+                                                  key: "item.type",
+                                                  fn: function(ref) {
+                                                    var item = ref.item
+                                                    return [
+                                                      _c(
+                                                        "span",
+                                                        {
+                                                          class: _vm.getColor(
+                                                            item.type
+                                                          )
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                        " +
+                                                              _vm._s(
+                                                                item.type
+                                                              ) +
+                                                              "\n                                        "
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  key: "item.actions",
+                                                  fn: function(ref) {
+                                                    var item = ref.item
+                                                    return [
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          staticClass: "mr-2",
+                                                          attrs: { small: "" },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.editPlatingProcess(
+                                                                item
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                mdi-pencil\n                                            "
+                                                          )
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          attrs: { small: "" },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.deleteItem(
+                                                                item
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                mdi-delete\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  }
+                                                }
+                                              ],
+                                              null,
+                                              true
+                                            )
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "text-center pt-2" },
+                                            [
+                                              _c("v-pagination", {
+                                                attrs: {
+                                                  length: _vm.pageCount,
+                                                  circle: "",
+                                                  "total-visible": 7
+                                                },
+                                                model: {
+                                                  value: _vm.page,
+                                                  callback: function($$v) {
+                                                    _vm.page = $$v
+                                                  },
+                                                  expression: "page"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
                                     1
                                   )
                                 ],
@@ -50165,15 +51054,196 @@ var render = function() {
                             [_vm._v("Add Plating Process\n                ")]
                           ),
                           _vm._v(" "),
-                          _c("v-card-text"),
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-container",
+                                [
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c(
+                                        "v-col",
+                                        { attrs: { cols: "12", md: "12" } },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticStyle: {
+                                                "background-color": "#2196F3",
+                                                padding: "10px"
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticStyle: {
+                                                    color: "white",
+                                                    "font-weight": "bold",
+                                                    "letter-spacing": "2px"
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "Add a Plating Process"
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "Plating Process",
+                                              clearable: ""
+                                            },
+                                            model: {
+                                              value:
+                                                _vm.modelForPlatingProcesses
+                                                  .plating_process,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.modelForPlatingProcesses,
+                                                  "plating_process",
+                                                  $$v
+                                                )
+                                              },
+                                              expression:
+                                                "modelForPlatingProcesses.plating_process"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "Type",
+                                              clearable: ""
+                                            },
+                                            model: {
+                                              value:
+                                                _vm.modelForPlatingProcesses
+                                                  .type,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.modelForPlatingProcesses,
+                                                  "type",
+                                                  $$v
+                                                )
+                                              },
+                                              expression:
+                                                "modelForPlatingProcesses.type"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "div",
+                                            [
+                                              _c("vuetify-money", {
+                                                attrs: {
+                                                  label: "Price per. Sq. Inch",
+                                                  placeholder: " ",
+                                                  outlined: true,
+                                                  clearable: true,
+                                                  options: _vm.options
+                                                },
+                                                model: {
+                                                  value:
+                                                    _vm.modelForPlatingProcesses
+                                                      .price_per_square_inch,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.modelForPlatingProcesses,
+                                                      "price_per_square_inch",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "modelForPlatingProcesses.price_per_square_inch"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c(
                             "v-card-actions",
                             { staticClass: "justify-end" },
                             [
-                              _c("v-btn", { attrs: { color: "primary" } }, [
-                                _vm._v("Save\n                        ")
-                              ]),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    color: "primary",
+                                    disabled:
+                                      !_vm.modelForPlatingProcesses
+                                        .plating_process ||
+                                      !_vm.modelForPlatingProcesses
+                                        .price_per_square_inch
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.addPlatingProcess()
+                                    }
+                                  }
+                                },
+                                [_vm._v("Save\n                        ")]
+                              ),
                               _vm._v(" "),
                               _c(
                                 "v-btn",
@@ -50819,6 +51889,220 @@ var render = function() {
                       on: {
                         click: function($event) {
                           _vm.dialogEditCategoryItem = false
+                        }
+                      }
+                    },
+                    [_vm._v("Close\n                        ")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { transition: "dialog-top-transition", "max-width": "800" },
+          model: {
+            value: _vm.dialogEditProcessPlating,
+            callback: function($$v) {
+              _vm.dialogEditProcessPlating = $$v
+            },
+            expression: "dialogEditProcessPlating"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-toolbar", { attrs: { color: "primary", dark: "" } }, [
+                _vm._v(
+                  "\n                Edit Plating Process\n                "
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-row",
+                        [
+                          _c("v-col", { attrs: { cols: "12", md: "12" } }, [
+                            _c(
+                              "div",
+                              {
+                                staticStyle: {
+                                  "background-color": "#2196F3",
+                                  padding: "10px"
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticStyle: {
+                                      color: "white",
+                                      "font-weight": "bold",
+                                      "letter-spacing": "2px"
+                                    }
+                                  },
+                                  [_vm._v("Edit Data")]
+                                )
+                              ]
+                            )
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Plating Process",
+                                  clearable: ""
+                                },
+                                model: {
+                                  value:
+                                    _vm.modelForPlatingProcesses
+                                      .plating_process,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.modelForPlatingProcesses,
+                                      "plating_process",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "modelForPlatingProcesses.plating_process"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Type", clearable: "" },
+                                model: {
+                                  value:
+                                    _vm.modelForPlatingProcesses.type == "N/A"
+                                      ? (_vm.modelForPlatingProcesses.type = null)
+                                      : _vm.modelForPlatingProcesses.type,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.modelForPlatingProcesses.type == "N/A"
+                                        ? (_vm.modelForPlatingProcesses.type = null)
+                                        : _vm.modelForPlatingProcesses,
+                                      "type",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "modelForPlatingProcesses.type == 'N/A'? modelForPlatingProcesses.type = null : modelForPlatingProcesses.type"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c(
+                                "div",
+                                [
+                                  _c("vuetify-money", {
+                                    attrs: {
+                                      label: "Price per. Sq. Inch",
+                                      placeholder: " ",
+                                      outlined: true,
+                                      clearable: true,
+                                      options: _vm.options
+                                    },
+                                    model: {
+                                      value:
+                                        _vm.modelForPlatingProcesses.raw_price,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.modelForPlatingProcesses,
+                                          "raw_price",
+                                          $$v
+                                        )
+                                      },
+                                      expression:
+                                        "modelForPlatingProcesses.raw_price"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                { staticClass: "justify-end" },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        color: "primary",
+                        disabled:
+                          _vm.modelForPlatingProcesses.plating_process ==
+                            null ||
+                          _vm.modelForPlatingProcesses.raw_price == "" ||
+                          _vm.modelForPlatingProcesses.raw_price == "0.00" ||
+                          (_vm.modelForPlatingProcesses.raw_price ==
+                            _vm.selectedPlatingProcesses.raw_price &&
+                            _vm.modelForPlatingProcesses.plating_process ==
+                              _vm.selectedPlatingProcesses.plating_process &&
+                            _vm.modelForPlatingProcesses.type ==
+                              _vm.selectedPlatingProcesses.type)
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.updatePlatingProcess()
+                        }
+                      }
+                    },
+                    [_vm._v("Save Changes")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { text: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.closeDialogEditProcessPlating()
                         }
                       }
                     },
@@ -65456,6 +66740,29 @@ function getOuterHTML (el) {
 Vue.compile = compileToFunctions;
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Vue);
+
+
+/***/ }),
+
+/***/ "./node_modules/vuetify-money/index.js":
+/*!*********************************************!*\
+  !*** ./node_modules/vuetify-money/index.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _VuetifyMoney_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VuetifyMoney.vue */ "./node_modules/vuetify-money/VuetifyMoney.vue");
+
+
+function install(Vue) {
+  Vue.component("vuetify-money", _VuetifyMoney_vue__WEBPACK_IMPORTED_MODULE_0__.default);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (install);
 
 
 /***/ }),

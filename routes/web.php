@@ -75,6 +75,7 @@ Route::get('/getcat_subcat_ItemList', [DashboardController::class, 'getcat_subca
 Route::get('/selectingCategoryNameList', [DashboardController::class, 'selectingCategoryNameList'])->name('selectingCategoryNameList');
 Route::get('/getcat_subcat_for_add_ItemList', [DashboardController::class, 'getcat_subcat_for_add_ItemList'])->name('getcat_subcat_for_add_ItemList');
 Route::get('/selectingCategoryNameListForAdd', [DashboardController::class, 'selectingCategoryNameListForAdd'])->name('selectingCategoryNameListForAdd');
+Route::get('/getAvailablePlatingProcesses', [DashboardController::class, 'getAvailablePlatingProcesses'])->name('getAvailablePlatingProcesses');
 
 Route::post('/addOrEditUserPermission', [DashboardController::class, 'addOrEditUserPermission'])->name('addOrEditUserPermission');
 Route::post('/deleteUser', [DashboardController::class, 'deleteUser'])->name('deleteUser');
@@ -86,6 +87,9 @@ Route::post('/updateSubCategory',[DashboardController::class, 'updateSubCategory
 Route::post('/updateItemList', [DashboardController::class, 'updateItemList'])->name('updateItemList');
 Route::post('/addItemList', [DashboardController::class, 'addItemList'])->name('addItemList');
 Route::post('/deleteItemList', [DashboardController::class, 'deleteItemList'])->name('deleteItemList');
+Route::post('/addPlatingProcess', [DashboardController::class, 'addPlatingProcess'])->name('addPlatingProcess');
+Route::post('/updatePlatingProcess', [DashboardController::class, 'updatePlatingProcess'])->name('updatePlatingProcess');
+Route::post('/deletePlatingProcess', [DashboardController::class, 'deletePlatingProcess'])->name('deletePlatingProcess');
 
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {

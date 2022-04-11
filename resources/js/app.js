@@ -5,10 +5,13 @@ window.Vue = require('vue').default;
 import { App, plugin } from '@inertiajs/inertia-vue'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import VuetifyMoney from "vuetify-money";
 
 Vue.mixin({ methods: { route }});
 Vue.use(plugin)
 Vue.use(Vuetify)
+Vue.use(VuetifyMoney);
+export default VuetifyMoney;
 
 const el = document.getElementById('app')
 

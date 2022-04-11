@@ -4,8 +4,73 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7aa1ae5c9d397f7eb71fe38edd779d9",
+    "content-hash": "f9ef67947a4e2039d64a86ce5ba587a1",
     "packages": [
+        {
+            "name": "akaunting/laravel-money",
+            "version": "1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/akaunting/laravel-money.git",
+                "reference": "e97cbb9735540fac995e5e0b17395ef4ba33ac38"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/akaunting/laravel-money/zipball/e97cbb9735540fac995e5e0b17395ef4ba33ac38",
+                "reference": "e97cbb9735540fac995e5e0b17395ef4ba33ac38",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=5.4",
+                "illuminate/view": ">=5.4",
+                "php": ">=5.6.4"
+            },
+            "require-dev": {
+                "mockery/mockery": ">=1.0",
+                "phpunit/phpunit": ">=5.7"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Akaunting\\Money\\Provider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Akaunting\\Money\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Denis Duliçi",
+                    "email": "info@akaunting.com",
+                    "homepage": "https://akaunting.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Currency formatting and conversion package for Laravel",
+            "keywords": [
+                "convert",
+                "currency",
+                "format",
+                "laravel",
+                "money"
+            ],
+            "support": {
+                "issues": "https://github.com/akaunting/laravel-money/issues",
+                "source": "https://github.com/akaunting/laravel-money/tree/1.2.3"
+            },
+            "time": "2021-09-28T06:19:54+00:00"
+        },
         {
             "name": "asm89/stack-cors",
             "version": "v2.1.1",
@@ -2159,16 +2224,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.4.0",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "d7fd7450628561ba697b7097d86db72662f54aef"
+                "reference": "4192345e260f1d51b365536199744b987e160edc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/d7fd7450628561ba697b7097d86db72662f54aef",
-                "reference": "d7fd7450628561ba697b7097d86db72662f54aef",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/4192345e260f1d51b365536199744b987e160edc",
+                "reference": "4192345e260f1d51b365536199744b987e160edc",
                 "shasum": ""
             },
             "require": {
@@ -2242,7 +2307,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/2.4.0"
+                "source": "https://github.com/Seldaek/monolog/tree/2.5.0"
             },
             "funding": [
                 {
@@ -2254,7 +2319,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-14T12:44:37+00:00"
+            "time": "2022-04-08T15:43:54+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -5889,16 +5954,16 @@
         },
         {
             "name": "tightenco/ziggy",
-            "version": "v1.4.5",
+            "version": "v1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/ziggy.git",
-                "reference": "d3c74474f624ab80b7fb4e3e264e62bb4043eee2"
+                "reference": "a9e0e078ae6f0768836bc640a80f4cf99fa3d08f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/ziggy/zipball/d3c74474f624ab80b7fb4e3e264e62bb4043eee2",
-                "reference": "d3c74474f624ab80b7fb4e3e264e62bb4043eee2",
+                "url": "https://api.github.com/repos/tighten/ziggy/zipball/a9e0e078ae6f0768836bc640a80f4cf99fa3d08f",
+                "reference": "a9e0e078ae6f0768836bc640a80f4cf99fa3d08f",
                 "shasum": ""
             },
             "require": {
@@ -5950,9 +6015,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tighten/ziggy/issues",
-                "source": "https://github.com/tighten/ziggy/tree/v1.4.5"
+                "source": "https://github.com/tighten/ziggy/tree/v1.4.6"
             },
-            "time": "2022-03-25T22:36:59+00:00"
+            "time": "2022-04-08T15:12:23+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -8737,5 +8802,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }

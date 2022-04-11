@@ -51,6 +51,10 @@
                         </v-tabs>
 
                         <v-tabs-items v-model="tab">
+
+
+
+
 <!-- /////////////////////tab_item_for_item_categories /////////////////////-->
                         <v-tab-item
                         >
@@ -121,6 +125,10 @@
                             </v-card>
                         </v-tab-item>
 <!-- ///////////////////end_tab_item ///////////////////////////////////////-->
+
+
+
+<!-- /////////////////////tab_item_for_item_list /////////////////////-->
                         <v-tab-item
                         >
                             <v-card
@@ -201,13 +209,75 @@
                                 </v-card-text>
                             </v-card>
                         </v-tab-item>
+<!-- ///////////////////end_tab_item ///////////////////////////////////////-->
+
+
+
+
                         <v-tab-item
                         >
                             <v-card
                             color="basil"
                             flat
                             >
-                            <v-card-text></v-card-text>
+                            <v-card-text>
+                                    <v-row justify="end">
+                                    <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="3"
+                                    >
+                                    <v-text-field
+                                        v-model="search"
+                                        append-icon="mdi-magnify"
+                                        label="Search"
+                                        single-line
+                                        hide-details
+                                    ></v-text-field>
+                                    </v-col>
+                                    </v-row>
+                                    <v-data-table
+                                    :headers="headersForItemProcessingPlate"
+                                    :search="search"
+                                    :items="itemsForPlatingProcess"
+                                    hide-default-footer
+                                    :page.sync="page"
+                                    :items-per-page="itemsPerPage"
+                                    @page-count="pageCount = $event"
+                                    class="mt-5"
+                                    >
+                                    <template v-slot:item.type="{ item }">
+                                        <span
+                                        :class="getColor(item.type)"
+                                        >
+                                        {{ item.type }}
+                                        </span>
+                                    </template>
+                                        <template v-slot:item.actions="{ item }">
+                                            <v-icon
+                                                small
+                                                class="mr-2"
+                                                @click="editPlatingProcess(item)"
+                                            >
+                                                mdi-pencil
+                                            </v-icon>
+                                            <v-icon
+                                                small
+                                                @click="deleteItem(item)"
+                                            >
+                                                mdi-delete
+                                            </v-icon>
+                                        </template>
+                                    </v-data-table>
+                                    <div class="text-center pt-2">
+                                    <v-pagination
+                                        v-model="page"
+                                        :length="pageCount"
+                                        circle
+                                        :total-visible="7"
+                                    ></v-pagination>
+                                    </div>
+                            </v-card-text>
                             </v-card>
                         </v-tab-item>
                         <v-tab-item
@@ -488,11 +558,62 @@
                 >Add Plating Process
                 </v-toolbar>
                 <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" md="12">
+                                    <div style="background-color: #2196F3; padding:10px;">
+                                        <span style="color:white; font-weight:bold; letter-spacing: 2px;">Add a Plating Process</span>
+                                    </div>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Plating Process'
+                            v-model="modelForPlatingProcesses.plating_process"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Type'
+                            v-model="modelForPlatingProcesses.type"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
 
+                            <div>
+                                <vuetify-money
+                                v-model="modelForPlatingProcesses.price_per_square_inch"
+                                label="Price per. Sq. Inch"
+                                placeholder=" "
+                                :outlined="true"
+                                :clearable="true"
+                                v-bind:options="options"
+                                />
+                            </div>
+                            </v-col>
+                        </v-row>
+                    </v-container>
                 </v-card-text>
                 <v-card-actions class="justify-end">
                     <v-btn
                          color="primary"
+                            @click="addPlatingProcess()"
+                            :disabled="!modelForPlatingProcesses.plating_process || !modelForPlatingProcesses.price_per_square_inch"
                         >Save
                         </v-btn>
                         <v-btn
@@ -648,6 +769,7 @@
         </v-dialog>
         <!-- //////end_dialog////// -->
 
+        <!-- //////dialog_for_edit_item_list////// -->
         <v-dialog v-model="dialogEditItemList" transition="dialog-top-transition"
             max-width="800">
             <v-card>
@@ -771,7 +893,90 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <!-- //////end_dialog////// -->
 
+        <!-- //////dialog_for_edit_process_plating////// -->
+        <v-dialog v-model="dialogEditProcessPlating" transition="dialog-top-transition"
+            max-width="800">
+            <v-card>
+                <v-toolbar
+                color="primary"
+                dark>
+                Edit Plating Process
+                </v-toolbar>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                        <div style="background-color: #2196F3; padding:10px;">
+                                            <span style="color:white; font-weight:bold; letter-spacing: 2px;">Edit Data</span>
+                                        </div>
+                                </v-col>
+                            </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Plating Process'
+                            v-model="modelForPlatingProcesses.plating_process"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Type'
+                            v-model="modelForPlatingProcesses.type == 'N/A'? modelForPlatingProcesses.type = null : modelForPlatingProcesses.type"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+
+                            <div>
+                                <vuetify-money
+                                v-model="modelForPlatingProcesses.raw_price"
+                                label="Price per. Sq. Inch"
+                                placeholder=" "
+                                :outlined="true"
+                                :clearable="true"
+                                v-bind:options="options"
+                                />
+                            </div>
+                            </v-col>
+                        </v-row>
+
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions class="justify-end">
+                        <v-btn
+                         color="primary"
+                         :disabled="(modelForPlatingProcesses.plating_process == null || 
+                                    modelForPlatingProcesses.raw_price == '' || 
+                                    modelForPlatingProcesses.raw_price == '0.00') || 
+                                    (modelForPlatingProcesses.raw_price == selectedPlatingProcesses.raw_price &&
+                                    modelForPlatingProcesses.plating_process == selectedPlatingProcesses.plating_process &&
+                                    modelForPlatingProcesses.type == selectedPlatingProcesses.type)"
+                        @click="updatePlatingProcess()"
+                        >Save Changes</v-btn>
+                        <v-btn
+                                text
+                                @click="closeDialogEditProcessPlating()"
+                            >Close
+                        </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <!-- //////dialog_for_edit_item_list////// -->
    </app-layout>
 </template>
 
@@ -784,6 +989,7 @@
         },
 
         data: () => ({
+            deleteIndex : null,
             successSnackbar : false,
             cards: ['Data Management'],
             tab: 0,
@@ -859,12 +1065,49 @@
             category_name_for_add_itemList : [],
             subcategory_name_for_add_itemList : [],
 
-            deleteIndex : null,
+//-------------------- for plating process section------------------------------------
+
+            dialogEditProcessPlating : false,
+
+            headersForItemProcessingPlate: [
+                {
+                text: 'Plating Process',
+                align: 'start',
+                value: 'plating_process',
+                class: "yellow"
+                },
+                { text: 'Type', value: 'type', class: "yellow"},
+                { text: 'Price per Sq. Inch', value: 'price_per_square_inch', class: "yellow"},
+                { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
+            ],
+
+            itemsForPlatingProcess : [],
+
+            modelForPlatingProcesses : {
+                plating_process : null,
+                type : null,
+                price_per_square_inch : null,
+                raw_price : null
+            },
+
+            selectedPlatingProcesses: {},
+
+
+            clearable: true,
+            options: {
+            locale: "en-US",
+            prefix: "₱",
+            suffix: "",
+            length: 11,
+            precision: 2
+            }
+
     }),
 
     created: function(){
         this.getAvailableCateogryItems()
         this.getAvailableItemList()
+        this.getAvailablePlatingProcesses()
     },
 
     computed: {
@@ -880,6 +1123,9 @@
             val || this.closeDelete()
         },
 
+        dialogEditProcessPlating(val){
+            val || this.closeDialogEditProcessPlating()
+        }
     },
 
     methods: {
@@ -900,6 +1146,7 @@
 
               });
          },
+
          addItemList(){
             axios.post('/addItemList', {cat_val : this.category_val_for_list_item,
                                         subcat_val : this.subcategory_val_for_list_item,
@@ -917,6 +1164,21 @@
 
               });
          },
+
+         addPlatingProcess(){
+               axios.post('/addPlatingProcess', {params : this.modelForPlatingProcesses})
+              .then(response =>{
+                    this.getAvailablePlatingProcesses();
+                    this.close();
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+         },
+
          deleteItemCategory(params){
               axios.post('/deleteItemCategory', {params : this.defaultCategoryItem})
               .then(response =>{
@@ -937,6 +1199,20 @@
               .then(response =>{
                     this.deleteIndex = null
                     this.getAvailableItemList()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+         },
+
+         deletePlatingProcess(params){
+              axios.post('/deletePlatingProcess', {params : params})
+              .then(response =>{
+                    this.deleteIndex = null
+                    this.getAvailablePlatingProcesses()
               })
               .catch(error =>{
                     console.log(error.response);
@@ -984,6 +1260,10 @@
                 this.category_name_selected=''
                 this.subcategory_val=''
 
+                this.modelForPlatingProcesses.plating_process = null,
+                this.modelForPlatingProcesses.type = null,
+                this.modelForPlatingProcesses.price_per_square_inch = null
+                this.raw_price = null
               })
           },
 
@@ -1020,6 +1300,19 @@
               axios.get('/getAvailableItemList')
               .then(response =>{
                  this.item_list = response.data
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        getAvailablePlatingProcesses(){
+              axios.get('/getAvailablePlatingProcesses')
+              .then(response =>{
+                  this.itemsForPlatingProcess = response.data
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1083,12 +1376,24 @@
             this.dialogDelete = false
         },
 
+        closeDialogEditProcessPlating(){
+            this.dialogEditProcessPlating = false
+                            this.modelForPlatingProcesses.plating_process = null,
+                this.modelForPlatingProcesses.type = null,
+                this.modelForPlatingProcesses.price_per_square_inch = null
+                this.modelForPlatingProcesses.raw_price = null
+        },
+
         deleteItem(item){
             if(this.tab == 0){
                 this.defaultCategoryItem = Object.assign({},item)
                 this.dialogDelete = true
             }
             if(this.tab == 1){
+                this.deleteIndex = item.id
+                this.dialogDelete = true
+            }
+            if(this.tab == 2){
                 this.deleteIndex = item.id
                 this.dialogDelete = true
             }
@@ -1101,6 +1406,10 @@
             }
             if(this.tab == 1){
                 this.deleteItemList(this.deleteIndex)
+                this.closeDelete()
+            }
+            if(this.tab == 2){
+                this.deletePlatingProcess(this.deleteIndex)
                 this.closeDelete()
             }
         },
@@ -1141,14 +1450,42 @@
 
         },
 
+        updatePlatingProcess(){
+            axios.post('/updatePlatingProcess', {params : this.modelForPlatingProcesses})
+              .then(response =>{
+                this.getAvailablePlatingProcesses()
+                this.closeDialogEditProcessPlating()
+                console.log(response.data)
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
         editItemList(item){
             this.dialogEditItemList = true
             this.getcat_subcat_ItemList(item)
             this.selectedItemList = Object.assign({},item)
             this.compareToSelectedItemList = Object.assign({},item)
             //console.log(this.compareToSelectedItemList)
-        }
+        },
 
+        editPlatingProcess(item){
+            this.dialogEditProcessPlating = true
+            this.modelForPlatingProcesses = Object.assign({},item)
+            this.selectedPlatingProcesses = Object.assign({},item)
+            console.log(item)
+        },
+
+        isNumber(event, quantity) {
+            if (!/\d/.test(event.key) &&  
+                (event.key !== "." || /\./.test(quantity))  
+            )  
+                return event.preventDefault();  
+        }
 
 
         },
