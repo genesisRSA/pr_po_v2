@@ -6089,6 +6089,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         subcategory_name: ''
       },
       //-------------------- for item list section------------------------------------
+      pageForItemList: 1,
+      pageCountForItemList: 0,
+      itemsPerPageForItemList: 10,
       headersForItemList: [{
         text: 'Category Name',
         align: 'start',
@@ -6135,6 +6138,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       category_name_for_add_itemList: [],
       subcategory_name_for_add_itemList: [],
       //-------------------- for plating process section------------------------------------
+      pageForPlating: 1,
+      pageCountForPlating: 0,
+      itemsPerPageForPlating: 10,
       dialogEditProcessPlating: false,
       headersForItemProcessingPlate: [{
         text: 'Plating Process',
@@ -6172,6 +6178,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         precision: 2
       },
       //-------------------- for vendor list------------------------------------
+      pageForVendor: 1,
+      pageCountForVendor: 0,
+      itemsPerPageForVendor: 10,
       dialogEditVendor: false,
       headersForVendor: [{
         text: 'Company Name',
@@ -6204,7 +6213,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         contact_number: null
       },
       selectedVendor: {},
-      //-------------------- for vendor list------------------------------------
+      //-------------------- for payment_term------------------------------------
+      pageForPayment: 1,
+      pageCountForPayment: 0,
+      itemsPerPageForPayment: 10,
       dialogEditPaymentTerm: false,
       headersForPaymentTerm: [{
         text: 'Payment Term',
@@ -6756,6 +6768,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.idOfPaymentTerm = item.id;
   }), _defineProperty(_methods, "isNumber", function isNumber(event, quantity) {
     if (!/\d/.test(event.key) && (event.key !== "." || /\./.test(quantity))) return event.preventDefault();
+  }), _defineProperty(_methods, "clearSearch", function clearSearch() {
+    this.search = '';
   }), _methods)
 });
 
@@ -50676,15 +50690,16 @@ var render = function() {
                                               items: _vm.item_list,
                                               search: _vm.search,
                                               "hide-default-footer": "",
-                                              page: _vm.page,
-                                              "items-per-page": _vm.itemsPerPage
+                                              page: _vm.pageForItemList,
+                                              "items-per-page":
+                                                _vm.itemsPerPageForItemList
                                             },
                                             on: {
                                               "update:page": function($event) {
-                                                _vm.page = $event
+                                                _vm.pageForItemList = $event
                                               },
                                               "page-count": function($event) {
-                                                _vm.pageCount = $event
+                                                _vm.pageCountForItemList = $event
                                               }
                                             },
                                             scopedSlots: _vm._u(
@@ -50826,16 +50841,17 @@ var render = function() {
                                             [
                                               _c("v-pagination", {
                                                 attrs: {
-                                                  length: _vm.pageCount,
+                                                  length:
+                                                    _vm.pageCountForItemList,
                                                   circle: "",
                                                   "total-visible": 7
                                                 },
                                                 model: {
-                                                  value: _vm.page,
+                                                  value: _vm.pageForItemList,
                                                   callback: function($$v) {
-                                                    _vm.page = $$v
+                                                    _vm.pageForItemList = $$v
                                                   },
-                                                  expression: "page"
+                                                  expression: "pageForItemList"
                                                 }
                                               })
                                             ],
@@ -50906,15 +50922,16 @@ var render = function() {
                                               search: _vm.search,
                                               items: _vm.itemsForPlatingProcess,
                                               "hide-default-footer": "",
-                                              page: _vm.page,
-                                              "items-per-page": _vm.itemsPerPage
+                                              page: _vm.pageForPlating,
+                                              "items-per-page":
+                                                _vm.itemsPerPageForPlating
                                             },
                                             on: {
                                               "update:page": function($event) {
-                                                _vm.page = $event
+                                                _vm.pageForPlating = $event
                                               },
                                               "page-count": function($event) {
-                                                _vm.pageCount = $event
+                                                _vm.pageCountForPlating = $event
                                               }
                                             },
                                             scopedSlots: _vm._u(
@@ -51006,16 +51023,17 @@ var render = function() {
                                             [
                                               _c("v-pagination", {
                                                 attrs: {
-                                                  length: _vm.pageCount,
+                                                  length:
+                                                    _vm.pageCountForPlating,
                                                   circle: "",
                                                   "total-visible": 7
                                                 },
                                                 model: {
-                                                  value: _vm.page,
+                                                  value: _vm.pageForPlating,
                                                   callback: function($$v) {
-                                                    _vm.page = $$v
+                                                    _vm.pageForPlating = $$v
                                                   },
-                                                  expression: "page"
+                                                  expression: "pageForPlating"
                                                 }
                                               })
                                             ],
@@ -51085,15 +51103,16 @@ var render = function() {
                                               search: _vm.search,
                                               items: _vm.itemsForVendor,
                                               "hide-default-footer": "",
-                                              page: _vm.page,
-                                              "items-per-page": _vm.itemsPerPage
+                                              page: _vm.pageForVendor,
+                                              "items-per-page":
+                                                _vm.itemsPerPageForVendor
                                             },
                                             on: {
                                               "update:page": function($event) {
-                                                _vm.page = $event
+                                                _vm.pageForVendor = $event
                                               },
                                               "page-count": function($event) {
-                                                _vm.pageCount = $event
+                                                _vm.pageCountForVendor = $event
                                               }
                                             },
                                             scopedSlots: _vm._u(
@@ -51160,16 +51179,17 @@ var render = function() {
                                             [
                                               _c("v-pagination", {
                                                 attrs: {
-                                                  length: _vm.pageCount,
+                                                  length:
+                                                    _vm.pageCountForVendor,
                                                   circle: "",
                                                   "total-visible": 7
                                                 },
                                                 model: {
-                                                  value: _vm.page,
+                                                  value: _vm.pageForVendor,
                                                   callback: function($$v) {
-                                                    _vm.page = $$v
+                                                    _vm.pageForVendor = $$v
                                                   },
-                                                  expression: "page"
+                                                  expression: "pageForVendor"
                                                 }
                                               })
                                             ],
@@ -51240,15 +51260,16 @@ var render = function() {
                                               search: _vm.search,
                                               items: _vm.itemsForPaymentTerm,
                                               "hide-default-footer": "",
-                                              page: _vm.page,
-                                              "items-per-page": _vm.itemsPerPage
+                                              page: _vm.pageForPayment,
+                                              "items-per-page":
+                                                _vm.itemsPerPageForPayment
                                             },
                                             on: {
                                               "update:page": function($event) {
-                                                _vm.page = $event
+                                                _vm.pageForPayment = $event
                                               },
                                               "page-count": function($event) {
-                                                _vm.pageCount = $event
+                                                _vm.pageCountForPayment = $event
                                               }
                                             },
                                             scopedSlots: _vm._u(
@@ -51315,16 +51336,17 @@ var render = function() {
                                             [
                                               _c("v-pagination", {
                                                 attrs: {
-                                                  length: _vm.pageCount,
+                                                  length:
+                                                    _vm.pageCountForPayment,
                                                   circle: "",
                                                   "total-visible": 7
                                                 },
                                                 model: {
-                                                  value: _vm.page,
+                                                  value: _vm.pageForPayment,
                                                   callback: function($$v) {
-                                                    _vm.page = $$v
+                                                    _vm.pageForPayment = $$v
                                                   },
-                                                  expression: "page"
+                                                  expression: "pageForPayment"
                                                 }
                                               })
                                             ],

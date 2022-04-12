@@ -183,9 +183,9 @@
                                     :items="item_list"
                                     :search="search"
                                     hide-default-footer
-                                    :page.sync="page"
-                                    :items-per-page="itemsPerPage"
-                                    @page-count="pageCount = $event"
+                                    :page.sync="pageForItemList"
+                                    :items-per-page="itemsPerPageForItemList"
+                                    @page-count="pageCountForItemList = $event"
                                     class="mt-5"
                                     >
                                     <template v-slot:item.part_name="{ item }">
@@ -227,8 +227,8 @@
                                     </v-data-table>
                                     <div class="text-center pt-2">
                                     <v-pagination
-                                        v-model="page"
-                                        :length="pageCount"
+                                        v-model="pageForItemList"
+                                        :length="pageCountForItemList"
                                         circle
                                         :total-visible="7"
                                     ></v-pagination>
@@ -268,9 +268,9 @@
                                     :search="search"
                                     :items="itemsForPlatingProcess"
                                     hide-default-footer
-                                    :page.sync="page"
-                                    :items-per-page="itemsPerPage"
-                                    @page-count="pageCount = $event"
+                                    :page.sync="pageForPlating"
+                                    :items-per-page="itemsPerPageForPlating"
+                                    @page-count="pageCountForPlating = $event"
                                     class="mt-5"
                                     >
                                     <template v-slot:item.type="{ item }">
@@ -298,8 +298,8 @@
                                     </v-data-table>
                                     <div class="text-center pt-2">
                                     <v-pagination
-                                        v-model="page"
-                                        :length="pageCount"
+                                        v-model="pageForPlating"
+                                        :length="pageCountForPlating"
                                         circle
                                         :total-visible="7"
                                     ></v-pagination>
@@ -339,9 +339,9 @@
                                     :search="search"
                                     :items="itemsForVendor"
                                     hide-default-footer
-                                    :page.sync="page"
-                                    :items-per-page="itemsPerPage"
-                                    @page-count="pageCount = $event"
+                                    :page.sync="pageForVendor"
+                                    :items-per-page="itemsPerPageForVendor"
+                                    @page-count="pageCountForVendor = $event"
                                     class="mt-5"
                                     >
                                         <template v-slot:item.actions="{ item }">
@@ -362,8 +362,8 @@
                                     </v-data-table>
                                     <div class="text-center pt-2">
                                     <v-pagination
-                                        v-model="page"
-                                        :length="pageCount"
+                                        v-model="pageForVendor"
+                                        :length="pageCountForVendor"
                                         circle
                                         :total-visible="7"
                                     ></v-pagination>
@@ -402,9 +402,9 @@
                                     :search="search"
                                     :items="itemsForPaymentTerm"
                                     hide-default-footer
-                                    :page.sync="page"
-                                    :items-per-page="itemsPerPage"
-                                    @page-count="pageCount = $event"
+                                    :page.sync="pageForPayment"
+                                    :items-per-page="itemsPerPageForPayment"
+                                    @page-count="pageCountForPayment = $event"
                                     class="mt-5"
                                     >
                                         <template v-slot:item.actions="{ item }">
@@ -425,8 +425,8 @@
                                     </v-data-table>
                                     <div class="text-center pt-2">
                                     <v-pagination
-                                        v-model="page"
-                                        :length="pageCount"
+                                        v-model="pageForPayment"
+                                        :length="pageCountForPayment"
                                         circle
                                         :total-visible="7"
                                     ></v-pagination>
@@ -1404,10 +1404,14 @@
             items: [
             'Item Categories', 'Item List', 'Plating Process', 'Vendors','Payment Terms'
             ],
+
+
             search: '',
             page: 1,
             pageCount: 0,
             itemsPerPage: 10,
+
+
             headers: [
                 {
                 text: 'Category Name',
@@ -1438,6 +1442,10 @@
             },
 
 //-------------------- for item list section------------------------------------
+
+            pageForItemList: 1,
+            pageCountForItemList: 0,
+            itemsPerPageForItemList: 10,
 
             headersForItemList: [
                 {
@@ -1473,6 +1481,11 @@
             subcategory_name_for_add_itemList : [],
 
 //-------------------- for plating process section------------------------------------
+
+
+            pageForPlating: 1,
+            pageCountForPlating: 0,
+            itemsPerPageForPlating: 10,
 
             dialogEditProcessPlating : false,
 
@@ -1511,6 +1524,10 @@
 
 //-------------------- for vendor list------------------------------------
 
+            pageForVendor: 1,
+            pageCountForVendor: 0,
+            itemsPerPageForVendor: 10,
+
             dialogEditVendor : false,
             headersForVendor: [
                 {
@@ -1537,7 +1554,11 @@
             selectedVendor: {},
 
 
-//-------------------- for vendor list------------------------------------
+//-------------------- for payment_term------------------------------------
+
+            pageForPayment: 1,
+            pageCountForPayment: 0,
+            itemsPerPageForPayment: 10,
 
             dialogEditPaymentTerm : false,
             headersForPaymentTerm :[
@@ -2165,6 +2186,9 @@
                 return event.preventDefault();  
         },
 
+        clearSearch(){
+            this.search =''
+        }
         },
     }
 </script>
