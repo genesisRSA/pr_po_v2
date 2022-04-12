@@ -12,7 +12,33 @@
                 >
                 <v-icon>mdi-check</v-icon>
                 A record has been added successfully.
-        </v-snackbar>
+            </v-snackbar>
+            <v-snackbar
+                v-model="dupliRecordSnackbar"
+                :timeout="3000"
+                :value="true"
+                bottom
+                color="warning"
+                success
+                top
+                right
+                >
+                <v-icon>mdi-flag-triangle</v-icon>
+                Whoops, a duplicate record has been recognized.
+            </v-snackbar>
+            <v-snackbar
+                v-model="updatedSnackbar"
+                :timeout="3000"
+                :value="true"
+                bottom
+                color="purple"
+                success
+                top
+                right
+                >
+                <v-icon>mdi-lightbulb</v-icon>
+                The record has been updated successfully.
+            </v-snackbar>
         <v-row>
           <v-col
             v-for="card in cards"
@@ -45,6 +71,7 @@
                         <v-tab
                             v-for="item in items"
                             :key="item"
+                            @click="clearSearch()"
                         >
                             {{ item }}
                         </v-tab>
@@ -213,7 +240,7 @@
 
 
 
-
+<!-- /////////////////////tab_item_for_plating_processes /////////////////////-->
                         <v-tab-item
                         >
                             <v-card
@@ -280,24 +307,136 @@
                             </v-card-text>
                             </v-card>
                         </v-tab-item>
+<!-- ///////////////////end_tab_item ///////////////////////////////////////-->
+
+
+
+<!-- /////////////////////tab_item_vendors /////////////////////-->
                         <v-tab-item
                         >
                             <v-card
                             color="basil"
                             flat
                             >
-                            <v-card-text></v-card-text>
+                            <v-card-text>
+                                    <v-row justify="end">
+                                    <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="3"
+                                    >
+                                    <v-text-field
+                                        v-model="search"
+                                        append-icon="mdi-magnify"
+                                        label="Search"
+                                        single-line
+                                        hide-details
+                                    ></v-text-field>
+                                    </v-col>
+                                    </v-row>
+                                    <v-data-table
+                                    :headers="headersForVendor"
+                                    :search="search"
+                                    :items="itemsForVendor"
+                                    hide-default-footer
+                                    :page.sync="page"
+                                    :items-per-page="itemsPerPage"
+                                    @page-count="pageCount = $event"
+                                    class="mt-5"
+                                    >
+                                        <template v-slot:item.actions="{ item }">
+                                            <v-icon
+                                                small
+                                                class="mr-2"
+                                                @click="editVendor(item)"
+                                            >
+                                                mdi-pencil
+                                            </v-icon>
+                                            <v-icon
+                                                small
+                                                @click="deleteItem(item)"
+                                            >
+                                                mdi-delete
+                                            </v-icon>
+                                        </template>
+                                    </v-data-table>
+                                    <div class="text-center pt-2">
+                                    <v-pagination
+                                        v-model="page"
+                                        :length="pageCount"
+                                        circle
+                                        :total-visible="7"
+                                    ></v-pagination>
+                                    </div>
+                            </v-card-text>
                             </v-card>
                         </v-tab-item>
+<!-- ///////////////////end_tab_item ///////////////////////////////////////-->
+
+
+<!-- /////////////////////tab_item_payment_term /////////////////////-->
                         <v-tab-item
                         >
                             <v-card
                             color="basil"
                             flat
                             >
-                            <v-card-text></v-card-text>
+                            <v-card-text>
+                                <v-row justify="end">
+                                    <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="3"
+                                    >
+                                    <v-text-field
+                                        v-model="search"
+                                        append-icon="mdi-magnify"
+                                        label="Search"
+                                        single-line
+                                        hide-details
+                                    ></v-text-field>
+                                    </v-col>
+                                    </v-row>
+                                    <v-data-table
+                                    :headers="headersForPaymentTerm"
+                                    :search="search"
+                                    :items="itemsForPaymentTerm"
+                                    hide-default-footer
+                                    :page.sync="page"
+                                    :items-per-page="itemsPerPage"
+                                    @page-count="pageCount = $event"
+                                    class="mt-5"
+                                    >
+                                        <template v-slot:item.actions="{ item }">
+                                            <v-icon
+                                                small
+                                                class="mr-2"
+                                                @click="editPaymentTerm(item)"
+                                            >
+                                                mdi-pencil
+                                            </v-icon>
+                                            <v-icon
+                                                small
+                                                @click="deleteItem(item)"
+                                            >
+                                                mdi-delete
+                                            </v-icon>
+                                        </template>
+                                    </v-data-table>
+                                    <div class="text-center pt-2">
+                                    <v-pagination
+                                        v-model="page"
+                                        :length="pageCount"
+                                        circle
+                                        :total-visible="7"
+                                    ></v-pagination>
+                                    </div>
+                            </v-card-text>
                             </v-card>
                         </v-tab-item>
+
+<!-- ///////////////////end_tab_item ///////////////////////////////////////-->
+
                         </v-tabs-items>
                   </v-container>
                </v-card-text>
@@ -533,6 +672,22 @@
                             v-model="dimension_for_list_item">
                             </v-text-field>
                             </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                                >
+                                <div>
+                                    <vuetify-money
+                                    v-model="raw_unit_price_for_list_item"
+                                    label="Unit Price Cost"
+                                    placeholder=" "
+                                    :outlined="true"
+                                    :clearable="true"
+                                    v-bind:options="options"
+                                    />
+                                </div>
+                            </v-col>
                         </v-row>
                     </v-container>
                 </v-card-text>
@@ -631,11 +786,72 @@
                 >Add Vendors
                 </v-toolbar>
                 <v-card-text>
-
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" md="12">
+                                    <div style="background-color: #2196F3; padding:10px;">
+                                        <span style="color:white; font-weight:bold; letter-spacing: 2px;">Add a Vendor</span>
+                                    </div>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Company Name'
+                            v-model="modelForVendor.company_name"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Company Address'
+                            v-model="modelForVendor.address"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Contact Person'
+                            v-model="modelForVendor.contact_person"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Contact Number'
+                            v-model="modelForVendor.contact_number"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-container>
                 </v-card-text>
                 <v-card-actions class="justify-end">
                     <v-btn
                          color="primary"
+                         @click="addVendor()"
+                         :disabled="(modelForVendor.company_name =='' || modelForVendor.company_name ==null) || 
+                                    (modelForVendor.address =='' || modelForVendor.address ==null) || 
+                                    (modelForVendor.contact_number =='' || modelForVendor.contact_number ==null) || 
+                                    (modelForVendor.contact_person =='' || modelForVendor.contact_person ==null)"
                         >Save
                         </v-btn>
                         <v-btn
@@ -653,16 +869,39 @@
                 >Add Payment Terms
                 </v-toolbar>
                 <v-card-text>
-
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" md="12">
+                                    <div style="background-color: #2196F3; padding:10px;">
+                                        <span style="color:white; font-weight:bold; letter-spacing: 2px;">Add a Payment Term</span>
+                                    </div>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Payment Term'
+                            v-model="payment_term"
+                            @input="(val) => (payment_term ? payment_term = payment_term.toUpperCase() : null)"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-container>
                 </v-card-text>
                 <v-card-actions class="justify-end">
                     <v-btn
                          color="primary"
+                         @click="addPaymentTerm()"
                         >Save
                         </v-btn>
                         <v-btn
                             text
-                            @click="close_for_add_itemList()"
+                            @click="close()"
                         >Close
                     </v-btn>
                 </v-card-actions>
@@ -776,7 +1015,7 @@
                 <v-toolbar
                 color="primary"
                 dark>
-                Edit Item Category
+                Edit Item List
                 </v-toolbar>
                     <v-card-text>
                         <v-container>
@@ -865,6 +1104,24 @@
                                 </v-text-field>
                                 </v-col>
 
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+
+                                <div>
+                                    <vuetify-money
+                                    v-model="selectedItemList.raw_unit_price"
+                                    label="Unit Price Cost"
+                                    placeholder=" "
+                                    :outlined="true"
+                                    :clearable="true"
+                                    v-bind:options="options"
+                                    />
+                                </div>
+                                </v-col>
+
                              </v-row>
 
 
@@ -882,12 +1139,13 @@
                                     (selectedItemList.subcat_val == compareToSelectedItemList.subcat_val || selectedItemList.subcat_val == compareToSelectedItemList.subcat_val.value) &&
                                     selectedItemList.material == compareToSelectedItemList.material &&
                                     selectedItemList.part_name == compareToSelectedItemList.part_name &&
-                                    selectedItemList.dimension == compareToSelectedItemList.dimension)
+                                    selectedItemList.dimension == compareToSelectedItemList.dimension &&
+                                    selectedItemList.raw_unit_price == compareToSelectedItemList.raw_unit_price)
                                     "
                         >Save Changes</v-btn>
                         <v-btn
                                 text
-                                @click="dialogEditCategoryItem=false"
+                                @click="dialogEditItemList=false"
                             >Close
                         </v-btn>
                 </v-card-actions>
@@ -977,6 +1235,151 @@
             </v-card>
         </v-dialog>
         <!-- //////dialog_for_edit_item_list////// -->
+
+        <!-- //////dialog_for_edit_vendor////// -->
+        <v-dialog v-model="dialogEditVendor" transition="dialog-top-transition"
+            max-width="800">
+            <v-card>
+                <v-toolbar
+                color="primary"
+                dark>
+                Edit Vendor
+                </v-toolbar>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                        <div style="background-color: #2196F3; padding:10px;">
+                                            <span style="color:white; font-weight:bold; letter-spacing: 2px;">Edit Data</span>
+                                        </div>
+                                </v-col>
+                            </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Company Name'
+                            v-model="modelForVendor.company_name"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Company Address'
+                            v-model="modelForVendor.address"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Contact Person'
+                            v-model="modelForVendor.contact_person"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Contact Number'
+                            v-model="modelForVendor.contact_number"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions class="justify-end">
+                        <v-btn
+                         color="primary"
+                        :disabled="((modelForVendor.company_name =='' || modelForVendor.company_name ==null) || 
+                                    (modelForVendor.address =='' || modelForVendor.address ==null) || 
+                                    (modelForVendor.contact_number =='' || modelForVendor.contact_number ==null) || 
+                                    (modelForVendor.contact_person =='' || modelForVendor.contact_person ==null)) ||
+                                    (modelForVendor.company_name == selectedVendor.company_name &&
+                                    modelForVendor.address== selectedVendor.address &&
+                                    modelForVendor.contact_number == selectedVendor.contact_number &&
+                                    modelForVendor.contact_person == selectedVendor.contact_person)"
+                                @click="updateVendor()"
+                        >Save Changes</v-btn>
+                        <v-btn
+                                text
+                                @click="closeDialogEditVendor()"
+                            >Close
+                        </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <!-- //////end_dialog////// -->
+
+        <!-- //////dialog_for_edit_paymentTerm////// -->
+        <v-dialog v-model="dialogEditPaymentTerm" transition="dialog-top-transition"
+            max-width="800">
+            <v-card>
+                <v-toolbar
+                color="primary"
+                dark>
+                Edit Payment Term
+                </v-toolbar>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                        <div style="background-color: #2196F3; padding:10px;">
+                                            <span style="color:white; font-weight:bold; letter-spacing: 2px;">Edit Data</span>
+                                        </div>
+                                </v-col>
+                            </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Payment Term'
+                            v-model="payment_term"
+                            @input="(val) => (payment_term = payment_term.toUpperCase())"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions class="justify-end">
+                        <v-btn
+                         color="primary"
+                          :disabled="(payment_term == '' || payment_term == null) || (payment_term == selecedPaymentTerm)"
+                         @click="updatePaymentTerm()"
+                        >Save Changes</v-btn>
+                        <v-btn
+                                text
+                            @click="closeDialogEditPaymentTerm()"
+                            >Close
+                        </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+<!-- ///////////////////end-dialog///////// -->
+
+
    </app-layout>
 </template>
 
@@ -991,6 +1394,8 @@
         data: () => ({
             deleteIndex : null,
             successSnackbar : false,
+            dupliRecordSnackbar : false,
+            updatedSnackbar : false,
             cards: ['Data Management'],
             tab: 0,
             dialog : false,
@@ -1045,6 +1450,7 @@
                 { text: 'Part Name', value: 'part_name', class: "yellow"},
                 { text: 'Material', value: 'material', class: "yellow"},
                 { text: 'Dimension', value: 'dimension', class: "yellow"},
+                { text: 'Unit Price', value: 'unit_price', class: "yellow"},
                 { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
             ],
 
@@ -1053,6 +1459,7 @@
             part_name_for_list_item : null,
             material_for_list_item : null,
             dimension_for_list_item : null,
+            raw_unit_price_for_list_item : null,
 
             item_list : [],
             dialogEditItemList : false,
@@ -1100,14 +1507,60 @@
             suffix: "",
             length: 11,
             precision: 2
-            }
+            },
 
+//-------------------- for vendor list------------------------------------
+
+            dialogEditVendor : false,
+            headersForVendor: [
+                {
+                text: 'Company Name',
+                align: 'start',
+                value: 'company_name',
+                class: "yellow"
+                },
+                { text: 'Address', value: 'address', class: "yellow"},
+                { text: 'Contact Person', value: 'contact_person', class: "yellow"},
+                { text: 'Contact No.', value: 'contact_number', class: "yellow"},
+                { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
+            ],
+
+            itemsForVendor : [],
+
+            modelForVendor : {
+                company_name : null,
+                address : null,
+                contact_person : null,
+                contact_number : null
+            },
+
+            selectedVendor: {},
+
+
+//-------------------- for vendor list------------------------------------
+
+            dialogEditPaymentTerm : false,
+            headersForPaymentTerm :[
+                {
+                text: 'Payment Term',
+                align: 'start',
+                value: 'payment_term',
+                class: "yellow"
+                },
+                { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
+            ],
+
+            itemsForPaymentTerm : [],
+            payment_term : null,
+            idOfPaymentTerm : null,
     }),
 
     created: function(){
         this.getAvailableCateogryItems()
         this.getAvailableItemList()
         this.getAvailablePlatingProcesses()
+        this.getAvailableVendor()
+        this.getAvailablePaymentTerm()
     },
 
     computed: {
@@ -1125,6 +1578,14 @@
 
         dialogEditProcessPlating(val){
             val || this.closeDialogEditProcessPlating()
+        },
+
+        dialogEditVendor(val){
+            val || this.closeDialogEditVendor()
+        },
+
+        dialogEditPaymentTerm(val){
+            val || this.closeDialogEditPaymentTerm()
         }
     },
 
@@ -1135,7 +1596,11 @@
               .then(response =>{
                     this.getAvailableCateogryItems()
                     this.getAvailableItemList()
-                    this.successSnackbar = true
+                    if(response.data == 0){
+                        this.successSnackbar = true
+                    } else {
+                        this.dupliRecordSnackbar = true
+                    }
                     this.$refs.category_form.reset()
                     this.category_val=''
               })
@@ -1152,10 +1617,16 @@
                                         subcat_val : this.subcategory_val_for_list_item,
                                         partname_val : this.part_name_for_list_item,
                                         material_val : this.material_for_list_item,
-                                        dimension : this.dimension_for_list_item})
+                                        dimension : this.dimension_for_list_item,
+                                        unit_price : this.raw_unit_price_for_list_item})
               .then(response =>{
                     this.getAvailableItemList()
                     this.close();
+                    if(response.data > 0){
+                        this.dupliRecordSnackbar = true
+                    } else {
+                        this.successSnackbar = true
+                    }
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1170,6 +1641,49 @@
               .then(response =>{
                     this.getAvailablePlatingProcesses();
                     this.close();
+                    if(response.data > 0){
+                        this.dupliRecordSnackbar = true
+                    } else {
+                        this.successSnackbar = true
+                    }
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+         },
+
+         addVendor(){
+               axios.post('/addVendor', {params : this.modelForVendor})
+              .then(response =>{
+                    this.getAvailableVendor();
+                    this.close();
+                    if(response.data > 0){
+                        this.dupliRecordSnackbar = true
+                    } else {
+                        this.successSnackbar = true
+                    }
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+         },
+
+         addPaymentTerm(){
+               axios.post('/addPaymentTerm', {params : this.payment_term})
+              .then(response =>{
+                   this.getAvailablePaymentTerm()
+                   this.close();
+                    if(response.data == 0){
+                        this.successSnackbar = true
+                    } else {
+                        this.dupliRecordSnackbar = true
+                    }
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1222,11 +1736,41 @@
               });
          },
 
+        deleteVendor(params){
+              axios.post('/deleteVendor', {params : params})
+              .then(response =>{
+                    this.getAvailableVendor()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+         },
+
+         deletePaymentTerm(params){
+              axios.post('/deletePaymentTerm', {params : params})
+              .then(response =>{
+                    this.getAvailablePaymentTerm()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+         },
+
          addSubCat(){
               axios.post('/addSubCategory', {cat_name : this.category_name_selected , subcat_name : this.subcategory_val})
               .then(response =>{
-                    //console.log(response.data)
-                    this.successSnackbar = true
+                    console.log(response.data)
+                    if (response.data == 0) {
+                        this.successSnackbar = true
+                    } else {
+                        this.dupliRecordSnackbar = true
+                    }
                     this.$refs.subcategory_form.reset()
                     this.category_name_selected=''
                     this.subcategory_val=''
@@ -1253,6 +1797,7 @@
                 this.part_name_for_list_item  = null
                 this.material_for_list_item  = null
                 this.dimension_for_list_item  = null
+                this.raw_unit_price_for_list_item = null
 
                 this.tab == 0 ? this.$refs.category_form.reset() : false
                 this.tab == 0 ? this.$refs.subcategory_form.reset() : false
@@ -1264,6 +1809,14 @@
                 this.modelForPlatingProcesses.type = null,
                 this.modelForPlatingProcesses.price_per_square_inch = null
                 this.raw_price = null
+
+                this.modelForVendor.company_name = null
+                this.modelForVendor.address = null
+                this.modelForVendor.contact_person = null
+                this.modelForVendor.contact_number = null
+
+                this.payment_term = null
+                this.selecedPaymentTerm = null
               })
           },
 
@@ -1313,6 +1866,32 @@
               axios.get('/getAvailablePlatingProcesses')
               .then(response =>{
                   this.itemsForPlatingProcess = response.data
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        getAvailableVendor(){
+              axios.get('/getAvailableVendor')
+              .then(response =>{
+                  this.itemsForVendor = response.data
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        getAvailablePaymentTerm(){
+              axios.get('/getAvailablePaymentTerm')
+              .then(response =>{
+                  this.itemsForPaymentTerm = response.data
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1384,6 +1963,19 @@
                 this.modelForPlatingProcesses.raw_price = null
         },
 
+        closeDialogEditVendor(){
+            this.dialogEditVendor = false
+                            this.modelForVendor.company_name = null
+               this.modelForVendor.address = null
+                this.modelForVendor.contact_person = null
+                this.modelForVendor.contact_number = null
+        },
+
+        closeDialogEditPaymentTerm(){
+            this.dialogEditPaymentTerm = false
+            this.payment_term = null
+        },
+
         deleteItem(item){
             if(this.tab == 0){
                 this.defaultCategoryItem = Object.assign({},item)
@@ -1394,6 +1986,14 @@
                 this.dialogDelete = true
             }
             if(this.tab == 2){
+                this.deleteIndex = item.id
+                this.dialogDelete = true
+            }
+            if(this.tab == 3){
+                this.deleteIndex = item.id
+                this.dialogDelete = true
+            }
+            if(this.tab == 4){
                 this.deleteIndex = item.id
                 this.dialogDelete = true
             }
@@ -1412,6 +2012,15 @@
                 this.deletePlatingProcess(this.deleteIndex)
                 this.closeDelete()
             }
+            if(this.tab == 3){
+                this.deleteVendor(this.deleteIndex)
+                this.closeDelete()
+            }
+            if(this.tab == 4){
+                this.deletePaymentTerm(this.deleteIndex)
+                this.closeDelete()
+            }
+
         },
 
         editCategoryItem(item){
@@ -1423,6 +2032,10 @@
         updateCategoryItem(){
               axios.post('/updateSubCategory', {updated_val : this.defaultCategoryItem , selected_val : this.selectedCategoryItem})
               .then(response =>{
+                    console.log(response.data)
+                    if(response.data > 1){
+                        this.dupliRecordSnackbar = true
+                    } 
                     this.getAvailableCateogryItems()
                     this.getAvailableItemList()
                     this.dialogEditCategoryItem = false
@@ -1440,6 +2053,11 @@
               .then(response =>{
                   this.getAvailableItemList()
                   this.dialogEditItemList = false
+                  if(response.data > 0){
+                      this.dupliRecordSnackbar = true
+                  } else {
+                      this.updatedSnackbar = true
+                  }
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1456,6 +2074,53 @@
                 this.getAvailablePlatingProcesses()
                 this.closeDialogEditProcessPlating()
                 console.log(response.data)
+                    if(response.data > 0){
+                        this.dupliRecordSnackbar = true
+                    } else {
+                        this.successSnackbar = true
+                    }
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        updateVendor(){
+            axios.post('/updateVendor', {params : this.modelForVendor})
+              .then(response =>{
+                  if(response.data > 0){
+                      this.dupliRecordSnackbar = true
+                  } else {
+                      this.updatedSnackbar = true
+                  }
+                  this.getAvailableVendor()
+                  this.closeDialogEditVendor()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        updatePaymentTerm(){
+            let params = {
+                payment_type :  this.payment_term,
+                id : this.idOfPaymentTerm
+            }
+            axios.post('/updatePaymentTerm', {params : params})
+              .then(response =>{
+                  this.getAvailablePaymentTerm()
+                  this.closeDialogEditPaymentTerm()
+                   if(response.data > 0){
+                       this.dupliRecordSnackbar = true
+                   } else {
+                       this.updatedSnackbar = true
+                   }
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1477,7 +2142,20 @@
             this.dialogEditProcessPlating = true
             this.modelForPlatingProcesses = Object.assign({},item)
             this.selectedPlatingProcesses = Object.assign({},item)
-            console.log(item)
+            //console.log(item)
+        },
+
+        editVendor(item){
+            this.dialogEditVendor = true
+            this.modelForVendor = Object.assign({},item)
+            this.selectedVendor = Object.assign({},item)
+        },
+
+        editPaymentTerm(item){
+            this.dialogEditPaymentTerm = true
+            this.payment_term = item.payment_term
+            this.selecedPaymentTerm = item.payment_term
+            this.idOfPaymentTerm = item.id
         },
 
         isNumber(event, quantity) {
@@ -1485,8 +2163,7 @@
                 (event.key !== "." || /\./.test(quantity))  
             )  
                 return event.preventDefault();  
-        }
-
+        },
 
         },
     }

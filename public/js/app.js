@@ -5634,6 +5634,409 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -5643,6 +6046,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       deleteIndex: null,
       successSnackbar: false,
+      dupliRecordSnackbar: false,
+      updatedSnackbar: false,
       cards: ['Data Management'],
       tab: 0,
       dialog: false,
@@ -5706,6 +6111,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         value: 'dimension',
         "class": "yellow"
       }, {
+        text: 'Unit Price',
+        value: 'unit_price',
+        "class": "yellow"
+      }, {
         text: 'Actions',
         value: 'actions',
         sortable: false,
@@ -5716,6 +6125,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       part_name_for_list_item: null,
       material_for_list_item: null,
       dimension_for_list_item: null,
+      raw_unit_price_for_list_item: null,
       item_list: [],
       dialogEditItemList: false,
       selectedItemList: {},
@@ -5760,13 +6170,64 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         suffix: "",
         length: 11,
         precision: 2
-      }
+      },
+      //-------------------- for vendor list------------------------------------
+      dialogEditVendor: false,
+      headersForVendor: [{
+        text: 'Company Name',
+        align: 'start',
+        value: 'company_name',
+        "class": "yellow"
+      }, {
+        text: 'Address',
+        value: 'address',
+        "class": "yellow"
+      }, {
+        text: 'Contact Person',
+        value: 'contact_person',
+        "class": "yellow"
+      }, {
+        text: 'Contact No.',
+        value: 'contact_number',
+        "class": "yellow"
+      }, {
+        text: 'Actions',
+        value: 'actions',
+        sortable: false,
+        "class": "yellow"
+      }],
+      itemsForVendor: [],
+      modelForVendor: {
+        company_name: null,
+        address: null,
+        contact_person: null,
+        contact_number: null
+      },
+      selectedVendor: {},
+      //-------------------- for vendor list------------------------------------
+      dialogEditPaymentTerm: false,
+      headersForPaymentTerm: [{
+        text: 'Payment Term',
+        align: 'start',
+        value: 'payment_term',
+        "class": "yellow"
+      }, {
+        text: 'Actions',
+        value: 'actions',
+        sortable: false,
+        "class": "yellow"
+      }],
+      itemsForPaymentTerm: [],
+      payment_term: null,
+      idOfPaymentTerm: null
     };
   },
   created: function created() {
     this.getAvailableCateogryItems();
     this.getAvailableItemList();
     this.getAvailablePlatingProcesses();
+    this.getAvailableVendor();
+    this.getAvailablePaymentTerm();
   },
   computed: {},
   watch: {
@@ -5778,6 +6239,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     dialogEditProcessPlating: function dialogEditProcessPlating(val) {
       val || this.closeDialogEditProcessPlating();
+    },
+    dialogEditVendor: function dialogEditVendor(val) {
+      val || this.closeDialogEditVendor();
+    },
+    dialogEditPaymentTerm: function dialogEditPaymentTerm(val) {
+      val || this.closeDialogEditPaymentTerm();
     }
   },
   methods: (_methods = {
@@ -5791,7 +6258,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         _this.getAvailableItemList();
 
-        _this.successSnackbar = true;
+        if (response.data == 0) {
+          _this.successSnackbar = true;
+        } else {
+          _this.dupliRecordSnackbar = true;
+        }
 
         _this.$refs.category_form.reset();
 
@@ -5808,11 +6279,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         subcat_val: this.subcategory_val_for_list_item,
         partname_val: this.part_name_for_list_item,
         material_val: this.material_for_list_item,
-        dimension: this.dimension_for_list_item
+        dimension: this.dimension_for_list_item,
+        unit_price: this.raw_unit_price_for_list_item
       }).then(function (response) {
         _this2.getAvailableItemList();
 
         _this2.close();
+
+        if (response.data > 0) {
+          _this2.dupliRecordSnackbar = true;
+        } else {
+          _this2.successSnackbar = true;
+        }
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
@@ -5826,64 +6304,135 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this3.getAvailablePlatingProcesses();
 
         _this3.close();
+
+        if (response.data > 0) {
+          _this3.dupliRecordSnackbar = true;
+        } else {
+          _this3.successSnackbar = true;
+        }
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    addVendor: function addVendor() {
+      var _this4 = this;
+
+      axios.post('/addVendor', {
+        params: this.modelForVendor
+      }).then(function (response) {
+        _this4.getAvailableVendor();
+
+        _this4.close();
+
+        if (response.data > 0) {
+          _this4.dupliRecordSnackbar = true;
+        } else {
+          _this4.successSnackbar = true;
+        }
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    addPaymentTerm: function addPaymentTerm() {
+      var _this5 = this;
+
+      axios.post('/addPaymentTerm', {
+        params: this.payment_term
+      }).then(function (response) {
+        _this5.getAvailablePaymentTerm();
+
+        _this5.close();
+
+        if (response.data == 0) {
+          _this5.successSnackbar = true;
+        } else {
+          _this5.dupliRecordSnackbar = true;
+        }
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     deleteItemCategory: function deleteItemCategory(params) {
-      var _this4 = this;
+      var _this6 = this;
 
       axios.post('/deleteItemCategory', {
         params: this.defaultCategoryItem
       }).then(function (response) {
         //console.log(response.data)
-        _this4.getAvailableCateogryItems();
+        _this6.getAvailableCateogryItems();
 
-        _this4.getAvailableItemList();
+        _this6.getAvailableItemList();
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     deleteItemList: function deleteItemList(params) {
-      var _this5 = this;
+      var _this7 = this;
 
       axios.post('/deleteItemList', {
         params: params
       }).then(function (response) {
-        _this5.deleteIndex = null;
+        _this7.deleteIndex = null;
 
-        _this5.getAvailableItemList();
+        _this7.getAvailableItemList();
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     deletePlatingProcess: function deletePlatingProcess(params) {
-      var _this6 = this;
+      var _this8 = this;
 
       axios.post('/deletePlatingProcess', {
         params: params
       }).then(function (response) {
-        _this6.deleteIndex = null;
+        _this8.deleteIndex = null;
 
-        _this6.getAvailablePlatingProcesses();
+        _this8.getAvailablePlatingProcesses();
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    deleteVendor: function deleteVendor(params) {
+      var _this9 = this;
+
+      axios.post('/deleteVendor', {
+        params: params
+      }).then(function (response) {
+        _this9.getAvailableVendor();
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    deletePaymentTerm: function deletePaymentTerm(params) {
+      var _this10 = this;
+
+      axios.post('/deletePaymentTerm', {
+        params: params
+      }).then(function (response) {
+        _this10.getAvailablePaymentTerm();
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     addSubCat: function addSubCat() {
-      var _this7 = this;
+      var _this11 = this;
 
       axios.post('/addSubCategory', {
         cat_name: this.category_name_selected,
         subcat_name: this.subcategory_val
       }).then(function (response) {
-        //console.log(response.data)
-        _this7.successSnackbar = true;
+        console.log(response.data);
 
-        _this7.$refs.subcategory_form.reset();
+        if (response.data == 0) {
+          _this11.successSnackbar = true;
+        } else {
+          _this11.dupliRecordSnackbar = true;
+        }
 
-        _this7.category_name_selected = '';
-        _this7.subcategory_val = '';
+        _this11.$refs.subcategory_form.reset();
+
+        _this11.category_name_selected = '';
+        _this11.subcategory_val = '';
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
@@ -5892,94 +6441,119 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log(this.defaultCategoryItem);
     },
     close: function close() {
-      var _this8 = this;
+      var _this12 = this;
 
       this.dialog = false;
       this.getAvailableCateogryItems(); //   this.rfqs=[],
 
       this.$nextTick(function () {
-        _this8.category_val_for_list_item = null;
-        _this8.subcategory_val_for_list_item = null;
-        _this8.part_name_for_list_item = null;
-        _this8.material_for_list_item = null;
-        _this8.dimension_for_list_item = null;
-        _this8.tab == 0 ? _this8.$refs.category_form.reset() : false;
-        _this8.tab == 0 ? _this8.$refs.subcategory_form.reset() : false;
-        _this8.category_val = '';
-        _this8.category_name_selected = '';
-        _this8.subcategory_val = '';
-        _this8.modelForPlatingProcesses.plating_process = null, _this8.modelForPlatingProcesses.type = null, _this8.modelForPlatingProcesses.price_per_square_inch = null;
-        _this8.raw_price = null;
+        _this12.category_val_for_list_item = null;
+        _this12.subcategory_val_for_list_item = null;
+        _this12.part_name_for_list_item = null;
+        _this12.material_for_list_item = null;
+        _this12.dimension_for_list_item = null;
+        _this12.raw_unit_price_for_list_item = null;
+        _this12.tab == 0 ? _this12.$refs.category_form.reset() : false;
+        _this12.tab == 0 ? _this12.$refs.subcategory_form.reset() : false;
+        _this12.category_val = '';
+        _this12.category_name_selected = '';
+        _this12.subcategory_val = '';
+        _this12.modelForPlatingProcesses.plating_process = null, _this12.modelForPlatingProcesses.type = null, _this12.modelForPlatingProcesses.price_per_square_inch = null;
+        _this12.raw_price = null;
+        _this12.modelForVendor.company_name = null;
+        _this12.modelForVendor.address = null;
+        _this12.modelForVendor.contact_person = null;
+        _this12.modelForVendor.contact_number = null;
+        _this12.payment_term = null;
+        _this12.selecedPaymentTerm = null;
       });
     },
     getAvailableCateogryItems: function getAvailableCateogryItems() {
-      var _this9 = this;
+      var _this13 = this;
 
       axios.get('/viewCatItem').then(function (response) {
-        _this9.item_categories = response.data[1];
-        _this9.category_name_items = response.data[0];
+        _this13.item_categories = response.data[1];
+        _this13.category_name_items = response.data[0];
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
 
       if (this.tab == 1) {
         axios.get('/getcat_subcat_for_add_ItemList').then(function (response) {
-          _this9.category_name_for_add_itemList = response.data;
+          _this13.category_name_for_add_itemList = response.data;
         })["catch"](function (error) {
           console.log(error.response);
         })["finally"](function () {});
       }
     },
     getAvailableItemList: function getAvailableItemList() {
-      var _this10 = this;
+      var _this14 = this;
 
       axios.get('/getAvailableItemList').then(function (response) {
-        _this10.item_list = response.data;
+        _this14.item_list = response.data;
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     getAvailablePlatingProcesses: function getAvailablePlatingProcesses() {
-      var _this11 = this;
+      var _this15 = this;
 
       axios.get('/getAvailablePlatingProcesses').then(function (response) {
-        _this11.itemsForPlatingProcess = response.data;
+        _this15.itemsForPlatingProcess = response.data;
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    getAvailableVendor: function getAvailableVendor() {
+      var _this16 = this;
+
+      axios.get('/getAvailableVendor').then(function (response) {
+        _this16.itemsForVendor = response.data;
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    getAvailablePaymentTerm: function getAvailablePaymentTerm() {
+      var _this17 = this;
+
+      axios.get('/getAvailablePaymentTerm').then(function (response) {
+        _this17.itemsForPaymentTerm = response.data;
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     getcat_subcat_ItemList: function getcat_subcat_ItemList(params) {
-      var _this12 = this;
+      var _this18 = this;
 
       axios.get('/getcat_subcat_ItemList', {
         params: params
       }).then(function (response) {
-        _this12.categoryNameList = response.data[0];
-        _this12.subCategoryNameList = response.data[1];
+        _this18.categoryNameList = response.data[0];
+        _this18.subCategoryNameList = response.data[1];
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     selectingCategoryNameList: function selectingCategoryNameList() {
-      var _this13 = this;
+      var _this19 = this;
 
       axios.get('/selectingCategoryNameList', {
         params: this.selectedItemList
       }).then(function (response) {
-        _this13.selectedItemList.subcat_val = null;
-        _this13.subCategoryNameList = response.data; //console.log(response.data)
+        _this19.selectedItemList.subcat_val = null;
+        _this19.subCategoryNameList = response.data; //console.log(response.data)
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
     selectingCategoryNameListForAdd: function selectingCategoryNameListForAdd(val) {
-      var _this14 = this;
+      var _this20 = this;
 
       axios.get('/selectingCategoryNameListForAdd', {
         params: val
       }).then(function (response) {
-        _this14.subcategory_val_for_list_item = null;
-        _this14.subcategory_name_for_add_itemList = response.data;
+        _this20.subcategory_val_for_list_item = null;
+        _this20.subcategory_name_for_add_itemList = response.data;
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
@@ -5995,6 +6569,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.modelForPlatingProcesses.plating_process = null, this.modelForPlatingProcesses.type = null, this.modelForPlatingProcesses.price_per_square_inch = null;
       this.modelForPlatingProcesses.raw_price = null;
     },
+    closeDialogEditVendor: function closeDialogEditVendor() {
+      this.dialogEditVendor = false;
+      this.modelForVendor.company_name = null;
+      this.modelForVendor.address = null;
+      this.modelForVendor.contact_person = null;
+      this.modelForVendor.contact_number = null;
+    },
+    closeDialogEditPaymentTerm: function closeDialogEditPaymentTerm() {
+      this.dialogEditPaymentTerm = false;
+      this.payment_term = null;
+    },
     deleteItem: function deleteItem(item) {
       if (this.tab == 0) {
         this.defaultCategoryItem = Object.assign({}, item);
@@ -6007,6 +6592,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       if (this.tab == 2) {
+        this.deleteIndex = item.id;
+        this.dialogDelete = true;
+      }
+
+      if (this.tab == 3) {
+        this.deleteIndex = item.id;
+        this.dialogDelete = true;
+      }
+
+      if (this.tab == 4) {
         this.deleteIndex = item.id;
         this.dialogDelete = true;
       }
@@ -6026,6 +6621,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.deletePlatingProcess(this.deleteIndex);
         this.closeDelete();
       }
+
+      if (this.tab == 3) {
+        this.deleteVendor(this.deleteIndex);
+        this.closeDelete();
+      }
+
+      if (this.tab == 4) {
+        this.deletePaymentTerm(this.deleteIndex);
+        this.closeDelete();
+      }
     },
     editCategoryItem: function editCategoryItem(item) {
       this.dialogEditCategoryItem = true;
@@ -6033,43 +6638,101 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.selectedCategoryItem = Object.assign({}, item);
     }
   }, _defineProperty(_methods, "updateCategoryItem", function updateCategoryItem() {
-    var _this15 = this;
+    var _this21 = this;
 
     axios.post('/updateSubCategory', {
       updated_val: this.defaultCategoryItem,
       selected_val: this.selectedCategoryItem
     }).then(function (response) {
-      _this15.getAvailableCateogryItems();
+      console.log(response.data);
 
-      _this15.getAvailableItemList();
+      if (response.data > 1) {
+        _this21.dupliRecordSnackbar = true;
+      }
 
-      _this15.dialogEditCategoryItem = false;
+      _this21.getAvailableCateogryItems();
+
+      _this21.getAvailableItemList();
+
+      _this21.dialogEditCategoryItem = false;
     })["catch"](function (error) {
       console.log(error.response);
     })["finally"](function () {});
   }), _defineProperty(_methods, "updateItemList", function updateItemList() {
-    var _this16 = this;
+    var _this22 = this;
 
     axios.post('/updateItemList', {
       params: this.selectedItemList
     }).then(function (response) {
-      _this16.getAvailableItemList();
+      _this22.getAvailableItemList();
 
-      _this16.dialogEditItemList = false;
+      _this22.dialogEditItemList = false;
+
+      if (response.data > 0) {
+        _this22.dupliRecordSnackbar = true;
+      } else {
+        _this22.updatedSnackbar = true;
+      }
     })["catch"](function (error) {
       console.log(error.response);
     })["finally"](function () {});
   }), _defineProperty(_methods, "updatePlatingProcess", function updatePlatingProcess() {
-    var _this17 = this;
+    var _this23 = this;
 
     axios.post('/updatePlatingProcess', {
       params: this.modelForPlatingProcesses
     }).then(function (response) {
-      _this17.getAvailablePlatingProcesses();
+      _this23.getAvailablePlatingProcesses();
 
-      _this17.closeDialogEditProcessPlating();
+      _this23.closeDialogEditProcessPlating();
 
       console.log(response.data);
+
+      if (response.data > 0) {
+        _this23.dupliRecordSnackbar = true;
+      } else {
+        _this23.successSnackbar = true;
+      }
+    })["catch"](function (error) {
+      console.log(error.response);
+    })["finally"](function () {});
+  }), _defineProperty(_methods, "updateVendor", function updateVendor() {
+    var _this24 = this;
+
+    axios.post('/updateVendor', {
+      params: this.modelForVendor
+    }).then(function (response) {
+      if (response.data > 0) {
+        _this24.dupliRecordSnackbar = true;
+      } else {
+        _this24.updatedSnackbar = true;
+      }
+
+      _this24.getAvailableVendor();
+
+      _this24.closeDialogEditVendor();
+    })["catch"](function (error) {
+      console.log(error.response);
+    })["finally"](function () {});
+  }), _defineProperty(_methods, "updatePaymentTerm", function updatePaymentTerm() {
+    var _this25 = this;
+
+    var params = {
+      payment_type: this.payment_term,
+      id: this.idOfPaymentTerm
+    };
+    axios.post('/updatePaymentTerm', {
+      params: params
+    }).then(function (response) {
+      _this25.getAvailablePaymentTerm();
+
+      _this25.closeDialogEditPaymentTerm();
+
+      if (response.data > 0) {
+        _this25.dupliRecordSnackbar = true;
+      } else {
+        _this25.updatedSnackbar = true;
+      }
     })["catch"](function (error) {
       console.log(error.response);
     })["finally"](function () {});
@@ -6081,8 +6744,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), _defineProperty(_methods, "editPlatingProcess", function editPlatingProcess(item) {
     this.dialogEditProcessPlating = true;
     this.modelForPlatingProcesses = Object.assign({}, item);
-    this.selectedPlatingProcesses = Object.assign({}, item);
-    console.log(item);
+    this.selectedPlatingProcesses = Object.assign({}, item); //console.log(item)
+  }), _defineProperty(_methods, "editVendor", function editVendor(item) {
+    this.dialogEditVendor = true;
+    this.modelForVendor = Object.assign({}, item);
+    this.selectedVendor = Object.assign({}, item);
+  }), _defineProperty(_methods, "editPaymentTerm", function editPaymentTerm(item) {
+    this.dialogEditPaymentTerm = true;
+    this.payment_term = item.payment_term;
+    this.selecedPaymentTerm = item.payment_term;
+    this.idOfPaymentTerm = item.id;
   }), _defineProperty(_methods, "isNumber", function isNumber(event, quantity) {
     if (!/\d/.test(event.key) && (event.key !== "." || /\./.test(quantity))) return event.preventDefault();
   }), _methods)
@@ -49631,7 +50302,65 @@ var render = function() {
         [
           _c("v-icon", [_vm._v("mdi-check")]),
           _vm._v(
-            "\n                A record has been added successfully.\n        "
+            "\n                A record has been added successfully.\n            "
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: {
+            timeout: 3000,
+            value: true,
+            bottom: "",
+            color: "warning",
+            success: "",
+            top: "",
+            right: ""
+          },
+          model: {
+            value: _vm.dupliRecordSnackbar,
+            callback: function($$v) {
+              _vm.dupliRecordSnackbar = $$v
+            },
+            expression: "dupliRecordSnackbar"
+          }
+        },
+        [
+          _c("v-icon", [_vm._v("mdi-flag-triangle")]),
+          _vm._v(
+            "\n                Whoops, a duplicate record has been recognized.\n            "
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: {
+            timeout: 3000,
+            value: true,
+            bottom: "",
+            color: "purple",
+            success: "",
+            top: "",
+            right: ""
+          },
+          model: {
+            value: _vm.updatedSnackbar,
+            callback: function($$v) {
+              _vm.updatedSnackbar = $$v
+            },
+            expression: "updatedSnackbar"
+          }
+        },
+        [
+          _c("v-icon", [_vm._v("mdi-lightbulb")]),
+          _vm._v(
+            "\n                The record has been updated successfully.\n            "
           )
         ],
         1
@@ -49680,13 +50409,24 @@ var render = function() {
                               }
                             },
                             _vm._l(_vm.items, function(item) {
-                              return _c("v-tab", { key: item }, [
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(item) +
-                                    "\n                        "
-                                )
-                              ])
+                              return _c(
+                                "v-tab",
+                                {
+                                  key: item,
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.clearSearch()
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(item) +
+                                      "\n                        "
+                                  )
+                                ]
+                              )
                             }),
                             1
                           ),
@@ -50297,7 +51037,148 @@ var render = function() {
                                   _c(
                                     "v-card",
                                     { attrs: { color: "basil", flat: "" } },
-                                    [_c("v-card-text")],
+                                    [
+                                      _c(
+                                        "v-card-text",
+                                        [
+                                          _c(
+                                            "v-row",
+                                            { attrs: { justify: "end" } },
+                                            [
+                                              _c(
+                                                "v-col",
+                                                {
+                                                  attrs: {
+                                                    cols: "12",
+                                                    sm: "6",
+                                                    md: "3"
+                                                  }
+                                                },
+                                                [
+                                                  _c("v-text-field", {
+                                                    attrs: {
+                                                      "append-icon":
+                                                        "mdi-magnify",
+                                                      label: "Search",
+                                                      "single-line": "",
+                                                      "hide-details": ""
+                                                    },
+                                                    model: {
+                                                      value: _vm.search,
+                                                      callback: function($$v) {
+                                                        _vm.search = $$v
+                                                      },
+                                                      expression: "search"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("v-data-table", {
+                                            staticClass: "mt-5",
+                                            attrs: {
+                                              headers: _vm.headersForVendor,
+                                              search: _vm.search,
+                                              items: _vm.itemsForVendor,
+                                              "hide-default-footer": "",
+                                              page: _vm.page,
+                                              "items-per-page": _vm.itemsPerPage
+                                            },
+                                            on: {
+                                              "update:page": function($event) {
+                                                _vm.page = $event
+                                              },
+                                              "page-count": function($event) {
+                                                _vm.pageCount = $event
+                                              }
+                                            },
+                                            scopedSlots: _vm._u(
+                                              [
+                                                {
+                                                  key: "item.actions",
+                                                  fn: function(ref) {
+                                                    var item = ref.item
+                                                    return [
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          staticClass: "mr-2",
+                                                          attrs: { small: "" },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.editVendor(
+                                                                item
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                mdi-pencil\n                                            "
+                                                          )
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          attrs: { small: "" },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.deleteItem(
+                                                                item
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                mdi-delete\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  }
+                                                }
+                                              ],
+                                              null,
+                                              true
+                                            )
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "text-center pt-2" },
+                                            [
+                                              _c("v-pagination", {
+                                                attrs: {
+                                                  length: _vm.pageCount,
+                                                  circle: "",
+                                                  "total-visible": 7
+                                                },
+                                                model: {
+                                                  value: _vm.page,
+                                                  callback: function($$v) {
+                                                    _vm.page = $$v
+                                                  },
+                                                  expression: "page"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
                                     1
                                   )
                                 ],
@@ -50310,7 +51191,149 @@ var render = function() {
                                   _c(
                                     "v-card",
                                     { attrs: { color: "basil", flat: "" } },
-                                    [_c("v-card-text")],
+                                    [
+                                      _c(
+                                        "v-card-text",
+                                        [
+                                          _c(
+                                            "v-row",
+                                            { attrs: { justify: "end" } },
+                                            [
+                                              _c(
+                                                "v-col",
+                                                {
+                                                  attrs: {
+                                                    cols: "12",
+                                                    sm: "6",
+                                                    md: "3"
+                                                  }
+                                                },
+                                                [
+                                                  _c("v-text-field", {
+                                                    attrs: {
+                                                      "append-icon":
+                                                        "mdi-magnify",
+                                                      label: "Search",
+                                                      "single-line": "",
+                                                      "hide-details": ""
+                                                    },
+                                                    model: {
+                                                      value: _vm.search,
+                                                      callback: function($$v) {
+                                                        _vm.search = $$v
+                                                      },
+                                                      expression: "search"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("v-data-table", {
+                                            staticClass: "mt-5",
+                                            attrs: {
+                                              headers:
+                                                _vm.headersForPaymentTerm,
+                                              search: _vm.search,
+                                              items: _vm.itemsForPaymentTerm,
+                                              "hide-default-footer": "",
+                                              page: _vm.page,
+                                              "items-per-page": _vm.itemsPerPage
+                                            },
+                                            on: {
+                                              "update:page": function($event) {
+                                                _vm.page = $event
+                                              },
+                                              "page-count": function($event) {
+                                                _vm.pageCount = $event
+                                              }
+                                            },
+                                            scopedSlots: _vm._u(
+                                              [
+                                                {
+                                                  key: "item.actions",
+                                                  fn: function(ref) {
+                                                    var item = ref.item
+                                                    return [
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          staticClass: "mr-2",
+                                                          attrs: { small: "" },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.editPaymentTerm(
+                                                                item
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                mdi-pencil\n                                            "
+                                                          )
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          attrs: { small: "" },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.deleteItem(
+                                                                item
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                mdi-delete\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  }
+                                                }
+                                              ],
+                                              null,
+                                              true
+                                            )
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "text-center pt-2" },
+                                            [
+                                              _c("v-pagination", {
+                                                attrs: {
+                                                  length: _vm.pageCount,
+                                                  circle: "",
+                                                  "total-visible": 7
+                                                },
+                                                model: {
+                                                  value: _vm.page,
+                                                  callback: function($$v) {
+                                                    _vm.page = $$v
+                                                  },
+                                                  expression: "page"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
                                     1
                                   )
                                 ],
@@ -50991,6 +52014,43 @@ var render = function() {
                                           })
                                         ],
                                         1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "div",
+                                            [
+                                              _c("vuetify-money", {
+                                                attrs: {
+                                                  label: "Unit Price Cost",
+                                                  placeholder: " ",
+                                                  outlined: true,
+                                                  clearable: true,
+                                                  options: _vm.options
+                                                },
+                                                model: {
+                                                  value:
+                                                    _vm.raw_unit_price_for_list_item,
+                                                  callback: function($$v) {
+                                                    _vm.raw_unit_price_for_list_item = $$v
+                                                  },
+                                                  expression:
+                                                    "raw_unit_price_for_list_item"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ]
                                       )
                                     ],
                                     1
@@ -51275,15 +52335,227 @@ var render = function() {
                             [_vm._v("Add Vendors\n                ")]
                           ),
                           _vm._v(" "),
-                          _c("v-card-text"),
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-container",
+                                [
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c(
+                                        "v-col",
+                                        { attrs: { cols: "12", md: "12" } },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticStyle: {
+                                                "background-color": "#2196F3",
+                                                padding: "10px"
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticStyle: {
+                                                    color: "white",
+                                                    "font-weight": "bold",
+                                                    "letter-spacing": "2px"
+                                                  }
+                                                },
+                                                [_vm._v("Add a Vendor")]
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "Company Name",
+                                              clearable: ""
+                                            },
+                                            model: {
+                                              value:
+                                                _vm.modelForVendor.company_name,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.modelForVendor,
+                                                  "company_name",
+                                                  $$v
+                                                )
+                                              },
+                                              expression:
+                                                "modelForVendor.company_name"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "Company Address",
+                                              clearable: ""
+                                            },
+                                            model: {
+                                              value: _vm.modelForVendor.address,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.modelForVendor,
+                                                  "address",
+                                                  $$v
+                                                )
+                                              },
+                                              expression:
+                                                "modelForVendor.address"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "Contact Person",
+                                              clearable: ""
+                                            },
+                                            model: {
+                                              value:
+                                                _vm.modelForVendor
+                                                  .contact_person,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.modelForVendor,
+                                                  "contact_person",
+                                                  $$v
+                                                )
+                                              },
+                                              expression:
+                                                "modelForVendor.contact_person"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "Contact Number",
+                                              clearable: ""
+                                            },
+                                            model: {
+                                              value:
+                                                _vm.modelForVendor
+                                                  .contact_number,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.modelForVendor,
+                                                  "contact_number",
+                                                  $$v
+                                                )
+                                              },
+                                              expression:
+                                                "modelForVendor.contact_number"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c(
                             "v-card-actions",
                             { staticClass: "justify-end" },
                             [
-                              _c("v-btn", { attrs: { color: "primary" } }, [
-                                _vm._v("Save\n                        ")
-                              ]),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    color: "primary",
+                                    disabled:
+                                      _vm.modelForVendor.company_name == "" ||
+                                      _vm.modelForVendor.company_name == null ||
+                                      _vm.modelForVendor.address == "" ||
+                                        _vm.modelForVendor.address == null ||
+                                      _vm.modelForVendor.contact_number == "" ||
+                                        _vm.modelForVendor.contact_number ==
+                                          null ||
+                                      _vm.modelForVendor.contact_person == "" ||
+                                        _vm.modelForVendor.contact_person ==
+                                          null
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.addVendor()
+                                    }
+                                  }
+                                },
+                                [_vm._v("Save\n                        ")]
+                              ),
                               _vm._v(" "),
                               _c(
                                 "v-btn",
@@ -51315,15 +52587,109 @@ var render = function() {
                             [_vm._v("Add Payment Terms\n                ")]
                           ),
                           _vm._v(" "),
-                          _c("v-card-text"),
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-container",
+                                [
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c(
+                                        "v-col",
+                                        { attrs: { cols: "12", md: "12" } },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticStyle: {
+                                                "background-color": "#2196F3",
+                                                padding: "10px"
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticStyle: {
+                                                    color: "white",
+                                                    "font-weight": "bold",
+                                                    "letter-spacing": "2px"
+                                                  }
+                                                },
+                                                [_vm._v("Add a Payment Term")]
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "12",
+                                            sm: "6",
+                                            md: "4"
+                                          }
+                                        },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "Payment Term",
+                                              clearable: ""
+                                            },
+                                            on: {
+                                              input: function(val) {
+                                                return _vm.payment_term
+                                                  ? (_vm.payment_term = _vm.payment_term.toUpperCase())
+                                                  : null
+                                              }
+                                            },
+                                            model: {
+                                              value: _vm.payment_term,
+                                              callback: function($$v) {
+                                                _vm.payment_term = $$v
+                                              },
+                                              expression: "payment_term"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c(
                             "v-card-actions",
                             { staticClass: "justify-end" },
                             [
-                              _c("v-btn", { attrs: { color: "primary" } }, [
-                                _vm._v("Save\n                        ")
-                              ]),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "primary" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.addPaymentTerm()
+                                    }
+                                  }
+                                },
+                                [_vm._v("Save\n                        ")]
+                              ),
                               _vm._v(" "),
                               _c(
                                 "v-btn",
@@ -51331,7 +52697,7 @@ var render = function() {
                                   attrs: { text: "" },
                                   on: {
                                     click: function($event) {
-                                      return _vm.close_for_add_itemList()
+                                      return _vm.close()
                                     }
                                   }
                                 },
@@ -51642,7 +53008,7 @@ var render = function() {
             "v-card",
             [
               _c("v-toolbar", { attrs: { color: "primary", dark: "" } }, [
-                _vm._v("\n                Edit Item Category\n                ")
+                _vm._v("\n                Edit Item List\n                ")
               ]),
               _vm._v(" "),
               _c(
@@ -51834,6 +53200,41 @@ var render = function() {
                               })
                             ],
                             1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c(
+                                "div",
+                                [
+                                  _c("vuetify-money", {
+                                    attrs: {
+                                      label: "Unit Price Cost",
+                                      placeholder: " ",
+                                      outlined: true,
+                                      clearable: true,
+                                      options: _vm.options
+                                    },
+                                    model: {
+                                      value:
+                                        _vm.selectedItemList.raw_unit_price,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.selectedItemList,
+                                          "raw_unit_price",
+                                          $$v
+                                        )
+                                      },
+                                      expression:
+                                        "selectedItemList.raw_unit_price"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ]
                           )
                         ],
                         1
@@ -51871,7 +53272,9 @@ var render = function() {
                             _vm.selectedItemList.part_name ==
                               _vm.compareToSelectedItemList.part_name &&
                             _vm.selectedItemList.dimension ==
-                              _vm.compareToSelectedItemList.dimension)
+                              _vm.compareToSelectedItemList.dimension &&
+                            _vm.selectedItemList.raw_unit_price ==
+                              _vm.compareToSelectedItemList.raw_unit_price)
                       },
                       on: {
                         click: function($event) {
@@ -51888,7 +53291,7 @@ var render = function() {
                       attrs: { text: "" },
                       on: {
                         click: function($event) {
-                          _vm.dialogEditCategoryItem = false
+                          _vm.dialogEditItemList = false
                         }
                       }
                     },
@@ -52103,6 +53506,369 @@ var render = function() {
                       on: {
                         click: function($event) {
                           return _vm.closeDialogEditProcessPlating()
+                        }
+                      }
+                    },
+                    [_vm._v("Close\n                        ")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { transition: "dialog-top-transition", "max-width": "800" },
+          model: {
+            value: _vm.dialogEditVendor,
+            callback: function($$v) {
+              _vm.dialogEditVendor = $$v
+            },
+            expression: "dialogEditVendor"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-toolbar", { attrs: { color: "primary", dark: "" } }, [
+                _vm._v("\n                Edit Vendor\n                ")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-row",
+                        [
+                          _c("v-col", { attrs: { cols: "12", md: "12" } }, [
+                            _c(
+                              "div",
+                              {
+                                staticStyle: {
+                                  "background-color": "#2196F3",
+                                  padding: "10px"
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticStyle: {
+                                      color: "white",
+                                      "font-weight": "bold",
+                                      "letter-spacing": "2px"
+                                    }
+                                  },
+                                  [_vm._v("Edit Data")]
+                                )
+                              ]
+                            )
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Company Name", clearable: "" },
+                                model: {
+                                  value: _vm.modelForVendor.company_name,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.modelForVendor,
+                                      "company_name",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "modelForVendor.company_name"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Company Address",
+                                  clearable: ""
+                                },
+                                model: {
+                                  value: _vm.modelForVendor.address,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.modelForVendor, "address", $$v)
+                                  },
+                                  expression: "modelForVendor.address"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Contact Person",
+                                  clearable: ""
+                                },
+                                model: {
+                                  value: _vm.modelForVendor.contact_person,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.modelForVendor,
+                                      "contact_person",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "modelForVendor.contact_person"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Contact Number",
+                                  clearable: ""
+                                },
+                                model: {
+                                  value: _vm.modelForVendor.contact_number,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.modelForVendor,
+                                      "contact_number",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "modelForVendor.contact_number"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                { staticClass: "justify-end" },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        color: "primary",
+                        disabled:
+                          _vm.modelForVendor.company_name == "" ||
+                          _vm.modelForVendor.company_name == null ||
+                          _vm.modelForVendor.address == "" ||
+                            _vm.modelForVendor.address == null ||
+                          _vm.modelForVendor.contact_number == "" ||
+                            _vm.modelForVendor.contact_number == null ||
+                          _vm.modelForVendor.contact_person == "" ||
+                            _vm.modelForVendor.contact_person == null ||
+                          (_vm.modelForVendor.company_name ==
+                            _vm.selectedVendor.company_name &&
+                            _vm.modelForVendor.address ==
+                              _vm.selectedVendor.address &&
+                            _vm.modelForVendor.contact_number ==
+                              _vm.selectedVendor.contact_number &&
+                            _vm.modelForVendor.contact_person ==
+                              _vm.selectedVendor.contact_person)
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.updateVendor()
+                        }
+                      }
+                    },
+                    [_vm._v("Save Changes")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { text: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.closeDialogEditVendor()
+                        }
+                      }
+                    },
+                    [_vm._v("Close\n                        ")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { transition: "dialog-top-transition", "max-width": "800" },
+          model: {
+            value: _vm.dialogEditPaymentTerm,
+            callback: function($$v) {
+              _vm.dialogEditPaymentTerm = $$v
+            },
+            expression: "dialogEditPaymentTerm"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-toolbar", { attrs: { color: "primary", dark: "" } }, [
+                _vm._v("\n                Edit Payment Term\n                ")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-row",
+                        [
+                          _c("v-col", { attrs: { cols: "12", md: "12" } }, [
+                            _c(
+                              "div",
+                              {
+                                staticStyle: {
+                                  "background-color": "#2196F3",
+                                  padding: "10px"
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticStyle: {
+                                      color: "white",
+                                      "font-weight": "bold",
+                                      "letter-spacing": "2px"
+                                    }
+                                  },
+                                  [_vm._v("Edit Data")]
+                                )
+                              ]
+                            )
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Payment Term", clearable: "" },
+                                on: {
+                                  input: function(val) {
+                                    return (_vm.payment_term = _vm.payment_term.toUpperCase())
+                                  }
+                                },
+                                model: {
+                                  value: _vm.payment_term,
+                                  callback: function($$v) {
+                                    _vm.payment_term = $$v
+                                  },
+                                  expression: "payment_term"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                { staticClass: "justify-end" },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        color: "primary",
+                        disabled:
+                          _vm.payment_term == "" ||
+                          _vm.payment_term == null ||
+                          _vm.payment_term == _vm.selecedPaymentTerm
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.updatePaymentTerm()
+                        }
+                      }
+                    },
+                    [_vm._v("Save Changes")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { text: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.closeDialogEditPaymentTerm()
                         }
                       }
                     },

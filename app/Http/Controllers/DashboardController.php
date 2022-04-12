@@ -13,6 +13,8 @@ use App\Models\CategoryItem;
 use App\Models\SubCategoryItem;
 use App\Models\ItemList;
 use App\Models\PlatingProcess;
+use App\Models\Vendor;
+use App\Models\PaymentTerm;
 use PDF;
 use Auth;
 use Akaunting\Money\Currency;
@@ -293,12 +295,19 @@ class DashboardController extends Controller
 
     public function addCategory(Request $request){
 
+        $detection = 0;
+
+        foreach(CategoryItem::all() as $cat){
+            if(in_array(ucwords($request->cat_name), [$cat->category_name] ) ){
+                $detection += 1;
+            }
+        }
         CategoryItem::updateOrCreate(
             ['category_name'=>ucwords($request->cat_name)],
             ['category_name'=>ucwords($request->cat_name)]
         );
 
-        return response()->json('Successfully Added');
+        return response()->json($detection);
     }
 
     public function viewCatItem(){
@@ -327,10 +336,23 @@ class DashboardController extends Controller
     }
 
     public function addSubCategory(Request $request){
+        $detection = 0;
         $catval = CategoryItem::findOrFail($request->cat_name);
+
+        $arr = array();
+        foreach($catval->subcategory_items->pluck('subcategory_name')->toArray() as $a){
+            $arr[] = strtolower($a);
+        }
+
+            if(in_array(strtolower($request->subcat_name), $arr)){
+                $detection += 1;
+            }
+        
+
+
         $catval->subcategory_items()->updateOrCreate(['subcategory_name'=>ucwords($request->subcat_name)],['subcategory_name'=>ucwords($request->subcat_name)]);
 
-        return response()->json('success');
+        return response()->json($detection);
     }
 
     public function deleteItemCategory(Request $request){
@@ -350,12 +372,12 @@ class DashboardController extends Controller
 
     public function updateSubCategory(Request $request){
 
-        $detection_for_cat_name = '';
+        $detection = 0;
         if($request->selected_val['subcategory_name'] == 'N/A'){
             $cat_item = CategoryItem::all()->pluck('category_name')->toArray();
 
             if(in_array(ucwords($request->updated_val['category_name']),$cat_item)){
-
+                $detection += 1;
             } else {
                 CategoryItem::where('category_name',$request->selected_val['category_name'])->update(['category_name'=>ucwords($request->updated_val['category_name'])]);
             }
@@ -363,7 +385,7 @@ class DashboardController extends Controller
         } else {
             $cat_item = CategoryItem::where('category_name',$request->selected_val['category_name'])->first()->subcategory_items->pluck('subcategory_name')->toArray();
             if(in_array(ucwords($request->updated_val['subcategory_name']),$cat_item)){
-
+                $detection += 1;
             } else {
                 $how = CategoryItem::where('category_name',ucwords($request->selected_val['category_name']))->first();
                 $how->subcategory_items->where('subcategory_name',ucwords($request->selected_val['subcategory_name']))->first()->update(['subcategory_name'=>ucwords($request->updated_val['subcategory_name'])]);
@@ -372,12 +394,12 @@ class DashboardController extends Controller
             $categ= CategoryItem::all()->pluck('category_name')->toArray();
 
             if(in_array(ucwords($request->updated_val['category_name']),$categ)){
-
+                $detection += 1;
             } else {
                 CategoryItem::where('category_name',$request->selected_val['category_name'])->update(['category_name'=>ucwords($request->updated_val['category_name'])]);
             }
         }
-        return response()->json();
+        return response()->json($detection);
     }
 
     public function getAvailableItemList(){
@@ -390,7 +412,9 @@ class DashboardController extends Controller
                 'material' => $query->material == '' ? 'N/A' : $query->material,
                 'dimension' => $query->dimension == '' ? 'N/A' : $query->dimension,
                 'cat_val' => ['text'=>$query->category_item->category_name,'value'=>$query->category_item_id],
-                'subcat_val' => ['text'=>$query->subcategory_item->subcategory_name,'value'=>$query->sub_category_item_id]
+                'subcat_val' => ['text'=>$query->subcategory_item->subcategory_name,'value'=>$query->sub_category_item_id],
+                'unit_price' => $query->unit_price == '' ? 'N/A' : $query->unit_price,
+                'raw_unit_price' => str_replace(',','',mb_substr($query->unit_price,2))
             ];
         });
         return response()->json($allItems);
@@ -434,6 +458,7 @@ class DashboardController extends Controller
 
         $cat_val = isset($request->params['cat_val']['value']) ? $request->params['cat_val']['value'] : $request->params['cat_val'];
         $subcat_val = isset($request->params['subcat_val']['value']) ? $request->params['subcat_val']['value'] : $request->params['subcat_val'];
+        $unit_price = '₱ '.number_format($request->params['raw_unit_price'],2, '.', ',');
 
         $detection = 0;
 
@@ -442,7 +467,8 @@ class DashboardController extends Controller
                in_array(strtolower($request->params['material']), [strtolower($item->material)]) &&
                in_array(strtolower($request->params['dimension']), [strtolower($item->dimension)]) &&
                in_array(strtolower($cat_val), [strtolower($item->category_item_id)]) &&
-               in_array(strtolower($subcat_val), [strtolower($item->sub_category_item_id)])) {
+               in_array(strtolower($subcat_val), [strtolower($item->sub_category_item_id)]) &&
+               in_array($unit_price, [$item->unit_price]) ) {
                 $detection += 1;
             }
         }
@@ -454,23 +480,27 @@ class DashboardController extends Controller
                 'part_name' => $request->params['part_name'] == null ? '' : $request->params['part_name'],
                 'material' => $request->params['material'] == null ? '' : $request->params['material'],
                 'dimension' => $request->params['dimension'] == null ? '' : $request->params['dimension'],
+                'unit_price' => $unit_price == null? '' : $unit_price
             ]);
         }
 
 
-        return response()->json('successfully updated');
+        return response()->json($detection);
     }
 
     public function addItemList(Request $request){
 
         $detection = 0;
 
+        $price = '₱ '.number_format($request->unit_price,2, '.', ',');
+
         foreach (ItemList::all() as $item) {
             if (in_array(strtolower($request->partname_val), [strtolower($item->part_name)]) &&
                in_array(strtolower($request->material_val), [strtolower($item->material)]) &&
                in_array(strtolower($request->dimension), [strtolower($item->dimension)]) &&
                in_array(strtolower($request->cat_val), [strtolower($item->category_item_id)]) &&
-               in_array(strtolower($request->subcat_val), [strtolower($item->sub_category_item_id)])) {
+               in_array(strtolower($request->subcat_val), [strtolower($item->sub_category_item_id)]) &&
+               in_array($price,[$item->unit_price])) {
                 $detection += 1;
             }
         }
@@ -481,12 +511,13 @@ class DashboardController extends Controller
                     'sub_category_item_id' => $request->subcat_val,
                     'part_name' => $request->partname_val == null ? '' : $request->partname_val,
                     'material' => $request->material_val == null ? '' : $request->material_val,
-                    'dimension' => $request->dimension == null ? '' : $request->dimension
+                    'dimension' => $request->dimension == null ? '' : $request->dimension,
+                    'unit_price' => $price
                 ]);
             }
 
 
-        return response()->json();
+        return response()->json($detection);
     }
 
     public function getcat_subcat_for_add_ItemList(){
@@ -554,7 +585,7 @@ class DashboardController extends Controller
         }
 
         
-        return response()->json( 'success' );
+        return response()->json(  $detection );
     }
 
     public function updatePlatingProcess(Request $request){
@@ -578,13 +609,126 @@ class DashboardController extends Controller
             ]);
         }
 
-        return response()->json('success');
+        return response()->json($detection);
     }
 
     public function deletePlatingProcess(Request $request){
         PlatingProcess::findOrFail($request->params)
         ->delete();
        return response()->json('success');
+    }
+
+    public function getAvailableVendor(){
+        return response()->json(Vendor::all());
+    }
+
+    public function addVendor(Request $request){
+
+        $detection = 0;
+
+        foreach (Vendor::all() as $item) {
+            if (in_array(strtoupper($request->params['company_name']), [strtoupper($item->company_name)]) &&
+                in_array(strtoupper($request->params['address']), [strtoupper($item->address)]) &&
+                in_array(strtoupper($request->params['contact_person']), [strtoupper($item->contact_person)]) &&
+                in_array(strtoupper($request->params['contact_number']), [strtoupper($item->contact_number)])) {
+                $detection += 1;
+            }
+        }
+
+        if($detection==0){
+            Vendor::create([
+                'company_name'=>strtoupper($request->params['company_name']),
+                'address'=>strtoupper($request->params['address']),
+                'contact_person'=>strtoupper($request->params['contact_person']),
+                'contact_number'=>strtoupper($request->params['contact_number'])
+            ]);
+        }
+        return response()->json($detection);
+    }
+
+    public function updateVendor(Request $request){
+        $detection = 0;
+
+        foreach (Vendor::all() as $item) {
+            if (in_array(strtoupper($request->params['company_name']), [strtoupper($item->company_name)]) &&
+                in_array(strtoupper($request->params['address']), [strtoupper($item->address)]) &&
+                in_array(strtoupper($request->params['contact_person']), [strtoupper($item->contact_person)]) &&
+                in_array(strtoupper($request->params['contact_number']), [strtoupper($item->contact_number)])) {
+                $detection += 1;
+            }
+        }
+
+        if($detection==0){
+            Vendor::where('id',$request->params['id'])->update([
+                'company_name'=>strtoupper($request->params['company_name']),
+                'address'=>strtoupper($request->params['address']),
+                'contact_person'=>strtoupper($request->params['contact_person']),
+                'contact_number'=>strtoupper($request->params['contact_number'])
+            ]);
+        }
+
+        return response()->json($detection);
+    }
+
+    public function deleteVendor(Request $request){
+        Vendor::findOrFail($request->params)->delete();
+        return response()->json('successfully deleted!');
+    }
+
+    public function getAvailablePaymentTerm(){
+        $paymentTerm = PaymentTerm::all()
+        ->map(function($query){
+            return [
+                'id' => $query->id,
+                'payment_term' => $query->payment_term
+            ];
+        });
+        return response()->json($paymentTerm);
+    }
+
+    public function addPaymentTerm(Request $request){
+
+        $detection = 0;
+
+        foreach (PaymentTerm::all() as $item) {
+            if (in_array(strtoupper($request->params), 
+                        [strtoupper($item->payment_term)]) ) {
+                $detection += 1;
+            }
+        }
+
+        if($detection == 0){
+            PaymentTerm::create([
+                'payment_term' => strtoupper($request->params)
+            ]);
+        }
+        return response()->json($detection);
+    }
+
+    public function updatePaymentTerm(Request $request){
+
+        $detection = 0;
+
+        foreach (PaymentTerm::all() as $item) {
+            if (in_array(strtoupper($request->params['payment_type']), 
+                        [strtoupper($item->payment_term)]) ) {
+                $detection += 1;
+            }
+        }
+
+        if($detection==0){
+            PaymentTerm::where('id',$request->params['id'])
+            ->update([
+                'payment_term' => strtoupper($request->params['payment_type'])
+            ]);
+        }
+
+        return response()->json($detection);
+    }
+
+    public function deletePaymentTerm(Request $request){
+        PaymentTerm::findOrFail($request->params)->delete();
+        return response()->json();
     }
     /**
      * Show the form for creating a new resource.

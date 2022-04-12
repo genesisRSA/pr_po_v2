@@ -20,6 +20,7 @@ class CreateItemListsTable extends Migration
             $table->string('part_name')->nullable();
             $table->string('material')->nullable();
             $table->string('dimension')->nullable();
+            $table->string('unit_price');
             $table->timestamps();
         });
     }

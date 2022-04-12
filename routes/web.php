@@ -22,7 +22,6 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/test', function(){
 
     $user = User::find(2);
@@ -76,6 +75,8 @@ Route::get('/selectingCategoryNameList', [DashboardController::class, 'selecting
 Route::get('/getcat_subcat_for_add_ItemList', [DashboardController::class, 'getcat_subcat_for_add_ItemList'])->name('getcat_subcat_for_add_ItemList');
 Route::get('/selectingCategoryNameListForAdd', [DashboardController::class, 'selectingCategoryNameListForAdd'])->name('selectingCategoryNameListForAdd');
 Route::get('/getAvailablePlatingProcesses', [DashboardController::class, 'getAvailablePlatingProcesses'])->name('getAvailablePlatingProcesses');
+Route::get('/getAvailableVendor', [DashboardController::class, 'getAvailableVendor'])->name('getAvailableVendor');
+Route::get('/getAvailablePaymentTerm', [DashboardController::class, 'getAvailablePaymentTerm'])->name('getAvailablePaymentTerm');
 
 Route::post('/addOrEditUserPermission', [DashboardController::class, 'addOrEditUserPermission'])->name('addOrEditUserPermission');
 Route::post('/deleteUser', [DashboardController::class, 'deleteUser'])->name('deleteUser');
@@ -90,7 +91,12 @@ Route::post('/deleteItemList', [DashboardController::class, 'deleteItemList'])->
 Route::post('/addPlatingProcess', [DashboardController::class, 'addPlatingProcess'])->name('addPlatingProcess');
 Route::post('/updatePlatingProcess', [DashboardController::class, 'updatePlatingProcess'])->name('updatePlatingProcess');
 Route::post('/deletePlatingProcess', [DashboardController::class, 'deletePlatingProcess'])->name('deletePlatingProcess');
-
+Route::post('/addVendor', [DashboardController::class, 'addVendor'])->name('addVendor');
+Route::post('/updateVendor', [DashboardController::class,'updateVendor'])->name('updateVendor');
+Route::post('/deleteVendor', [DashboardController::class, 'deleteVendor'])->name('deleteVendor');
+Route::post('/addPaymentTerm', [DashboardController::class, 'addPaymentTerm'])->name('addPaymentTerm');
+Route::post('/updatePaymentTerm',[DashboardController::class, 'updatePaymentTerm'])->name('updatePaymentTerm');
+Route::post('/deletePaymentTerm', [DashboardController::class, 'deletePaymentTerm'])->name('deletePaymentTerm');
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
