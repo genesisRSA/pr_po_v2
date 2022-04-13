@@ -730,6 +730,7 @@
                             <v-text-field
                             label='Plating Process'
                             v-model="modelForPlatingProcesses.plating_process"
+                            @input="(val) => (modelForPlatingProcesses.plating_process ? modelForPlatingProcesses.plating_process = modelForPlatingProcesses.plating_process.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -741,6 +742,7 @@
                             <v-text-field
                             label='Type'
                             v-model="modelForPlatingProcesses.type"
+                            @input="(val) => (modelForPlatingProcesses.type ? modelForPlatingProcesses.type = modelForPlatingProcesses.type.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1184,6 +1186,7 @@
                             <v-text-field
                             label='Plating Process'
                             v-model="modelForPlatingProcesses.plating_process"
+                            @input="(val) => (modelForPlatingProcesses.plating_process ? modelForPlatingProcesses.plating_process = modelForPlatingProcesses.plating_process.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1195,6 +1198,7 @@
                             <v-text-field
                             label='Type'
                             v-model="modelForPlatingProcesses.type == 'N/A'? modelForPlatingProcesses.type = null : modelForPlatingProcesses.type"
+                            @input="(val) => (modelForPlatingProcesses.type ? modelForPlatingProcesses.type = modelForPlatingProcesses.type.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>

@@ -6048,6 +6048,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -52224,6 +52228,15 @@ var render = function() {
                                               label: "Plating Process",
                                               clearable: ""
                                             },
+                                            on: {
+                                              input: function(val) {
+                                                return _vm
+                                                  .modelForPlatingProcesses
+                                                  .plating_process
+                                                  ? (_vm.modelForPlatingProcesses.plating_process = _vm.modelForPlatingProcesses.plating_process.toUpperCase())
+                                                  : null
+                                              }
+                                            },
                                             model: {
                                               value:
                                                 _vm.modelForPlatingProcesses
@@ -52257,6 +52270,14 @@ var render = function() {
                                             attrs: {
                                               label: "Type",
                                               clearable: ""
+                                            },
+                                            on: {
+                                              input: function(val) {
+                                                return _vm
+                                                  .modelForPlatingProcesses.type
+                                                  ? (_vm.modelForPlatingProcesses.type = _vm.modelForPlatingProcesses.type.toUpperCase())
+                                                  : null
+                                              }
                                             },
                                             model: {
                                               value:
@@ -53457,6 +53478,14 @@ var render = function() {
                                   label: "Plating Process",
                                   clearable: ""
                                 },
+                                on: {
+                                  input: function(val) {
+                                    return _vm.modelForPlatingProcesses
+                                      .plating_process
+                                      ? (_vm.modelForPlatingProcesses.plating_process = _vm.modelForPlatingProcesses.plating_process.toUpperCase())
+                                      : null
+                                  }
+                                },
                                 model: {
                                   value:
                                     _vm.modelForPlatingProcesses
@@ -53482,6 +53511,13 @@ var render = function() {
                             [
                               _c("v-text-field", {
                                 attrs: { label: "Type", clearable: "" },
+                                on: {
+                                  input: function(val) {
+                                    return _vm.modelForPlatingProcesses.type
+                                      ? (_vm.modelForPlatingProcesses.type = _vm.modelForPlatingProcesses.type.toUpperCase())
+                                      : null
+                                  }
+                                },
                                 model: {
                                   value:
                                     _vm.modelForPlatingProcesses.type == "N/A"

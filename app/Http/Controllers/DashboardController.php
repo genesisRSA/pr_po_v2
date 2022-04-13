@@ -573,6 +573,10 @@ class DashboardController extends Controller
                 in_array(strtoupper($request->params['type']), [strtoupper($item->type)])) {
                 $detection += 1;
             }
+                if (in_array(strtoupper($request->params['plating_process']), [strtoupper($item->plating_process)]) &&
+                in_array(strtoupper($request->params['type']), [strtoupper($item->type)])) {
+                $detection += 1;
+            }
         }
 
         if($detection==0){
@@ -606,6 +610,11 @@ class DashboardController extends Controller
                 in_array(strtoupper($request->params['type']), [strtoupper($item->type)])) {
                 $detection += 1;
             }
+            if (in_array(strtoupper($request->params['plating_process']), [strtoupper($item->plating_process)]) &&
+            in_array(strtoupper($request->params['type']), [strtoupper($item->type)])  && $request->params['id'] != $item->id) {
+            $detection += 1;
+        }
+
         }
 
         if($detection==0){
@@ -629,6 +638,7 @@ class DashboardController extends Controller
     }
 
     public function deletePlatingProcess(Request $request){
+        PlatingCostUpdate::where('plating_process_item_id',$request->params)->delete();
         PlatingProcess::findOrFail($request->params)
         ->delete();
        return response()->json('success');
