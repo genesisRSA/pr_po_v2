@@ -15,6 +15,7 @@ use App\Models\ItemList;
 use App\Models\PlatingProcess;
 use App\Models\Vendor;
 use App\Models\PaymentTerm;
+use App\Models\PlatingCostUpdate;
 use PDF;
 use Auth;
 use Akaunting\Money\Currency;
@@ -576,11 +577,17 @@ class DashboardController extends Controller
 
         if($detection==0){
 
-            PlatingProcess::create([
+           $id = PlatingProcess::insertGetId([
                 'plating_process' => strtoupper($request->params['plating_process']),
                 'type'            => $request->params['type'] == null ? '' : strtoupper($request->params['type']),
                 'price_per_square_inch' => $price
             ]);
+            
+           PlatingCostUpdate::create([
+               'plating_process_item_id' => $id,
+               'updated_cost' => $price
+           ]);
+            
 
         }
 
@@ -602,11 +609,20 @@ class DashboardController extends Controller
         }
 
         if($detection==0){
+
+            if($price != PlatingProcess::findOrFail($request->params['id'])->price_per_square_inch){
+                PlatingCostUpdate::create([
+                    'plating_process_item_id' => $request->params['id'],
+                    'updated_cost' => $price
+                ]);
+            }
+
             PlatingProcess::findOrFail($request->params['id'])->update([
                 'plating_process' => strtoupper($request->params['plating_process']),
                 'type' => $request->params['type'] == null ? '' : strtoupper($request->params['type']),
                 'price_per_square_inch' => $price 
             ]);
+
         }
 
         return response()->json($detection);
@@ -729,6 +745,22 @@ class DashboardController extends Controller
     public function deletePaymentTerm(Request $request){
         PaymentTerm::findOrFail($request->params)->delete();
         return response()->json();
+    }
+
+    public function getUpdatedPrice(Request $request){
+        $getUpdatedCost = PlatingProcess::where('id',$request[0])->first();
+
+        $format = $getUpdatedCost->updated_costs()->latest()->get()->map( function($query){
+            return [
+                'id' => $query->id,
+                'plating_process_item_id' => $query->plating_process_item_id,
+                'updated_cost' => $query->updated_cost,
+                'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
+                'updated_at' => $query->updated_at,
+            ];
+        });
+
+        return response()->json( $format);
     }
     /**
      * Show the form for creating a new resource.

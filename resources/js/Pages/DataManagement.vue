@@ -1214,6 +1214,9 @@
                                 v-bind:options="options"
                                 />
                             </div>
+                            <div>
+                                <v-subheader style="position: relative; bottom: 30px; font-style: italic; left: 17px;">* Price as of {{ price_tracker_plating_process }}</v-subheader>
+                            </div>
                             </v-col>
                         </v-row>
 
@@ -1529,6 +1532,8 @@
             length: 11,
             precision: 2
             },
+
+            price_tracker_plating_process : null,
 
 //-------------------- for vendor list------------------------------------
 
@@ -1990,6 +1995,7 @@
                 this.modelForPlatingProcesses.type = null,
                 this.modelForPlatingProcesses.price_per_square_inch = null
                 this.modelForPlatingProcesses.raw_price = null
+                this.price_tracker_plating_process = null
         },
 
         closeDialogEditVendor(){
@@ -2106,7 +2112,7 @@
                     if(response.data > 0){
                         this.dupliRecordSnackbar = true
                     } else {
-                        this.successSnackbar = true
+                        this.updatedSnackbar = true
                     }
               })
               .catch(error =>{
@@ -2169,6 +2175,7 @@
 
         editPlatingProcess(item){
             this.dialogEditProcessPlating = true
+            this.getUpdatedPrice(item.id)
             this.modelForPlatingProcesses = Object.assign({},item)
             this.selectedPlatingProcesses = Object.assign({},item)
             //console.log(item)
@@ -2196,7 +2203,22 @@
 
         clearSearch(){
             this.search =''
+        },
+
+        getUpdatedPrice(params){
+            axios.get('/getUpdatedPrice', { params : params})
+              .then(response =>{
+                  //console.log(response.data)
+                  this.price_tracker_plating_process = response.data[0].created_at
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
         }
+
         },
     }
 </script>
@@ -2227,8 +2249,5 @@
   .position_edit_category_button{
     bottom: 80px;
     left: 360px;
-  }
-  ::placeholder{
-    font-style: italic;
   }
 </style>

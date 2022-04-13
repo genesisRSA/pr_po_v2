@@ -6045,6 +6045,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -6185,6 +6188,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         length: 11,
         precision: 2
       },
+      price_tracker_plating_process: null,
       //-------------------- for vendor list------------------------------------
       pageForVendor: 1,
       pageCountForVendor: 0,
@@ -6588,6 +6592,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.dialogEditProcessPlating = false;
       this.modelForPlatingProcesses.plating_process = null, this.modelForPlatingProcesses.type = null, this.modelForPlatingProcesses.price_per_square_inch = null;
       this.modelForPlatingProcesses.raw_price = null;
+      this.price_tracker_plating_process = null;
     },
     closeDialogEditVendor: function closeDialogEditVendor() {
       this.dialogEditVendor = false;
@@ -6711,7 +6716,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (response.data > 0) {
         _this23.dupliRecordSnackbar = true;
       } else {
-        _this23.successSnackbar = true;
+        _this23.updatedSnackbar = true;
       }
     })["catch"](function (error) {
       console.log(error.response);
@@ -6763,6 +6768,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.compareToSelectedItemList = Object.assign({}, item); //console.log(this.compareToSelectedItemList)
   }), _defineProperty(_methods, "editPlatingProcess", function editPlatingProcess(item) {
     this.dialogEditProcessPlating = true;
+    this.getUpdatedPrice(item.id);
     this.modelForPlatingProcesses = Object.assign({}, item);
     this.selectedPlatingProcesses = Object.assign({}, item); //console.log(item)
   }), _defineProperty(_methods, "editVendor", function editVendor(item) {
@@ -6778,6 +6784,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     if (!/\d/.test(event.key) && (event.key !== "." || /\./.test(quantity))) return event.preventDefault();
   }), _defineProperty(_methods, "clearSearch", function clearSearch() {
     this.search = '';
+  }), _defineProperty(_methods, "getUpdatedPrice", function getUpdatedPrice(params) {
+    var _this26 = this;
+
+    axios.get('/getUpdatedPrice', {
+      params: params
+    }).then(function (response) {
+      //console.log(response.data)
+      _this26.price_tracker_plating_process = response.data[0].created_at;
+    })["catch"](function (error) {
+      console.log(error.response);
+    })["finally"](function () {});
   }), _methods)
 });
 
@@ -12543,7 +12560,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ntbody tr:nth-of-type(even) {\n  background-color: rgba(0, 0, 0, .05);\n}\n.void-text{\n font-size: 150% !important;\n}\n.position_add{\n position: fixed;\n bottom: 15px;\n right: 37px;\n}\n.position_add_category{\n bottom: 80px;\n left: 180px;\n}\n.position_sub_category{\n top: 15px;\n right: 11px;\n}\n.width{\n  width: 100% !important;\n}\n.position_edit_category_button{\n  bottom: 80px;\n  left: 360px;\n}\n::-moz-placeholder{\n  font-style: italic;\n}\n:-ms-input-placeholder{\n  font-style: italic;\n}\n::placeholder{\n  font-style: italic;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ntbody tr:nth-of-type(even) {\n  background-color: rgba(0, 0, 0, .05);\n}\n.void-text{\n font-size: 150% !important;\n}\n.position_add{\n position: fixed;\n bottom: 15px;\n right: 37px;\n}\n.position_add_category{\n bottom: 80px;\n left: 180px;\n}\n.position_sub_category{\n top: 15px;\n right: 11px;\n}\n.width{\n  width: 100% !important;\n}\n.position_edit_category_button{\n  bottom: 80px;\n  left: 360px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -53516,6 +53533,32 @@ var render = function() {
                                         "modelForPlatingProcesses.raw_price"
                                     }
                                   })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                [
+                                  _c(
+                                    "v-subheader",
+                                    {
+                                      staticStyle: {
+                                        position: "relative",
+                                        bottom: "30px",
+                                        "font-style": "italic",
+                                        left: "17px"
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "* Price as of " +
+                                          _vm._s(
+                                            _vm.price_tracker_plating_process
+                                          )
+                                      )
+                                    ]
+                                  )
                                 ],
                                 1
                               )

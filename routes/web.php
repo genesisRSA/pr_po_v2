@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\SitePermission;
 use App\Models\User;
 use App\Models\PaymentTerm;
+use App\Models\PlatingProcess;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,11 +26,12 @@ use App\Models\PaymentTerm;
 */
 Route::get('/test', function(){
 
-    $item = PaymentTerm::find(1);
-    $item->update([
-        'payment_term' => 'CASH ON DELIVERY'
-    ]);
-    dd($item->getChanges('payment_term'));
+    dd(PlatingProcess::find(1)->updated_costs);
+    // $item = PaymentTerm::find(1);
+    // $item->update([
+    //     'payment_term' => 'CASH ON DELIVERY'
+    // ]);
+    // dd($item->getChanges('payment_term'));
 });
 
 
@@ -79,6 +81,7 @@ Route::get('/selectingCategoryNameListForAdd', [DashboardController::class, 'sel
 Route::get('/getAvailablePlatingProcesses', [DashboardController::class, 'getAvailablePlatingProcesses'])->name('getAvailablePlatingProcesses');
 Route::get('/getAvailableVendor', [DashboardController::class, 'getAvailableVendor'])->name('getAvailableVendor');
 Route::get('/getAvailablePaymentTerm', [DashboardController::class, 'getAvailablePaymentTerm'])->name('getAvailablePaymentTerm');
+Route::get('/getUpdatedPrice', [DashboardController::class, 'getUpdatedPrice'])->name('getUpdatedPrice');
 
 Route::post('/addOrEditUserPermission', [DashboardController::class, 'addOrEditUserPermission'])->name('addOrEditUserPermission');
 Route::post('/deleteUser', [DashboardController::class, 'deleteUser'])->name('deleteUser');
