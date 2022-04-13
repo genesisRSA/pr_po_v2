@@ -803,6 +803,7 @@
                             <v-text-field
                             label='Company Name'
                             v-model="modelForVendor.company_name"
+                            @input="(val) => (modelForVendor.company_name ? modelForVendor.company_name = modelForVendor.company_name.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -814,6 +815,7 @@
                             <v-text-field
                             label='Company Address'
                             v-model="modelForVendor.address"
+                            @input="(val) => (modelForVendor.address ? modelForVendor.address = modelForVendor.address.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -825,6 +827,7 @@
                             <v-text-field
                             label='Contact Person'
                             v-model="modelForVendor.contact_person"
+                            @input="(val) => (modelForVendor.contact_person ? modelForVendor.contact_person = modelForVendor.contact_person.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -838,6 +841,7 @@
                             <v-text-field
                             label='Contact Number'
                             v-model="modelForVendor.contact_number"
+                            @input="(val) => (modelForVendor.contact_number ? modelForVendor.contact_number = modelForVendor.contact_number.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1263,6 +1267,7 @@
                             <v-text-field
                             label='Company Name'
                             v-model="modelForVendor.company_name"
+                            @input="(val) => (modelForVendor.company_name ? modelForVendor.company_name = modelForVendor.company_name.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1274,6 +1279,7 @@
                             <v-text-field
                             label='Company Address'
                             v-model="modelForVendor.address"
+                            @input="(val) => (modelForVendor.address ? modelForVendor.address = modelForVendor.address.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1285,6 +1291,7 @@
                             <v-text-field
                             label='Contact Person'
                             v-model="modelForVendor.contact_person"
+                            @input="(val) => (modelForVendor.contact_person ? modelForVendor.contact_person = modelForVendor.contact_person.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1298,6 +1305,7 @@
                             <v-text-field
                             label='Contact Number'
                             v-model="modelForVendor.contact_number"
+                            @input="(val) => (modelForVendor.contact_number ? modelForVendor.contact_number = modelForVendor.contact_number.toUpperCase() : null)"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1377,7 +1385,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-<!-- ///////////////////end-dialog///////// -->
+        <!-- ///////////////////end-dialog///////// -->
 
 
    </app-layout>
@@ -2219,5 +2227,8 @@
   .position_edit_category_button{
     bottom: 80px;
     left: 360px;
+  }
+  ::placeholder{
+    font-style: italic;
   }
 </style>

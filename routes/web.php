@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SitePermission;
 use App\Models\User;
+use App\Models\PaymentTerm;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,32 +25,33 @@ use App\Models\User;
 */
 Route::get('/test', function(){
 
-    $user = User::find(2);
-
-    $as = $user->permission()->where('module','RFQ')->update(['permission'=>'true,true,true,true']);
-    dd($as);
+    $item = PaymentTerm::find(1);
+    $item->update([
+        'payment_term' => 'CASH ON DELIVERY'
+    ]);
+    dd($item->getChanges('payment_term'));
 });
 
 
-Route::get('/send-mail', function () {
+// Route::get('/send-mail', function () {
 
 
-    $notices = EmployeeCertification::where('cert_expiration_date',Carbon::now()->addMonth()->format('Y-m-d'))->get();
+//     $notices = EmployeeCertification::where('cert_expiration_date',Carbon::now()->addMonth()->format('Y-m-d'))->get();
 
-    foreach($notices as $notice){
+//     foreach($notices as $notice){
 
-        $details = [
-            'title' => 'Expiration Notice',
-            'body' => 'The TNR certificate of '.$notice->employee_name.' '.$notice->employee_id.' will be expired at ' . Carbon::now()->addMonth()->format('Y-m-d')
-        ];
+//         $details = [
+//             'title' => 'Expiration Notice',
+//             'body' => 'The TNR certificate of '.$notice->employee_name.' '.$notice->employee_id.' will be expired at ' . Carbon::now()->addMonth()->format('Y-m-d')
+//         ];
 
-     Mail::to(Auth::user()->email)->send(new App\Mail\NoticeMail($details));
+//      Mail::to(Auth::user()->email)->send(new App\Mail\NoticeMail($details));
 
-    }
+//     }
 
 
-    dd('email sent.');
-});
+//     dd('email sent.');
+// });
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
