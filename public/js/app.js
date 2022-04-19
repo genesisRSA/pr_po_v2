@@ -4076,6 +4076,232 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4149,11 +4375,42 @@ __webpack_require__.r(__webpack_exports__);
         name: '',
         email: ''
       },
-      selectedUserPerm: ''
+      selectedUserPerm: '',
+      ////////////////////department list///////////////////
+      pageForDept: 1,
+      pageCountForDept: 0,
+      itemsPerPageForDept: 10,
+      searchForDept: '',
+      deptName: 'Departments',
+      headersForDept: [{
+        text: 'Department Code',
+        value: 'dept_code',
+        "class": "yellow"
+      }, {
+        text: 'Department Name',
+        align: 'start',
+        value: 'dept_name',
+        "class": "yellow"
+      }, {
+        text: 'Actions',
+        value: 'actions',
+        sortable: false,
+        "class": "yellow"
+      }],
+      dept: [],
+      editDialogForDept: false,
+      dialogDeleteDept: false,
+      dialogAddDept: false,
+      modelForDept: {
+        dept_code: null,
+        dept_name: null
+      },
+      selectedDept: {}
     };
   },
   created: function created() {
     this.initialize();
+    this.getAvailableDept();
   },
   computed: {
     formTitle: function formTitle() {
@@ -4169,6 +4426,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     dialogVoid: function dialogVoid(val) {
       val || this.closeVoid();
+    },
+    editDialogForDept: function editDialogForDept(val) {
+      val || this.closeDialogEditDept();
+    },
+    dialogAddDept: function dialogAddDept(val) {
+      val || this.closeDialogAddDept();
     }
   },
   methods: {
@@ -4181,6 +4444,15 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error.response);
       })["finally"](function () {});
     },
+    getAvailableDept: function getAvailableDept() {
+      var _this2 = this;
+
+      axios.get('/getAvailableDept').then(function (response) {
+        _this2.dept = response.data;
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
     editItem: function editItem(item) {
       this.editedIndex = this.users.indexOf(item); //this.editedItem = Object.assign({}, item)
       //console.log(item.email)
@@ -4189,35 +4461,67 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedUserPerm = item.email;
       this.dialog = true;
     },
+    editDept: function editDept(item) {
+      this.editDialogForDept = true;
+      this.modelForDept = Object.assign({}, item);
+      this.selectedDept = Object.assign({}, item);
+    },
     deleteItem: function deleteItem(item) {
       this.editedIndex = this.users.indexOf(item); //this.editedItem = Object.assign({}, item)
 
       this.selectedUserPerm = item.email;
       this.dialogDelete = true;
     },
+    deleteDept: function deleteDept(item) {
+      this.dialogDeleteDept = true;
+      this.selectedDept = Object.assign({}, item);
+    },
     deleteItemConfirm: function deleteItemConfirm() {
       this.deleteUser(this.selectedUserPerm);
       this.closeDelete();
     },
+    deleteDeptConfirm: function deleteDeptConfirm() {
+      var _this3 = this;
+
+      var params = {
+        'dept': this.selectedDept
+      };
+      axios.post('/deleteDeptConfirm', {
+        params: params
+      }).then(function (response) {
+        _this3.dialogDeleteDept = false;
+
+        _this3.getAvailableDept();
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
     close: function close() {
-      var _this2 = this;
+      var _this4 = this;
 
       this.dialog = false;
       this.$nextTick(function () {
-        _this2.editedItem = Object.assign({}, _this2.defaultItem);
-        _this2.editedIndex = -1;
-        _this2.selectedUserPerm = '';
+        _this4.editedItem = Object.assign({}, _this4.defaultItem);
+        _this4.editedIndex = -1;
+        _this4.selectedUserPerm = '';
       });
     },
+    closeDialogAddDept: function closeDialogAddDept() {
+      this.dialogAddDept = false;
+      this.modelForDept = {};
+    },
     closeDelete: function closeDelete() {
-      var _this3 = this;
+      var _this5 = this;
 
       this.dialogDelete = false;
       this.$nextTick(function () {
-        _this3.editedItem = Object.assign({}, _this3.defaultItem);
-        _this3.editedIndex = -1;
-        _this3.selectedUserPerm = '';
+        _this5.editedItem = Object.assign({}, _this5.defaultItem);
+        _this5.editedIndex = -1;
+        _this5.selectedUserPerm = '';
       });
+    },
+    closeDeleteDept: function closeDeleteDept() {
+      this.dialogDeleteDept = false;
     },
     save: function save() {
       this.addOrEditUserPermission(this.selectedUserPerm);
@@ -4225,7 +4529,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     /////////////////////////////////////////////////////
     getUserPermission: function getUserPermission(email) {
-      var _this4 = this;
+      var _this6 = this;
 
       axios.get('/getUserAuthorization', {
         params: {
@@ -4233,9 +4537,9 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         if (response.data == 'none') {
-          _this4.defaultChkBox();
+          _this6.defaultChkBox();
         } else {
-          _this4.checkbox = response.data;
+          _this6.checkbox = response.data;
         }
       })["catch"](function (error) {
         console.log(error.response);
@@ -4249,6 +4553,22 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/addOrEditUserPermission', {
         params: params
       }).then(function (response) {})["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    addConfirmDept: function addConfirmDept() {
+      var _this7 = this;
+
+      var params = {
+        'dept': this.modelForDept
+      };
+      axios.post('/addConfirmDept', {
+        params: params
+      }).then(function (response) {
+        _this7.dialogAddDept = false;
+
+        _this7.getAvailableDept();
+      })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
@@ -4271,12 +4591,12 @@ __webpack_require__.r(__webpack_exports__);
       this.checkbox[3].delete_dm = false;
     },
     deleteUser: function deleteUser(email) {
-      var _this5 = this;
+      var _this8 = this;
 
       axios.post('/deleteUser', {
         email: email
       }).then(function (response) {
-        _this5.initialize();
+        _this8.initialize();
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
@@ -4292,14 +4612,18 @@ __webpack_require__.r(__webpack_exports__);
       this.closeVoid();
     },
     closeVoid: function closeVoid() {
-      var _this6 = this;
+      var _this9 = this;
 
       this.dialogVoid = false;
       this.$nextTick(function () {
-        _this6.editedItem = Object.assign({}, _this6.defaultItem);
-        _this6.editedIndex = -1;
-        _this6.selectedUserPerm = '';
+        _this9.editedItem = Object.assign({}, _this9.defaultItem);
+        _this9.editedIndex = -1;
+        _this9.selectedUserPerm = '';
       });
+    },
+    closeDialogEditDept: function closeDialogEditDept() {
+      this.editDialogForDept = false;
+      this.modelForDept = {};
     },
     voidSelectedUser: function voidSelectedUser(user) {
       axios.post('/voidUser', {
@@ -4307,6 +4631,25 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {})["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
+    },
+    updateDept: function updateDept() {
+      var _this10 = this;
+
+      var params = {
+        'updated': this.modelForDept
+      };
+      axios.post('/updateDept', {
+        params: params
+      }).then(function (response) {
+        _this10.closeDialogEditDept();
+
+        _this10.getAvailableDept();
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    addDept: function addDept() {
+      this.dialogAddDept = true;
     }
   }
 });
@@ -6052,6 +6395,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -6152,6 +6498,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       subCategoryNameList: [],
       category_name_for_add_itemList: [],
       subcategory_name_for_add_itemList: [],
+      price_tracker_item_list: null,
       //-------------------- for plating process section------------------------------------
       pageForPlating: 1,
       pageCountForPlating: 0,
@@ -6768,6 +7115,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), _defineProperty(_methods, "editItemList", function editItemList(item) {
     this.dialogEditItemList = true;
     this.getcat_subcat_ItemList(item);
+    this.getUpdatedPriceItemList(item.id);
     this.selectedItemList = Object.assign({}, item);
     this.compareToSelectedItemList = Object.assign({}, item); //console.log(this.compareToSelectedItemList)
   }), _defineProperty(_methods, "editPlatingProcess", function editPlatingProcess(item) {
@@ -6796,6 +7144,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }).then(function (response) {
       //console.log(response.data)
       _this26.price_tracker_plating_process = response.data[0].created_at;
+    })["catch"](function (error) {
+      console.log(error.response);
+    })["finally"](function () {});
+  }), _defineProperty(_methods, "getUpdatedPriceItemList", function getUpdatedPriceItemList(params) {
+    var _this27 = this;
+
+    axios.get('/getUpdatedPriceItemList', {
+      params: params
+    }).then(function (response) {
+      //console.log(response.data)
+      _this27.price_tracker_item_list = response.data[0].created_at;
     })["catch"](function (error) {
       console.log(error.response);
     })["finally"](function () {});
@@ -12660,7 +13019,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.sideBarButton{\n    width: 300%;\n    background-color: white;\n    right: 153px;\n}\n.sideBarButton_2{\n    width: 300%;\n    background-color: white;\n    right: 190px;\n}\n.sideBarButton_3{\n    width: 350%;\n    background-color: white;\n    right: 157px;\n}\n.purchase_req{\n    width: 300%;\n    background-color: white;\n    right: 260px;\n}\n.purchase_order{\n    width: 150%;\n    background-color: white;\n    right: 70px;\n}\n.admin_autho{\n    width: 300%;\n    background-color: white;\n    right: 236px;\n}\n.data_mngt{\n    width: 300%;\n    background-color: white;\n    right: 259px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.sideBarButton{\n    width: 300%;\n    background-color: white;\n    right: 153px;\n}\n.sideBarButton_2{\n    width: 300%;\n    background-color: white;\n    right: 190px;\n}\n.sideBarButton_3{\n    width: 350%;\n    background-color: white;\n    right: 157px;\n}\n.purchase_req{\n    width: 300%;\n    background-color: white;\n    right: 260px;\n}\n.purchase_order{\n    width: 150%;\n    background-color: white;\n    right: 70px;\n}\n.admin_autho{\n    width: 282%;\n    background-color: white;\n    right: 236px;\n}\n.data_mngt{\n    width: 300%;\n    background-color: white;\n    right: 259px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -49454,6 +49813,647 @@ var render = function() {
           )
         }),
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
+        [
+          _c(
+            "v-col",
+            { attrs: { cols: "12" } },
+            [
+              _c(
+                "v-card",
+                { attrs: { "min-height": "800" } },
+                [
+                  _c("div", { staticClass: "mt-5" }),
+                  _vm._v(" "),
+                  _c("v-subheader", [
+                    _c("h1", { staticClass: "mt-5" }, [
+                      _vm._v(_vm._s(_vm.deptName))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c("v-divider", { staticClass: "mb-5" }),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        { attrs: { justify: "start" } },
+                        [
+                          _c(
+                            "v-col",
+                            {
+                              staticClass: "mt-4",
+                              attrs: { cols: "12", sm: "6", md: "3" }
+                            },
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "primary" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.addDept()
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                    Add Department\n                  "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("v-spacer"),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "3" } },
+                            [
+                              _c("v-text-field", {
+                                staticClass: "mb-10",
+                                attrs: {
+                                  "append-icon": "mdi-magnify",
+                                  label: "Search",
+                                  "single-line": "",
+                                  "hide-details": ""
+                                },
+                                model: {
+                                  value: _vm.searchForDept,
+                                  callback: function($$v) {
+                                    _vm.searchForDept = $$v
+                                  },
+                                  expression: "searchForDept"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-data-table", {
+                        staticClass: "elevation-1",
+                        attrs: {
+                          headers: _vm.headersForDept,
+                          items: _vm.dept,
+                          "hide-default-footer": "",
+                          search: _vm.searchForDept,
+                          page: _vm.pageForDept,
+                          "items-per-page": _vm.itemsPerPageForDept,
+                          "sort-by": "name"
+                        },
+                        on: {
+                          "update:page": function($event) {
+                            _vm.pageForDept = $event
+                          },
+                          "page-count": function($event) {
+                            _vm.pageCountForDept = $event
+                          }
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "item.actions",
+                            fn: function(ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-tooltip",
+                                  {
+                                    attrs: { bottom: "" },
+                                    scopedSlots: _vm._u(
+                                      [
+                                        {
+                                          key: "activator",
+                                          fn: function(ref) {
+                                            var on = ref.on
+                                            var attrs = ref.attrs
+                                            return [
+                                              _c(
+                                                "v-icon",
+                                                _vm._g(
+                                                  _vm._b(
+                                                    {
+                                                      staticClass: "mr-2",
+                                                      attrs: { small: "" },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          return _vm.editDept(
+                                                            item
+                                                          )
+                                                        }
+                                                      }
+                                                    },
+                                                    "v-icon",
+                                                    attrs,
+                                                    false
+                                                  ),
+                                                  on
+                                                ),
+                                                [
+                                                  _vm._v(
+                                                    "\n                              mdi-pencil\n                          "
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          }
+                                        }
+                                      ],
+                                      null,
+                                      true
+                                    )
+                                  },
+                                  [
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("Edit Department")])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-tooltip",
+                                  {
+                                    attrs: { bottom: "" },
+                                    scopedSlots: _vm._u(
+                                      [
+                                        {
+                                          key: "activator",
+                                          fn: function(ref) {
+                                            var on = ref.on
+                                            var attrs = ref.attrs
+                                            return [
+                                              _c(
+                                                "v-icon",
+                                                _vm._g(
+                                                  _vm._b(
+                                                    {
+                                                      attrs: { small: "" },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          return _vm.deleteDept(
+                                                            item
+                                                          )
+                                                        }
+                                                      }
+                                                    },
+                                                    "v-icon",
+                                                    attrs,
+                                                    false
+                                                  ),
+                                                  on
+                                                ),
+                                                [
+                                                  _vm._v(
+                                                    "\n                              mdi-delete\n                          "
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          }
+                                        }
+                                      ],
+                                      null,
+                                      true
+                                    )
+                                  },
+                                  [
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("Delete Department")])
+                                  ]
+                                )
+                              ]
+                            }
+                          }
+                        ])
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "text-center pt-2" },
+                        [
+                          _c("v-pagination", {
+                            attrs: {
+                              length: _vm.pageCountForDept,
+                              circle: "",
+                              "total-visible": 7
+                            },
+                            model: {
+                              value: _vm.pageForDept,
+                              callback: function($$v) {
+                                _vm.pageForDept = $$v
+                              },
+                              expression: "pageForDept"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { transition: "dialog-top-transition", "max-width": "800" },
+          model: {
+            value: _vm.editDialogForDept,
+            callback: function($$v) {
+              _vm.editDialogForDept = $$v
+            },
+            expression: "editDialogForDept"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-toolbar", { attrs: { color: "primary", dark: "" } }, [
+                _vm._v("\n            Edit Department\n            ")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-row",
+                        [
+                          _c("v-col", { attrs: { cols: "12", md: "12" } }, [
+                            _c(
+                              "div",
+                              {
+                                staticStyle: {
+                                  "background-color": "#2196F3",
+                                  padding: "10px"
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticStyle: {
+                                      color: "white",
+                                      "font-weight": "bold",
+                                      "letter-spacing": "2px"
+                                    }
+                                  },
+                                  [_vm._v("Edit Department")]
+                                )
+                              ]
+                            )
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Department Code" },
+                                on: {
+                                  input: function(val) {
+                                    return _vm.modelForDept.dept_code
+                                      ? (_vm.modelForDept.dept_code = _vm.modelForDept.dept_code.toUpperCase())
+                                      : null
+                                  }
+                                },
+                                model: {
+                                  value: _vm.modelForDept.dept_code,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.modelForDept, "dept_code", $$v)
+                                  },
+                                  expression: "modelForDept.dept_code"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Department Name" },
+                                on: {
+                                  input: function(val) {
+                                    return _vm.modelForDept.dept_name
+                                      ? (_vm.modelForDept.dept_name = _vm.modelForDept.dept_name.toUpperCase())
+                                      : null
+                                  }
+                                },
+                                model: {
+                                  value: _vm.modelForDept.dept_name,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.modelForDept, "dept_name", $$v)
+                                  },
+                                  expression: "modelForDept.dept_name"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                { staticClass: "justify-end" },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        color: "primary",
+                        disabled:
+                          _vm.modelForDept.dept_code == "" ||
+                          _vm.modelForDept.dept_name == "" ||
+                          (_vm.modelForDept.dept_code ==
+                            _vm.selectedDept.dept_code &&
+                            _vm.modelForDept.dept_name ==
+                              _vm.selectedDept.dept_name)
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.updateDept()
+                        }
+                      }
+                    },
+                    [_vm._v("Save Changes")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { text: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.closeDialogEditDept()
+                        }
+                      }
+                    },
+                    [_vm._v("Close\n                    ")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { transition: "dialog-top-transition", "max-width": "800" },
+          model: {
+            value: _vm.dialogAddDept,
+            callback: function($$v) {
+              _vm.dialogAddDept = $$v
+            },
+            expression: "dialogAddDept"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-toolbar", { attrs: { color: "primary", dark: "" } }, [
+                _vm._v("\n            Add Department\n            ")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-row",
+                        [
+                          _c("v-col", { attrs: { cols: "12", md: "12" } }, [
+                            _c(
+                              "div",
+                              {
+                                staticStyle: {
+                                  "background-color": "#2196F3",
+                                  padding: "10px"
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticStyle: {
+                                      color: "white",
+                                      "font-weight": "bold",
+                                      "letter-spacing": "2px"
+                                    }
+                                  },
+                                  [_vm._v("Add Department")]
+                                )
+                              ]
+                            )
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Department Code" },
+                                on: {
+                                  input: function(val) {
+                                    return _vm.modelForDept.dept_code
+                                      ? (_vm.modelForDept.dept_code = _vm.modelForDept.dept_code.toUpperCase())
+                                      : null
+                                  }
+                                },
+                                model: {
+                                  value: _vm.modelForDept.dept_code,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.modelForDept, "dept_code", $$v)
+                                  },
+                                  expression: "modelForDept.dept_code"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Department Name" },
+                                on: {
+                                  input: function(val) {
+                                    return _vm.modelForDept.dept_name
+                                      ? (_vm.modelForDept.dept_name = _vm.modelForDept.dept_name.toUpperCase())
+                                      : null
+                                  }
+                                },
+                                model: {
+                                  value: _vm.modelForDept.dept_name,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.modelForDept, "dept_name", $$v)
+                                  },
+                                  expression: "modelForDept.dept_name"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                { staticClass: "justify-end" },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        color: "primary",
+                        disabled:
+                          _vm.modelForDept.dept_code == "" ||
+                          _vm.modelForDept.dept_name == ""
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.addConfirmDept()
+                        }
+                      }
+                    },
+                    [_vm._v("Save")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { text: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.closeDialogAddDept()
+                        }
+                      }
+                    },
+                    [_vm._v("Close\n                    ")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "500px" },
+          model: {
+            value: _vm.dialogDeleteDept,
+            callback: function($$v) {
+              _vm.dialogDeleteDept = $$v
+            },
+            expression: "dialogDeleteDept"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", { staticClass: "text-h5" }, [
+                _vm._v("Are you sure you want to delete this user?")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", text: "" },
+                      on: { click: _vm.closeDeleteDept }
+                    },
+                    [_vm._v("Cancel")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", text: "" },
+                      on: { click: _vm.deleteDeptConfirm }
+                    },
+                    [_vm._v("OK")]
+                  ),
+                  _vm._v(" "),
+                  _c("v-spacer")
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
       )
     ],
     1
@@ -53333,6 +54333,30 @@ var render = function() {
                                   })
                                 ],
                                 1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                [
+                                  _c(
+                                    "v-subheader",
+                                    {
+                                      staticStyle: {
+                                        position: "relative",
+                                        bottom: "30px",
+                                        "font-style": "italic",
+                                        left: "17px"
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "* Price as of " +
+                                          _vm._s(_vm.price_tracker_item_list)
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
                               )
                             ]
                           )
@@ -56475,7 +57499,7 @@ var render = function() {
                                           [_vm._v("mdi-cog")]
                                         ),
                                         _vm._v(
-                                          "\n                                     Authorizations\n                                "
+                                          "\n                                     User Management\n                                "
                                         )
                                       ],
                                       1
@@ -56486,7 +57510,7 @@ var render = function() {
                             ],
                             null,
                             false,
-                            3160501151
+                            2837951413
                           )
                         })
                       ],

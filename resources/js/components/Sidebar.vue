@@ -123,7 +123,7 @@
                             <v-hover v-slot="{ hover }">
                                 <v-btn text type="submit" class="admin_autho" :href="route('admin_authorization')" color="gray" x-large :style="{ 'background-color': hover ? 'gold' : '' }">
                                     <v-icon color="gray" left small>mdi-cog</v-icon>
-                                     Authorizations
+                                     User Management
                                 </v-btn>
                             </v-hover>
                         </form>
@@ -227,7 +227,7 @@
         right: 70px;
     }
     .admin_autho{
-        width: 300%;
+        width: 282%;
         background-color: white;
         right: 236px;
     }

@@ -16,6 +16,8 @@ use App\Models\PlatingProcess;
 use App\Models\Vendor;
 use App\Models\PaymentTerm;
 use App\Models\PlatingCostUpdate;
+use App\Models\ItemListCostUpdate;
+use App\Models\Department;
 use PDF;
 use Auth;
 use Akaunting\Money\Currency;
@@ -475,6 +477,12 @@ class DashboardController extends Controller
         }
 
         if($detection == 0){
+            if($unit_price != ItemList::findOrFail($request->params['id'])->unit_price){
+                ItemListCostUpdate::create([
+                    'item_list_id' => $request->params['id'],
+                    'updated_cost' => $unit_price
+                ]);
+            }
             ItemList::where('id',$request->params['id'])->update([
                 'category_item_id' => $cat_val,
                 'sub_category_item_id' => $subcat_val,
@@ -507,13 +515,18 @@ class DashboardController extends Controller
         }
 
             if($detection == 0){
-                    ItemList::create([
+                  $id =  ItemList::insertGetId([
                     'category_item_id' => $request->cat_val,
                     'sub_category_item_id' => $request->subcat_val,
                     'part_name' => $request->partname_val == null ? '' : $request->partname_val,
                     'material' => $request->material_val == null ? '' : $request->material_val,
                     'dimension' => $request->dimension == null ? '' : $request->dimension,
                     'unit_price' => $price
+                ]);
+
+                ItemListCostUpdate::create([
+                    'item_list_id' => $id,
+                    'updated_cost' => $price
                 ]);
             }
 
@@ -543,6 +556,7 @@ class DashboardController extends Controller
     }
 
     public function deleteItemList(Request $request){
+        ItemListCostUpdate::where('item_list_id',$request->params)->delete();
         ItemList::findOrFail($request->params)->delete();
         return response()->json();
     }
@@ -771,6 +785,83 @@ class DashboardController extends Controller
         });
 
         return response()->json( $format);
+    }
+
+    public function getUpdatedPriceItemList(Request $request){
+        $getUpdatedCost = ItemList::where('id',$request[0])->first();
+
+        $format = $getUpdatedCost->updated_costs()->latest()->get()->map( function($query){
+            return [
+                'id' => $query->id,
+                'plating_process_item_id' => $query->item_list_id,
+                'updated_cost' => $query->updated_cost,
+                'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
+                'updated_at' => $query->updated_at,
+            ];
+        });
+
+        return response()->json($format);
+    }
+
+    public function getAvailableDept(Request $request){
+        $dept = Department::all();
+        return response()->json($dept);
+    }
+
+    public function updateDept(Request $request){
+
+        $dept = Department::find($request->params['updated']['id']);
+
+        $detection = 0;
+
+        foreach (Department::all() as $item) {
+            if (in_array(strtoupper($request->params['updated']['dept_code']), 
+                        [strtoupper($item->dept_code)]) &&
+                in_array(strtoupper($request->params['updated']['dept_name']), 
+                        [strtoupper($item->dept_name)])) {
+                $detection += 1;
+            }
+        }
+
+        if($detection==0){
+            Department::where('id',$request->params['updated']['id'])
+            ->update([
+                'dept_code' => strtoupper($request->params['updated']['dept_code']),
+                'dept_name' => strtoupper($request->params['updated']['dept_name'])
+            ]);
+        }
+
+        return response()->json($detection);
+    }
+
+    public function deleteDeptConfirm(Request $request){
+        Department::find($request->params['dept']['id'])->delete();
+        return response()->json();
+    }
+
+    public function addConfirmDept(Request $request){
+
+
+        $detection = 0;
+
+        foreach (Department::all() as $item) {
+            if (in_array(strtoupper($request->params['dept']['dept_code']), 
+                        [strtoupper($item->dept_code)]) &&
+                in_array(strtoupper($request->params['dept']['dept_name']), 
+                        [strtoupper($item->dept_name)])) {
+                $detection += 1;
+            }
+        }
+
+        if($detection==0){
+            Department::create([
+                'dept_code' => strtoupper($request->params['dept']['dept_code']),
+                'dept_name' => strtoupper($request->params['dept']['dept_name'])
+            ]);
+        }
+
+
+        return response()->json($detection);
     }
     /**
      * Show the form for creating a new resource.

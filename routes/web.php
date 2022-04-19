@@ -82,6 +82,8 @@ Route::get('/getAvailablePlatingProcesses', [DashboardController::class, 'getAva
 Route::get('/getAvailableVendor', [DashboardController::class, 'getAvailableVendor'])->name('getAvailableVendor');
 Route::get('/getAvailablePaymentTerm', [DashboardController::class, 'getAvailablePaymentTerm'])->name('getAvailablePaymentTerm');
 Route::get('/getUpdatedPrice', [DashboardController::class, 'getUpdatedPrice'])->name('getUpdatedPrice');
+Route::get('/getUpdatedPriceItemList', [DashboardController::class, 'getUpdatedPriceItemList'])->name('getUpdatedPriceItemList');
+Route::get('/getAvailableDept', [DashboardController::class, 'getAvailableDept'])->name('getAvailableDept');
 
 Route::post('/addOrEditUserPermission', [DashboardController::class, 'addOrEditUserPermission'])->name('addOrEditUserPermission');
 Route::post('/deleteUser', [DashboardController::class, 'deleteUser'])->name('deleteUser');
@@ -102,6 +104,9 @@ Route::post('/deleteVendor', [DashboardController::class, 'deleteVendor'])->name
 Route::post('/addPaymentTerm', [DashboardController::class, 'addPaymentTerm'])->name('addPaymentTerm');
 Route::post('/updatePaymentTerm',[DashboardController::class, 'updatePaymentTerm'])->name('updatePaymentTerm');
 Route::post('/deletePaymentTerm', [DashboardController::class, 'deletePaymentTerm'])->name('deletePaymentTerm');
+Route::post('/updateDept', [DashboardController::class, 'updateDept'])->name('updateDept');
+Route::post('/deleteDeptConfirm', [DashboardController::class, 'deleteDeptConfirm'])->name('deleteDeptConfirm');
+Route::post('/addConfirmDept', [DashboardController::class, 'addConfirmDept'])->name('addConfirmDept');
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

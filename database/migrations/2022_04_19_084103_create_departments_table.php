@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePlatingCostUpdatesTable extends Migration
+class CreateDepartmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePlatingCostUpdatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('plating_cost_updates', function (Blueprint $table) {
+        Schema::create('departments', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('plating_process_item_id');
-            $table->string('updated_cost');
+            $table->string('dept_code');
+            $table->string('dept_name');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreatePlatingCostUpdatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('plating_cost_updates');
+        Schema::dropIfExists('departments');
     }
 }

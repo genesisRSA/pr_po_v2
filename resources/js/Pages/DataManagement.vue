@@ -1126,6 +1126,9 @@
                                     v-bind:options="options"
                                     />
                                 </div>
+                                <div>
+                                    <v-subheader style="position: relative; bottom: 30px; font-style: italic; left: 17px;">* Price as of {{ price_tracker_item_list }}</v-subheader>
+                                </div>
                                 </v-col>
 
                              </v-row>
@@ -1140,7 +1143,7 @@
                         <v-btn
                          color="primary"
                         @click="updateItemList()"
-                        :disabled ="(selectedItemList.cat_val==null || selectedItemList.subcat_val==null) ||
+                        :disabled="(selectedItemList.cat_val==null || selectedItemList.subcat_val==null) ||
                                     ((selectedItemList.cat_val == compareToSelectedItemList.cat_val || selectedItemList.cat_val == compareToSelectedItemList.cat_val.value)&&
                                     (selectedItemList.subcat_val == compareToSelectedItemList.subcat_val || selectedItemList.subcat_val == compareToSelectedItemList.subcat_val.value) &&
                                     selectedItemList.material == compareToSelectedItemList.material &&
@@ -1494,6 +1497,8 @@
 
             category_name_for_add_itemList : [],
             subcategory_name_for_add_itemList : [],
+
+            price_tracker_item_list : null,
 
 //-------------------- for plating process section------------------------------------
 
@@ -2172,6 +2177,7 @@
         editItemList(item){
             this.dialogEditItemList = true
             this.getcat_subcat_ItemList(item)
+            this.getUpdatedPriceItemList(item.id)
             this.selectedItemList = Object.assign({},item)
             this.compareToSelectedItemList = Object.assign({},item)
             //console.log(this.compareToSelectedItemList)
@@ -2214,6 +2220,20 @@
               .then(response =>{
                   //console.log(response.data)
                   this.price_tracker_plating_process = response.data[0].created_at
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        getUpdatedPriceItemList(params){
+            axios.get('/getUpdatedPriceItemList', { params : params})
+              .then(response =>{
+                  //console.log(response.data)
+                  this.price_tracker_item_list = response.data[0].created_at
               })
               .catch(error =>{
                     console.log(error.response);

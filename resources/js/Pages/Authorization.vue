@@ -358,6 +358,232 @@
           </v-col>
         </v-row>
 
+         <v-row>
+          <v-col
+            cols="12"
+          >
+            <v-card min-height="800">
+            <div class="mt-5"></div>
+              <v-subheader><h1 class="mt-5">{{ deptName }}</h1></v-subheader>
+              <v-card-text>
+              <v-divider class='mb-5'></v-divider>
+                    <v-row justify="start">
+                    <v-col
+                          cols="12"
+                          sm="6"
+                          md="3"
+                          class='mt-4'
+                        >
+                      <v-btn color='primary' @click='addDept()'>
+                        Add Department
+                      </v-btn>
+                      </v-col>
+                      <v-spacer></v-spacer>
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="3"
+                        >
+                    <v-text-field
+                        v-model="searchForDept"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        hide-details
+                        class="mb-10"
+                      ></v-text-field>
+                      </v-col>
+                    </v-row>
+
+                      <v-data-table
+                        :headers="headersForDept"
+                        :items="dept"
+                        hide-default-footer
+                        :search="searchForDept"
+                        :page.sync="pageForDept"
+                        :items-per-page="itemsPerPageForDept"
+                        @page-count="pageCountForDept = $event"
+                        sort-by="name"
+                        class="elevation-1"
+                    >
+
+                        <template v-slot:item.actions="{ item }">
+
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on, attrs }">
+                              <v-icon
+                                  small
+                                  class="mr-2"
+                                  @click="editDept(item)"
+                                  v-bind="attrs"
+                                  v-on="on"
+                              >
+                                  mdi-pencil
+                              </v-icon>
+                          </template>
+                          <span>Edit Department</span>
+                        </v-tooltip>
+
+
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on, attrs }">
+                              <v-icon
+                                  small
+                                  @click="deleteDept(item)"
+                                  v-bind="attrs"
+                                  v-on="on"
+                              >
+                                  mdi-delete
+                              </v-icon>
+                          </template>
+                          <span>Delete Department</span>
+                        </v-tooltip>
+
+                        </template>
+                    </v-data-table>
+                    <div class="text-center pt-2">
+                    <v-pagination
+                        v-model="pageForDept"
+                        :length="pageCountForDept"
+                        circle
+                        :total-visible="7"
+                    ></v-pagination>
+                    </div>
+               </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+
+        <v-dialog v-model="editDialogForDept" transition="dialog-top-transition"
+            max-width="800">
+            <v-card>
+                <v-toolbar
+                color="primary"
+                dark>
+                Edit Department
+                </v-toolbar>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                        <div style="background-color: #2196F3; padding:10px;">
+                                            <span style="color:white; font-weight:bold; letter-spacing: 2px;">Edit Department</span>
+                                        </div>
+                                </v-col>
+                            </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Department Code'
+                            v-model="modelForDept.dept_code"
+                            @input="(val) => (modelForDept.dept_code ? modelForDept.dept_code = modelForDept.dept_code.toUpperCase() : null)">
+                            </v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Department Name'
+                            v-model="modelForDept.dept_name"
+                            @input="(val) => (modelForDept.dept_name ? modelForDept.dept_name = modelForDept.dept_name.toUpperCase() : null)">
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions class="justify-end">
+                        <v-btn
+                         color="primary"
+                         :disabled="(modelForDept.dept_code == '' || modelForDept.dept_name == '') || ( modelForDept.dept_code == selectedDept.dept_code && modelForDept.dept_name == selectedDept.dept_name)"
+                         @click="updateDept()"
+                        >Save Changes</v-btn>
+                        <v-btn
+                                text
+                                @click="closeDialogEditDept()"
+                            >Close
+                        </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="dialogAddDept" transition="dialog-top-transition"
+            max-width="800">
+            <v-card>
+                <v-toolbar
+                color="primary"
+                dark>
+                Add Department
+                </v-toolbar>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                        <div style="background-color: #2196F3; padding:10px;">
+                                            <span style="color:white; font-weight:bold; letter-spacing: 2px;">Add Department</span>
+                                        </div>
+                                </v-col>
+                            </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Department Code'
+                            v-model="modelForDept.dept_code"
+                            @input="(val) => (modelForDept.dept_code ? modelForDept.dept_code = modelForDept.dept_code.toUpperCase() : null)">
+                            </v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Department Name'
+                            v-model="modelForDept.dept_name"
+                            @input="(val) => (modelForDept.dept_name ? modelForDept.dept_name = modelForDept.dept_name.toUpperCase() : null)">
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions class="justify-end">
+                        <v-btn
+                         color="primary"
+                         :disabled="(modelForDept.dept_code == '' || modelForDept.dept_name == '')"
+                         @click="addConfirmDept()"
+                        >Save</v-btn>
+                        <v-btn
+                                text
+                                @click="closeDialogAddDept()"
+                            >Close
+                        </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="dialogDeleteDept" max-width="500px">
+                            <v-card>
+                                <v-card-title class="text-h5">Are you sure you want to delete this user?</v-card-title>
+                                <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" text @click="closeDeleteDept">Cancel</v-btn>
+                                <v-btn color="blue darken-1" text @click="deleteDeptConfirm">OK</v-btn>
+                                <v-spacer></v-spacer>
+                                </v-card-actions>
+                            </v-card>
+          </v-dialog>
+
     </app-layout>
 </template>
 
@@ -426,10 +652,42 @@
                     email: '',
                 },
                 selectedUserPerm : '',
+
+
+////////////////////department list///////////////////
+                pageForDept: 1,
+                pageCountForDept: 0,
+                itemsPerPageForDept: 10,
+                searchForDept: '',
+                deptName : 'Departments',
+                headersForDept: [
+                    { text: 'Department Code', value: 'dept_code', class: "yellow" },
+                    {
+                    text: 'Department Name',
+                    align: 'start',
+                    value: 'dept_name',
+                    class: "yellow"
+                    },
+                    { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
+                ],
+
+                dept:[],
+                editDialogForDept: false,
+                dialogDeleteDept: false,
+                dialogAddDept: false,
+
+                modelForDept: {
+                  dept_code: null,
+                  dept_name: null
+                },
+
+                selectedDept:{}
+
     }),
 
     created: function(){
        this.initialize()
+       this.getAvailableDept()
     },
 
     computed: {
@@ -447,6 +705,12 @@
       },
       dialogVoid (val) {
         val || this.closeVoid()
+      },
+      editDialogForDept (val){
+        val || this.closeDialogEditDept()
+      },
+      dialogAddDept (val){
+        val || this.closeDialogAddDept()
       }
     },
 
@@ -465,6 +729,19 @@
               });
         
       },
+      getAvailableDept(){
+              axios.get('/getAvailableDept')
+              .then(response =>{
+                    this.dept = response.data
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+                  
+              });
+      },
+
         editItem (item) {
         this.editedIndex = this.users.indexOf(item)
         //this.editedItem = Object.assign({}, item)
@@ -474,6 +751,12 @@
         this.dialog = true
       },
 
+      editDept(item){
+        this.editDialogForDept = true
+        this.modelForDept = Object.assign({}, item)
+        this.selectedDept= Object.assign({}, item)
+      },
+
       deleteItem (item) {
         this.editedIndex = this.users.indexOf(item)
         //this.editedItem = Object.assign({}, item)
@@ -481,9 +764,31 @@
         this.dialogDelete = true
       },
 
+      deleteDept(item){
+        this.dialogDeleteDept = true
+        this.selectedDept = Object.assign({}, item)
+      },
+
       deleteItemConfirm () {
         this.deleteUser(this.selectedUserPerm)
         this.closeDelete()
+      },
+
+      deleteDeptConfirm(){
+        let params = {
+          'dept' : this.selectedDept
+        }
+              axios.post('/deleteDeptConfirm',{ params })
+              .then(response =>{
+                  this.dialogDeleteDept = false
+                  this.getAvailableDept();
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+                  
+          });
       },
 
       close () {
@@ -495,6 +800,11 @@
         })
       },
 
+      closeDialogAddDept(){
+        this.dialogAddDept = false
+        this.modelForDept = {}
+      },
+
       closeDelete () {
         this.dialogDelete = false
         this.$nextTick(() => {
@@ -502,6 +812,10 @@
           this.editedIndex = -1
           this.selectedUserPerm = ''
         })
+      },
+
+      closeDeleteDept(){
+        this.dialogDeleteDept = false
       },
 
       save () {
@@ -536,6 +850,23 @@
               axios.post('/addOrEditUserPermission',{ params })
               .then(response =>{
 
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+                  
+          });
+      },
+
+      addConfirmDept(){
+        let params = {
+          'dept' : this.modelForDept
+        }
+              axios.post('/addConfirmDept',{ params })
+              .then(response =>{
+                this.dialogAddDept = false
+                this.getAvailableDept()
               })
               .catch(error =>{
                     console.log(error.response);
@@ -602,6 +933,11 @@
         })
       },
 
+      closeDialogEditDept(){
+        this.editDialogForDept = false
+        this.modelForDept = {}
+      },
+
       voidSelectedUser(user){
                 axios.post('/voidUser',{ user })
               .then(response =>{
@@ -612,6 +948,27 @@
               .finally(() => {
                   
           });
+      },
+
+      updateDept(){
+        let params = {
+          'updated' : this.modelForDept,
+        }
+              axios.post('/updateDept',{ params })
+              .then(response =>{
+                  this.closeDialogEditDept()
+                  this.getAvailableDept()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+                  
+          });
+      },
+
+      addDept(){
+        this.dialogAddDept = true
       }
 
     },
