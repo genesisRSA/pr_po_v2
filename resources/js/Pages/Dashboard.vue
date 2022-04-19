@@ -261,15 +261,6 @@
             </v-card>
           </v-col>
         </v-row>
-        <!-- <v-btn
-              color="success"
-              fab
-              x-large
-              dark
-              class="position_add"
-            >
-              <v-icon>mdi-plus</v-icon>
-        </v-btn> -->
     </app-layout>
 </template>
 
