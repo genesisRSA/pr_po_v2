@@ -129,12 +129,14 @@
                                             small
                                             class="mr-2"
                                             @click="editCategoryItem(item)"
+                                            :disabled="permToEdit=='false'"
                                         >
                                             mdi-pencil
                                         </v-icon>
                                         <v-icon
                                             small
                                             @click="deleteItem(item)"
+                                            :disabled="permToDelete=='false'"
                                         >
                                             mdi-delete
                                         </v-icon>
@@ -214,12 +216,14 @@
                                                 small
                                                 class="mr-2"
                                                 @click="editItemList(item)"
+                                                :disabled="permToEdit=='false'"
                                             >
                                                 mdi-pencil
                                             </v-icon>
                                             <v-icon
                                                 small
                                                 @click="deleteItem(item)"
+                                                :disabled="permToDelete=='false'"
                                             >
                                                 mdi-delete
                                             </v-icon>
@@ -285,12 +289,14 @@
                                                 small
                                                 class="mr-2"
                                                 @click="editPlatingProcess(item)"
+                                                :disabled="permToEdit=='false'"
                                             >
                                                 mdi-pencil
                                             </v-icon>
                                             <v-icon
                                                 small
                                                 @click="deleteItem(item)"
+                                                :disabled="permToDelete=='false'"
                                             >
                                                 mdi-delete
                                             </v-icon>
@@ -349,12 +355,14 @@
                                                 small
                                                 class="mr-2"
                                                 @click="editVendor(item)"
+                                                :disabled="permToEdit=='false'"
                                             >
                                                 mdi-pencil
                                             </v-icon>
                                             <v-icon
                                                 small
                                                 @click="deleteItem(item)"
+                                                :disabled="permToDelete=='false'"
                                             >
                                                 mdi-delete
                                             </v-icon>
@@ -408,16 +416,18 @@
                                     class="mt-5"
                                     >
                                         <template v-slot:item.actions="{ item }">
-                                            <v-icon
+                                            <v-icon 
                                                 small
                                                 class="mr-2"
                                                 @click="editPaymentTerm(item)"
+                                                :disabled="permToEdit=='false'"
                                             >
                                                 mdi-pencil
                                             </v-icon>
-                                            <v-icon
+                                            <v-icon 
                                                 small
                                                 @click="deleteItem(item)"
+                                                :disabled="permToDelete=='false'"
                                             >
                                                 mdi-delete
                                             </v-icon>
@@ -445,7 +455,7 @@
         </v-row>
 
         <!-- //////dialog_for_add////// -->
-        <v-dialog
+        <v-dialog v-if="permToAdd == 'true'"
             transition="dialog-top-transition"
             max-width="800"
             v-model="dialog"
@@ -1596,6 +1606,12 @@
             itemsForPaymentTerm : [],
             payment_term : null,
             idOfPaymentTerm : null,
+
+//////////////////// permissions =============================================
+
+            permToAdd : null,
+            permToEdit : null,
+            permToDelete : null
     }),
 
     created: function(){
@@ -1604,6 +1620,7 @@
         this.getAvailablePlatingProcesses()
         this.getAvailableVendor()
         this.getAvailablePaymentTerm()
+        this.getPermission()
     },
 
     computed: {
@@ -2234,6 +2251,21 @@
               .then(response =>{
                   //console.log(response.data)
                   this.price_tracker_item_list = response.data[0].created_at
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        getPermission(){
+               axios.get('/getPermissionForDM')
+              .then(response =>{
+                    this.permToAdd = response.data[1]
+                    this.permToEdit = response.data[2]
+                    this.permToDelete = response.data[3]
               })
               .catch(error =>{
                     console.log(error.response);

@@ -6389,6 +6389,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -6585,7 +6595,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }],
       itemsForPaymentTerm: [],
       payment_term: null,
-      idOfPaymentTerm: null
+      idOfPaymentTerm: null,
+      //////////////////// permissions =============================================
+      permToAdd: null,
+      permToEdit: null,
+      permToDelete: null
     };
   },
   created: function created() {
@@ -6594,6 +6608,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.getAvailablePlatingProcesses();
     this.getAvailableVendor();
     this.getAvailablePaymentTerm();
+    this.getPermission();
   },
   computed: {},
   watch: {
@@ -7146,6 +7161,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }).then(function (response) {
       //console.log(response.data)
       _this27.price_tracker_item_list = response.data[0].created_at;
+    })["catch"](function (error) {
+      console.log(error.response);
+    })["finally"](function () {});
+  }), _defineProperty(_methods, "getPermission", function getPermission() {
+    var _this28 = this;
+
+    axios.get('/getPermissionForDM').then(function (response) {
+      _this28.permToAdd = response.data[1];
+      _this28.permToEdit = response.data[2];
+      _this28.permToDelete = response.data[3];
     })["catch"](function (error) {
       console.log(error.response);
     })["finally"](function () {});
@@ -51578,7 +51603,12 @@ var render = function() {
                                                         "v-icon",
                                                         {
                                                           staticClass: "mr-2",
-                                                          attrs: { small: "" },
+                                                          attrs: {
+                                                            small: "",
+                                                            disabled:
+                                                              _vm.permToEdit ==
+                                                              "false"
+                                                          },
                                                           on: {
                                                             click: function(
                                                               $event
@@ -51599,7 +51629,12 @@ var render = function() {
                                                       _c(
                                                         "v-icon",
                                                         {
-                                                          attrs: { small: "" },
+                                                          attrs: {
+                                                            small: "",
+                                                            disabled:
+                                                              _vm.permToDelete ==
+                                                              "false"
+                                                          },
                                                           on: {
                                                             click: function(
                                                               $event
@@ -51808,7 +51843,12 @@ var render = function() {
                                                         "v-icon",
                                                         {
                                                           staticClass: "mr-2",
-                                                          attrs: { small: "" },
+                                                          attrs: {
+                                                            small: "",
+                                                            disabled:
+                                                              _vm.permToEdit ==
+                                                              "false"
+                                                          },
                                                           on: {
                                                             click: function(
                                                               $event
@@ -51829,7 +51869,12 @@ var render = function() {
                                                       _c(
                                                         "v-icon",
                                                         {
-                                                          attrs: { small: "" },
+                                                          attrs: {
+                                                            small: "",
+                                                            disabled:
+                                                              _vm.permToDelete ==
+                                                              "false"
+                                                          },
                                                           on: {
                                                             click: function(
                                                               $event
@@ -51990,7 +52035,12 @@ var render = function() {
                                                         "v-icon",
                                                         {
                                                           staticClass: "mr-2",
-                                                          attrs: { small: "" },
+                                                          attrs: {
+                                                            small: "",
+                                                            disabled:
+                                                              _vm.permToEdit ==
+                                                              "false"
+                                                          },
                                                           on: {
                                                             click: function(
                                                               $event
@@ -52011,7 +52061,12 @@ var render = function() {
                                                       _c(
                                                         "v-icon",
                                                         {
-                                                          attrs: { small: "" },
+                                                          attrs: {
+                                                            small: "",
+                                                            disabled:
+                                                              _vm.permToDelete ==
+                                                              "false"
+                                                          },
                                                           on: {
                                                             click: function(
                                                               $event
@@ -52146,7 +52201,12 @@ var render = function() {
                                                         "v-icon",
                                                         {
                                                           staticClass: "mr-2",
-                                                          attrs: { small: "" },
+                                                          attrs: {
+                                                            small: "",
+                                                            disabled:
+                                                              _vm.permToEdit ==
+                                                              "false"
+                                                          },
                                                           on: {
                                                             click: function(
                                                               $event
@@ -52167,7 +52227,12 @@ var render = function() {
                                                       _c(
                                                         "v-icon",
                                                         {
-                                                          attrs: { small: "" },
+                                                          attrs: {
+                                                            small: "",
+                                                            disabled:
+                                                              _vm.permToDelete ==
+                                                              "false"
+                                                          },
                                                           on: {
                                                             click: function(
                                                               $event
@@ -52303,7 +52368,12 @@ var render = function() {
                                                         "v-icon",
                                                         {
                                                           staticClass: "mr-2",
-                                                          attrs: { small: "" },
+                                                          attrs: {
+                                                            small: "",
+                                                            disabled:
+                                                              _vm.permToEdit ==
+                                                              "false"
+                                                          },
                                                           on: {
                                                             click: function(
                                                               $event
@@ -52324,7 +52394,12 @@ var render = function() {
                                                       _c(
                                                         "v-icon",
                                                         {
-                                                          attrs: { small: "" },
+                                                          attrs: {
+                                                            small: "",
+                                                            disabled:
+                                                              _vm.permToDelete ==
+                                                              "false"
+                                                          },
                                                           on: {
                                                             click: function(
                                                               $event
@@ -52400,1420 +52475,1513 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("v-dialog", {
-        attrs: { transition: "dialog-top-transition", "max-width": "800" },
-        scopedSlots: _vm._u([
-          {
-            key: "activator",
-            fn: function(ref) {
-              var on = ref.on
-              var attrs = ref.attrs
-              return [
-                _c(
-                  "v-btn",
-                  _vm._g(
-                    _vm._b(
-                      {
-                        staticClass: "position_add",
-                        attrs: {
-                          color: "success",
-                          fab: "",
-                          "x-large": "",
-                          dark: ""
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.getAvailableCateogryItems()
-                          }
-                        }
-                      },
-                      "v-btn",
-                      attrs,
-                      false
-                    ),
-                    on
-                  ),
-                  [_c("v-icon", [_vm._v("mdi-plus")])],
-                  1
-                )
-              ]
-            }
-          },
-          {
-            key: "default",
-            fn: function(dialog) {
-              return [
-                _c("v-card", [
-                  _vm.tab == 0
-                    ? _c(
-                        "div",
-                        [
-                          _c(
-                            "v-toolbar",
-                            { attrs: { color: "primary", dark: "" } },
-                            [_vm._v("Add Item Categories\n                ")]
+      _vm.permToAdd == "true"
+        ? _c("v-dialog", {
+            attrs: { transition: "dialog-top-transition", "max-width": "800" },
+            scopedSlots: _vm._u(
+              [
+                {
+                  key: "activator",
+                  fn: function(ref) {
+                    var on = ref.on
+                    var attrs = ref.attrs
+                    return [
+                      _c(
+                        "v-btn",
+                        _vm._g(
+                          _vm._b(
+                            {
+                              staticClass: "position_add",
+                              attrs: {
+                                color: "success",
+                                fab: "",
+                                "x-large": "",
+                                dark: ""
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.getAvailableCateogryItems()
+                                }
+                              }
+                            },
+                            "v-btn",
+                            attrs,
+                            false
                           ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-text",
-                            [
-                              _c(
-                                "v-container",
-                                [
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        { attrs: { cols: "12", md: "12" } },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticStyle: {
-                                                "background-color": "#2196F3",
-                                                padding: "10px"
-                                              }
-                                            },
-                                            [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticStyle: {
-                                                    color: "white",
-                                                    "font-weight": "bold",
-                                                    "letter-spacing": "2px"
-                                                  }
-                                                },
-                                                [_vm._v("Add a Category")]
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-form",
-                                        {
-                                          ref: "category_form",
-                                          staticClass: "width",
-                                          attrs: { "lazy-validation": "" },
-                                          model: {
-                                            value: _vm.category_valid,
-                                            callback: function($$v) {
-                                              _vm.category_valid = $$v
-                                            },
-                                            expression: "category_valid"
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "v-col",
-                                            {
-                                              attrs: {
-                                                cols: "12",
-                                                sm: "6",
-                                                md: "3"
-                                              }
-                                            },
-                                            [
-                                              _c("v-text-field", {
-                                                attrs: {
-                                                  label: "Category Name",
-                                                  clearable: "",
-                                                  rules: [
-                                                    function(v) {
-                                                      return (
-                                                        !!v ||
-                                                        "Category Name is required"
-                                                      )
+                          on
+                        ),
+                        [_c("v-icon", [_vm._v("mdi-plus")])],
+                        1
+                      )
+                    ]
+                  }
+                },
+                {
+                  key: "default",
+                  fn: function(dialog) {
+                    return [
+                      _c("v-card", [
+                        _vm.tab == 0
+                          ? _c(
+                              "div",
+                              [
+                                _c(
+                                  "v-toolbar",
+                                  { attrs: { color: "primary", dark: "" } },
+                                  [
+                                    _vm._v(
+                                      "Add Item Categories\n                "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-text",
+                                  [
+                                    _c(
+                                      "v-container",
+                                      [
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: { cols: "12", md: "12" }
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticStyle: {
+                                                      "background-color":
+                                                        "#2196F3",
+                                                      padding: "10px"
                                                     }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "span",
+                                                      {
+                                                        staticStyle: {
+                                                          color: "white",
+                                                          "font-weight": "bold",
+                                                          "letter-spacing":
+                                                            "2px"
+                                                        }
+                                                      },
+                                                      [_vm._v("Add a Category")]
+                                                    )
                                                   ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-form",
+                                              {
+                                                ref: "category_form",
+                                                staticClass: "width",
+                                                attrs: {
+                                                  "lazy-validation": ""
                                                 },
                                                 model: {
-                                                  value: _vm.category_val,
+                                                  value: _vm.category_valid,
                                                   callback: function($$v) {
-                                                    _vm.category_val = $$v
+                                                    _vm.category_valid = $$v
                                                   },
-                                                  expression: "category_val"
+                                                  expression: "category_valid"
                                                 }
-                                              })
-                                            ],
-                                            1
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-col",
-                                            {
-                                              attrs: {
-                                                cols: "12",
-                                                sm: "6",
-                                                md: "3"
-                                              }
-                                            },
-                                            [
-                                              _c(
-                                                "v-btn",
-                                                {
-                                                  staticClass:
-                                                    "position_add_category",
+                                              },
+                                              [
+                                                _c(
+                                                  "v-col",
+                                                  {
+                                                    attrs: {
+                                                      cols: "12",
+                                                      sm: "6",
+                                                      md: "3"
+                                                    }
+                                                  },
+                                                  [
+                                                    _c("v-text-field", {
+                                                      attrs: {
+                                                        label: "Category Name",
+                                                        clearable: "",
+                                                        rules: [
+                                                          function(v) {
+                                                            return (
+                                                              !!v ||
+                                                              "Category Name is required"
+                                                            )
+                                                          }
+                                                        ]
+                                                      },
+                                                      model: {
+                                                        value: _vm.category_val,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.category_val = $$v
+                                                        },
+                                                        expression:
+                                                          "category_val"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "v-col",
+                                                  {
+                                                    attrs: {
+                                                      cols: "12",
+                                                      sm: "6",
+                                                      md: "3"
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "v-btn",
+                                                      {
+                                                        staticClass:
+                                                          "position_add_category",
+                                                        attrs: {
+                                                          color: "primary",
+                                                          fab: "",
+                                                          "x-small": "",
+                                                          dark: "",
+                                                          disabled:
+                                                            _vm.category_val ==
+                                                            ""
+                                                              ? true
+                                                              :  false ||
+                                                                !_vm.category_valid
+                                                        },
+                                                        on: {
+                                                          click: function(
+                                                            $event
+                                                          ) {
+                                                            return _vm.addCategory()
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("v-icon", [
+                                                          _vm._v("mdi-plus")
+                                                        ])
+                                                      ],
+                                                      1
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: { cols: "12", md: "12" }
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticStyle: {
+                                                      "background-color":
+                                                        "#2196F3",
+                                                      padding: "10px"
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "span",
+                                                      {
+                                                        staticStyle: {
+                                                          color: "white",
+                                                          "font-weight": "bold",
+                                                          "letter-spacing":
+                                                            "2px"
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "Add a Sub-Category"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-form",
+                                              {
+                                                ref: "subcategory_form",
+                                                staticClass: "width",
+                                                attrs: {
+                                                  "lazy-validation": ""
+                                                },
+                                                model: {
+                                                  value: _vm.subcategory_valid,
+                                                  callback: function($$v) {
+                                                    _vm.subcategory_valid = $$v
+                                                  },
+                                                  expression:
+                                                    "subcategory_valid"
+                                                }
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  { staticClass: "d-flex" },
+                                                  [
+                                                    _c(
+                                                      "v-col",
+                                                      {
+                                                        attrs: {
+                                                          cols: "12",
+                                                          sm: "6",
+                                                          md: "3"
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("v-select", {
+                                                          attrs: {
+                                                            label:
+                                                              "Category Name",
+                                                            "menu-props":
+                                                              "auto",
+                                                            "menu-props": {
+                                                              bottom: true,
+                                                              offsetY: true
+                                                            },
+                                                            items:
+                                                              _vm.category_name_items,
+                                                            "item-text":
+                                                              _vm
+                                                                .category_name_items
+                                                                .text,
+                                                            "item-value":
+                                                              _vm
+                                                                .category_name_items
+                                                                .value,
+                                                            rules: [
+                                                              function(v) {
+                                                                return (
+                                                                  !!v ||
+                                                                  "Category Name is required"
+                                                                )
+                                                              }
+                                                            ],
+                                                            clearable: ""
+                                                          },
+                                                          model: {
+                                                            value:
+                                                              _vm.category_name_selected,
+                                                            callback: function(
+                                                              $$v
+                                                            ) {
+                                                              _vm.category_name_selected = $$v
+                                                            },
+                                                            expression:
+                                                              "category_name_selected"
+                                                          }
+                                                        })
+                                                      ],
+                                                      1
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "v-col",
+                                                      {
+                                                        attrs: {
+                                                          cols: "12",
+                                                          sm: "6",
+                                                          md: "3"
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("v-text-field", {
+                                                          attrs: {
+                                                            label:
+                                                              "Sub-Category Name",
+                                                            rules: [
+                                                              function(v) {
+                                                                return (
+                                                                  !!v ||
+                                                                  "Sub-Category Name is required"
+                                                                )
+                                                              }
+                                                            ],
+                                                            clearable: ""
+                                                          },
+                                                          model: {
+                                                            value:
+                                                              _vm.subcategory_val,
+                                                            callback: function(
+                                                              $$v
+                                                            ) {
+                                                              _vm.subcategory_val = $$v
+                                                            },
+                                                            expression:
+                                                              "subcategory_val"
+                                                          }
+                                                        })
+                                                      ],
+                                                      1
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "v-col",
+                                                      {
+                                                        attrs: {
+                                                          cols: "12",
+                                                          sm: "6",
+                                                          md: "3"
+                                                        }
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "v-btn",
+                                                          {
+                                                            staticClass:
+                                                              "position_sub_category",
+                                                            attrs: {
+                                                              color: "primary",
+                                                              fab: "",
+                                                              "x-small": "",
+                                                              dark: "",
+                                                              disabled:
+                                                                _vm.category_name_selected ==
+                                                                  "" ||
+                                                                !_vm.subcategory_valid ||
+                                                                _vm.subcategory_val ==
+                                                                  ""
+                                                            },
+                                                            on: {
+                                                              click: function(
+                                                                $event
+                                                              ) {
+                                                                return _vm.addSubCat()
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("v-icon", [
+                                                              _vm._v("mdi-plus")
+                                                            ])
+                                                          ],
+                                                          1
+                                                        )
+                                                      ],
+                                                      1
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-actions",
+                                  { staticClass: "justify-end" },
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { text: "" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.close()
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Close\n                    ")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.tab == 1
+                          ? _c(
+                              "div",
+                              [
+                                _c(
+                                  "v-toolbar",
+                                  { attrs: { color: "primary", dark: "" } },
+                                  [_vm._v("Add Item\n                ")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-text",
+                                  [
+                                    _c(
+                                      "v-container",
+                                      [
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: { cols: "12", md: "12" }
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticStyle: {
+                                                      "background-color":
+                                                        "#2196F3",
+                                                      padding: "10px"
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "span",
+                                                      {
+                                                        staticStyle: {
+                                                          color: "white",
+                                                          "font-weight": "bold",
+                                                          "letter-spacing":
+                                                            "2px"
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "Add an Item List"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
+                                              },
+                                              [
+                                                _c("v-select", {
                                                   attrs: {
-                                                    color: "primary",
-                                                    fab: "",
-                                                    "x-small": "",
-                                                    dark: "",
-                                                    disabled:
-                                                      _vm.category_val == ""
-                                                        ? true
-                                                        :  false ||
-                                                          !_vm.category_valid
+                                                    label: "Category Name",
+                                                    clearable: "",
+                                                    items:
+                                                      _vm.category_name_for_add_itemList,
+                                                    "item-text":
+                                                      _vm
+                                                        .category_name_for_add_itemList
+                                                        .text,
+                                                    "item-value":
+                                                      _vm
+                                                        .category_name_for_add_itemList
+                                                        .value
                                                   },
                                                   on: {
-                                                    click: function($event) {
-                                                      return _vm.addCategory()
+                                                    input: function($event) {
+                                                      return _vm.selectingCategoryNameListForAdd(
+                                                        $event
+                                                      )
                                                     }
-                                                  }
-                                                },
-                                                [
-                                                  _c("v-icon", [
-                                                    _vm._v("mdi-plus")
-                                                  ])
-                                                ],
-                                                1
-                                              )
-                                            ],
-                                            1
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        { attrs: { cols: "12", md: "12" } },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticStyle: {
-                                                "background-color": "#2196F3",
-                                                padding: "10px"
-                                              }
-                                            },
-                                            [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticStyle: {
-                                                    color: "white",
-                                                    "font-weight": "bold",
-                                                    "letter-spacing": "2px"
-                                                  }
-                                                },
-                                                [_vm._v("Add a Sub-Category")]
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-form",
-                                        {
-                                          ref: "subcategory_form",
-                                          staticClass: "width",
-                                          attrs: { "lazy-validation": "" },
-                                          model: {
-                                            value: _vm.subcategory_valid,
-                                            callback: function($$v) {
-                                              _vm.subcategory_valid = $$v
-                                            },
-                                            expression: "subcategory_valid"
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "div",
-                                            { staticClass: "d-flex" },
-                                            [
-                                              _c(
-                                                "v-col",
-                                                {
-                                                  attrs: {
-                                                    cols: "12",
-                                                    sm: "6",
-                                                    md: "3"
-                                                  }
-                                                },
-                                                [
-                                                  _c("v-select", {
-                                                    attrs: {
-                                                      label: "Category Name",
-                                                      "menu-props": "auto",
-                                                      "menu-props": {
-                                                        bottom: true,
-                                                        offsetY: true
-                                                      },
-                                                      items:
-                                                        _vm.category_name_items,
-                                                      "item-text":
-                                                        _vm.category_name_items
-                                                          .text,
-                                                      "item-value":
-                                                        _vm.category_name_items
-                                                          .value,
-                                                      rules: [
-                                                        function(v) {
-                                                          return (
-                                                            !!v ||
-                                                            "Category Name is required"
-                                                          )
-                                                        }
-                                                      ],
-                                                      clearable: ""
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.category_val_for_list_item,
+                                                    callback: function($$v) {
+                                                      _vm.category_val_for_list_item = $$v
                                                     },
-                                                    model: {
-                                                      value:
-                                                        _vm.category_name_selected,
-                                                      callback: function($$v) {
-                                                        _vm.category_name_selected = $$v
-                                                      },
-                                                      expression:
-                                                        "category_name_selected"
-                                                    }
-                                                  })
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-col",
-                                                {
-                                                  attrs: {
-                                                    cols: "12",
-                                                    sm: "6",
-                                                    md: "3"
+                                                    expression:
+                                                      "category_val_for_list_item"
                                                   }
-                                                },
-                                                [
-                                                  _c("v-text-field", {
-                                                    attrs: {
-                                                      label:
-                                                        "Sub-Category Name",
-                                                      rules: [
-                                                        function(v) {
-                                                          return (
-                                                            !!v ||
-                                                            "Sub-Category Name is required"
-                                                          )
-                                                        }
-                                                      ],
-                                                      clearable: ""
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
+                                              },
+                                              [
+                                                _c("v-select", {
+                                                  attrs: {
+                                                    label: "Sub-Category Name",
+                                                    clearable: "",
+                                                    items:
+                                                      _vm.subcategory_name_for_add_itemList,
+                                                    "item-text":
+                                                      _vm
+                                                        .subcategory_name_for_add_itemList
+                                                        .text,
+                                                    "item-value":
+                                                      _vm
+                                                        .subcategory_name_for_add_itemList
+                                                        .value,
+                                                    disabled: !_vm.category_val_for_list_item
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.subcategory_val_for_list_item,
+                                                    callback: function($$v) {
+                                                      _vm.subcategory_val_for_list_item = $$v
                                                     },
-                                                    model: {
-                                                      value:
-                                                        _vm.subcategory_val,
-                                                      callback: function($$v) {
-                                                        _vm.subcategory_val = $$v
-                                                      },
-                                                      expression:
-                                                        "subcategory_val"
-                                                    }
-                                                  })
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-col",
-                                                {
-                                                  attrs: {
-                                                    cols: "12",
-                                                    sm: "6",
-                                                    md: "3"
+                                                    expression:
+                                                      "subcategory_val_for_list_item"
                                                   }
-                                                },
-                                                [
-                                                  _c(
-                                                    "v-btn",
-                                                    {
-                                                      staticClass:
-                                                        "position_sub_category",
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
+                                              },
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    label: "Part Name",
+                                                    clearable: ""
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.part_name_for_list_item,
+                                                    callback: function($$v) {
+                                                      _vm.part_name_for_list_item = $$v
+                                                    },
+                                                    expression:
+                                                      "part_name_for_list_item"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
+                                              },
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    label: "Material",
+                                                    clearable: ""
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.material_for_list_item,
+                                                    callback: function($$v) {
+                                                      _vm.material_for_list_item = $$v
+                                                    },
+                                                    expression:
+                                                      "material_for_list_item"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
+                                              },
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    label: "Dimension",
+                                                    clearable: ""
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.dimension_for_list_item,
+                                                    callback: function($$v) {
+                                                      _vm.dimension_for_list_item = $$v
+                                                    },
+                                                    expression:
+                                                      "dimension_for_list_item"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  [
+                                                    _c("vuetify-money", {
                                                       attrs: {
-                                                        color: "primary",
-                                                        fab: "",
-                                                        "x-small": "",
-                                                        dark: "",
-                                                        disabled:
-                                                          _vm.category_name_selected ==
-                                                            "" ||
-                                                          !_vm.subcategory_valid ||
-                                                          _vm.subcategory_val ==
-                                                            ""
+                                                        label:
+                                                          "Unit Price Cost",
+                                                        placeholder: " ",
+                                                        outlined: true,
+                                                        clearable: true,
+                                                        options: _vm.options
                                                       },
-                                                      on: {
-                                                        click: function(
-                                                          $event
+                                                      model: {
+                                                        value:
+                                                          _vm.raw_unit_price_for_list_item,
+                                                        callback: function(
+                                                          $$v
                                                         ) {
-                                                          return _vm.addSubCat()
-                                                        }
+                                                          _vm.raw_unit_price_for_list_item = $$v
+                                                        },
+                                                        expression:
+                                                          "raw_unit_price_for_list_item"
                                                       }
-                                                    },
-                                                    [
-                                                      _c("v-icon", [
-                                                        _vm._v("mdi-plus")
-                                                      ])
-                                                    ],
-                                                    1
-                                                  )
-                                                ],
-                                                1
-                                              )
-                                            ],
-                                            1
-                                          )
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-actions",
-                            { staticClass: "justify-end" },
-                            [
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { text: "" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.close()
-                                    }
-                                  }
-                                },
-                                [_vm._v("Close\n                    ")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.tab == 1
-                    ? _c(
-                        "div",
-                        [
-                          _c(
-                            "v-toolbar",
-                            { attrs: { color: "primary", dark: "" } },
-                            [_vm._v("Add Item\n                ")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-text",
-                            [
-                              _c(
-                                "v-container",
-                                [
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        { attrs: { cols: "12", md: "12" } },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticStyle: {
-                                                "background-color": "#2196F3",
-                                                padding: "10px"
-                                              }
-                                            },
-                                            [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticStyle: {
-                                                    color: "white",
-                                                    "font-weight": "bold",
-                                                    "letter-spacing": "2px"
-                                                  }
-                                                },
-                                                [_vm._v("Add an Item List")]
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
-                                        },
-                                        [
-                                          _c("v-select", {
-                                            attrs: {
-                                              label: "Category Name",
-                                              clearable: "",
-                                              items:
-                                                _vm.category_name_for_add_itemList,
-                                              "item-text":
-                                                _vm
-                                                  .category_name_for_add_itemList
-                                                  .text,
-                                              "item-value":
-                                                _vm
-                                                  .category_name_for_add_itemList
-                                                  .value
-                                            },
-                                            on: {
-                                              input: function($event) {
-                                                return _vm.selectingCategoryNameListForAdd(
-                                                  $event
+                                                    })
+                                                  ],
+                                                  1
                                                 )
-                                              }
-                                            },
-                                            model: {
-                                              value:
-                                                _vm.category_val_for_list_item,
-                                              callback: function($$v) {
-                                                _vm.category_val_for_list_item = $$v
-                                              },
-                                              expression:
-                                                "category_val_for_list_item"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-actions",
+                                  { staticClass: "justify-end" },
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          color: "primary",
+                                          disabled:
+                                            !_vm.category_val_for_list_item ||
+                                            !_vm.subcategory_val_for_list_item
                                         },
-                                        [
-                                          _c("v-select", {
-                                            attrs: {
-                                              label: "Sub-Category Name",
-                                              clearable: "",
-                                              items:
-                                                _vm.subcategory_name_for_add_itemList,
-                                              "item-text":
-                                                _vm
-                                                  .subcategory_name_for_add_itemList
-                                                  .text,
-                                              "item-value":
-                                                _vm
-                                                  .subcategory_name_for_add_itemList
-                                                  .value,
-                                              disabled: !_vm.category_val_for_list_item
-                                            },
-                                            model: {
-                                              value:
-                                                _vm.subcategory_val_for_list_item,
-                                              callback: function($$v) {
-                                                _vm.subcategory_val_for_list_item = $$v
-                                              },
-                                              expression:
-                                                "subcategory_val_for_list_item"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.addItemList()
                                           }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Part Name",
-                                              clearable: ""
-                                            },
-                                            model: {
-                                              value:
-                                                _vm.part_name_for_list_item,
-                                              callback: function($$v) {
-                                                _vm.part_name_for_list_item = $$v
-                                              },
-                                              expression:
-                                                "part_name_for_list_item"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
+                                        }
+                                      },
+                                      [_vm._v("Save\n                        ")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { text: "" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.close()
                                           }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Material",
-                                              clearable: ""
-                                            },
-                                            model: {
-                                              value: _vm.material_for_list_item,
-                                              callback: function($$v) {
-                                                _vm.material_for_list_item = $$v
+                                        }
+                                      },
+                                      [_vm._v("Close\n                    ")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.tab == 2
+                          ? _c(
+                              "div",
+                              [
+                                _c(
+                                  "v-toolbar",
+                                  { attrs: { color: "primary", dark: "" } },
+                                  [
+                                    _vm._v(
+                                      "Add Plating Process\n                "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-text",
+                                  [
+                                    _c(
+                                      "v-container",
+                                      [
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: { cols: "12", md: "12" }
                                               },
-                                              expression:
-                                                "material_for_list_item"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Dimension",
-                                              clearable: ""
-                                            },
-                                            model: {
-                                              value:
-                                                _vm.dimension_for_list_item,
-                                              callback: function($$v) {
-                                                _vm.dimension_for_list_item = $$v
-                                              },
-                                              expression:
-                                                "dimension_for_list_item"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "div",
-                                            [
-                                              _c("vuetify-money", {
-                                                attrs: {
-                                                  label: "Unit Price Cost",
-                                                  placeholder: " ",
-                                                  outlined: true,
-                                                  clearable: true,
-                                                  options: _vm.options
-                                                },
-                                                model: {
-                                                  value:
-                                                    _vm.raw_unit_price_for_list_item,
-                                                  callback: function($$v) {
-                                                    _vm.raw_unit_price_for_list_item = $$v
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticStyle: {
+                                                      "background-color":
+                                                        "#2196F3",
+                                                      padding: "10px"
+                                                    }
                                                   },
-                                                  expression:
-                                                    "raw_unit_price_for_list_item"
-                                                }
-                                              })
-                                            ],
-                                            1
-                                          )
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-actions",
-                            { staticClass: "justify-end" },
-                            [
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: {
-                                    color: "primary",
-                                    disabled:
-                                      !_vm.category_val_for_list_item ||
-                                      !_vm.subcategory_val_for_list_item
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.addItemList()
-                                    }
-                                  }
-                                },
-                                [_vm._v("Save\n                        ")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { text: "" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.close()
-                                    }
-                                  }
-                                },
-                                [_vm._v("Close\n                    ")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.tab == 2
-                    ? _c(
-                        "div",
-                        [
-                          _c(
-                            "v-toolbar",
-                            { attrs: { color: "primary", dark: "" } },
-                            [_vm._v("Add Plating Process\n                ")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-text",
-                            [
-                              _c(
-                                "v-container",
-                                [
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        { attrs: { cols: "12", md: "12" } },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticStyle: {
-                                                "background-color": "#2196F3",
-                                                padding: "10px"
-                                              }
-                                            },
-                                            [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticStyle: {
-                                                    color: "white",
-                                                    "font-weight": "bold",
-                                                    "letter-spacing": "2px"
-                                                  }
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "Add a Plating Process"
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Plating Process",
-                                              clearable: ""
-                                            },
-                                            on: {
-                                              input: function(val) {
-                                                return _vm
-                                                  .modelForPlatingProcesses
-                                                  .plating_process
-                                                  ? (_vm.modelForPlatingProcesses.plating_process = _vm.modelForPlatingProcesses.plating_process.toUpperCase())
-                                                  : null
-                                              }
-                                            },
-                                            model: {
-                                              value:
-                                                _vm.modelForPlatingProcesses
-                                                  .plating_process,
-                                              callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.modelForPlatingProcesses,
-                                                  "plating_process",
-                                                  $$v
-                                                )
-                                              },
-                                              expression:
-                                                "modelForPlatingProcesses.plating_process"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Type",
-                                              clearable: ""
-                                            },
-                                            on: {
-                                              input: function(val) {
-                                                return _vm
-                                                  .modelForPlatingProcesses.type
-                                                  ? (_vm.modelForPlatingProcesses.type = _vm.modelForPlatingProcesses.type.toUpperCase())
-                                                  : null
-                                              }
-                                            },
-                                            model: {
-                                              value:
-                                                _vm.modelForPlatingProcesses
-                                                  .type,
-                                              callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.modelForPlatingProcesses,
-                                                  "type",
-                                                  $$v
-                                                )
-                                              },
-                                              expression:
-                                                "modelForPlatingProcesses.type"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "div",
-                                            [
-                                              _c("vuetify-money", {
-                                                attrs: {
-                                                  label: "Price per. Sq. Inch",
-                                                  placeholder: " ",
-                                                  outlined: true,
-                                                  clearable: true,
-                                                  options: _vm.options
-                                                },
-                                                model: {
-                                                  value:
-                                                    _vm.modelForPlatingProcesses
-                                                      .price_per_square_inch,
-                                                  callback: function($$v) {
-                                                    _vm.$set(
-                                                      _vm.modelForPlatingProcesses,
-                                                      "price_per_square_inch",
-                                                      $$v
+                                                  [
+                                                    _c(
+                                                      "span",
+                                                      {
+                                                        staticStyle: {
+                                                          color: "white",
+                                                          "font-weight": "bold",
+                                                          "letter-spacing":
+                                                            "2px"
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "Add a Plating Process"
+                                                        )
+                                                      ]
                                                     )
-                                                  },
-                                                  expression:
-                                                    "modelForPlatingProcesses.price_per_square_inch"
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
                                                 }
-                                              })
-                                            ],
-                                            1
-                                          )
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-actions",
-                            { staticClass: "justify-end" },
-                            [
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: {
-                                    color: "primary",
-                                    disabled:
-                                      !_vm.modelForPlatingProcesses
-                                        .plating_process ||
-                                      !_vm.modelForPlatingProcesses
-                                        .price_per_square_inch
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.addPlatingProcess()
-                                    }
-                                  }
-                                },
-                                [_vm._v("Save\n                        ")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { text: "" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.close()
-                                    }
-                                  }
-                                },
-                                [_vm._v("Close\n                    ")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.tab == 3
-                    ? _c(
-                        "div",
-                        [
-                          _c(
-                            "v-toolbar",
-                            { attrs: { color: "primary", dark: "" } },
-                            [_vm._v("Add Vendors\n                ")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-text",
-                            [
-                              _c(
-                                "v-container",
-                                [
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        { attrs: { cols: "12", md: "12" } },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticStyle: {
-                                                "background-color": "#2196F3",
-                                                padding: "10px"
-                                              }
-                                            },
-                                            [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticStyle: {
-                                                    color: "white",
-                                                    "font-weight": "bold",
-                                                    "letter-spacing": "2px"
+                                              },
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    label: "Plating Process",
+                                                    clearable: ""
+                                                  },
+                                                  on: {
+                                                    input: function(val) {
+                                                      return _vm
+                                                        .modelForPlatingProcesses
+                                                        .plating_process
+                                                        ? (_vm.modelForPlatingProcesses.plating_process = _vm.modelForPlatingProcesses.plating_process.toUpperCase())
+                                                        : null
+                                                    }
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm
+                                                        .modelForPlatingProcesses
+                                                        .plating_process,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.modelForPlatingProcesses,
+                                                        "plating_process",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "modelForPlatingProcesses.plating_process"
                                                   }
-                                                },
-                                                [_vm._v("Add a Vendor")]
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Company Name",
-                                              clearable: ""
-                                            },
-                                            on: {
-                                              input: function(val) {
-                                                return _vm.modelForVendor
-                                                  .company_name
-                                                  ? (_vm.modelForVendor.company_name = _vm.modelForVendor.company_name.toUpperCase())
-                                                  : null
-                                              }
-                                            },
-                                            model: {
-                                              value:
-                                                _vm.modelForVendor.company_name,
-                                              callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.modelForVendor,
-                                                  "company_name",
-                                                  $$v
-                                                )
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
                                               },
-                                              expression:
-                                                "modelForVendor.company_name"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Company Address",
-                                              clearable: ""
-                                            },
-                                            on: {
-                                              input: function(val) {
-                                                return _vm.modelForVendor
-                                                  .address
-                                                  ? (_vm.modelForVendor.address = _vm.modelForVendor.address.toUpperCase())
-                                                  : null
-                                              }
-                                            },
-                                            model: {
-                                              value: _vm.modelForVendor.address,
-                                              callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.modelForVendor,
-                                                  "address",
-                                                  $$v
-                                                )
-                                              },
-                                              expression:
-                                                "modelForVendor.address"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Contact Person",
-                                              clearable: ""
-                                            },
-                                            on: {
-                                              input: function(val) {
-                                                return _vm.modelForVendor
-                                                  .contact_person
-                                                  ? (_vm.modelForVendor.contact_person = _vm.modelForVendor.contact_person.toUpperCase())
-                                                  : null
-                                              }
-                                            },
-                                            model: {
-                                              value:
-                                                _vm.modelForVendor
-                                                  .contact_person,
-                                              callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.modelForVendor,
-                                                  "contact_person",
-                                                  $$v
-                                                )
-                                              },
-                                              expression:
-                                                "modelForVendor.contact_person"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Contact Number",
-                                              clearable: ""
-                                            },
-                                            on: {
-                                              input: function(val) {
-                                                return _vm.modelForVendor
-                                                  .contact_number
-                                                  ? (_vm.modelForVendor.contact_number = _vm.modelForVendor.contact_number.toUpperCase())
-                                                  : null
-                                              }
-                                            },
-                                            model: {
-                                              value:
-                                                _vm.modelForVendor
-                                                  .contact_number,
-                                              callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.modelForVendor,
-                                                  "contact_number",
-                                                  $$v
-                                                )
-                                              },
-                                              expression:
-                                                "modelForVendor.contact_number"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-actions",
-                            { staticClass: "justify-end" },
-                            [
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: {
-                                    color: "primary",
-                                    disabled:
-                                      _vm.modelForVendor.company_name == "" ||
-                                      _vm.modelForVendor.company_name == null ||
-                                      _vm.modelForVendor.address == "" ||
-                                        _vm.modelForVendor.address == null ||
-                                      _vm.modelForVendor.contact_number == "" ||
-                                        _vm.modelForVendor.contact_number ==
-                                          null ||
-                                      _vm.modelForVendor.contact_person == "" ||
-                                        _vm.modelForVendor.contact_person ==
-                                          null
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.addVendor()
-                                    }
-                                  }
-                                },
-                                [_vm._v("Save\n                        ")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { text: "" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.close()
-                                    }
-                                  }
-                                },
-                                [_vm._v("Close\n                    ")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.tab == 4
-                    ? _c(
-                        "div",
-                        [
-                          _c(
-                            "v-toolbar",
-                            { attrs: { color: "primary", dark: "" } },
-                            [_vm._v("Add Payment Terms\n                ")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-text",
-                            [
-                              _c(
-                                "v-container",
-                                [
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        { attrs: { cols: "12", md: "12" } },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticStyle: {
-                                                "background-color": "#2196F3",
-                                                padding: "10px"
-                                              }
-                                            },
-                                            [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticStyle: {
-                                                    color: "white",
-                                                    "font-weight": "bold",
-                                                    "letter-spacing": "2px"
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    label: "Type",
+                                                    clearable: ""
+                                                  },
+                                                  on: {
+                                                    input: function(val) {
+                                                      return _vm
+                                                        .modelForPlatingProcesses
+                                                        .type
+                                                        ? (_vm.modelForPlatingProcesses.type = _vm.modelForPlatingProcesses.type.toUpperCase())
+                                                        : null
+                                                    }
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm
+                                                        .modelForPlatingProcesses
+                                                        .type,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.modelForPlatingProcesses,
+                                                        "type",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "modelForPlatingProcesses.type"
                                                   }
-                                                },
-                                                [_vm._v("Add a Payment Term")]
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-row",
-                                    [
-                                      _c(
-                                        "v-col",
-                                        {
-                                          attrs: {
-                                            cols: "12",
-                                            sm: "6",
-                                            md: "4"
-                                          }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Payment Term",
-                                              clearable: ""
-                                            },
-                                            on: {
-                                              input: function(val) {
-                                                return _vm.payment_term
-                                                  ? (_vm.payment_term = _vm.payment_term.toUpperCase())
-                                                  : null
-                                              }
-                                            },
-                                            model: {
-                                              value: _vm.payment_term,
-                                              callback: function($$v) {
-                                                _vm.payment_term = $$v
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
                                               },
-                                              expression: "payment_term"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-actions",
-                            { staticClass: "justify-end" },
-                            [
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { color: "primary" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.addPaymentTerm()
-                                    }
-                                  }
-                                },
-                                [_vm._v("Save\n                        ")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { text: "" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.close()
-                                    }
-                                  }
-                                },
-                                [_vm._v("Close\n                    ")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    : _vm._e()
-                ])
-              ]
+                                              [
+                                                _c(
+                                                  "div",
+                                                  [
+                                                    _c("vuetify-money", {
+                                                      attrs: {
+                                                        label:
+                                                          "Price per. Sq. Inch",
+                                                        placeholder: " ",
+                                                        outlined: true,
+                                                        clearable: true,
+                                                        options: _vm.options
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm
+                                                            .modelForPlatingProcesses
+                                                            .price_per_square_inch,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.modelForPlatingProcesses,
+                                                            "price_per_square_inch",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "modelForPlatingProcesses.price_per_square_inch"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-actions",
+                                  { staticClass: "justify-end" },
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          color: "primary",
+                                          disabled:
+                                            !_vm.modelForPlatingProcesses
+                                              .plating_process ||
+                                            !_vm.modelForPlatingProcesses
+                                              .price_per_square_inch
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.addPlatingProcess()
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Save\n                        ")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { text: "" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.close()
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Close\n                    ")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.tab == 3
+                          ? _c(
+                              "div",
+                              [
+                                _c(
+                                  "v-toolbar",
+                                  { attrs: { color: "primary", dark: "" } },
+                                  [_vm._v("Add Vendors\n                ")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-text",
+                                  [
+                                    _c(
+                                      "v-container",
+                                      [
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: { cols: "12", md: "12" }
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticStyle: {
+                                                      "background-color":
+                                                        "#2196F3",
+                                                      padding: "10px"
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "span",
+                                                      {
+                                                        staticStyle: {
+                                                          color: "white",
+                                                          "font-weight": "bold",
+                                                          "letter-spacing":
+                                                            "2px"
+                                                        }
+                                                      },
+                                                      [_vm._v("Add a Vendor")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
+                                              },
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    label: "Company Name",
+                                                    clearable: ""
+                                                  },
+                                                  on: {
+                                                    input: function(val) {
+                                                      return _vm.modelForVendor
+                                                        .company_name
+                                                        ? (_vm.modelForVendor.company_name = _vm.modelForVendor.company_name.toUpperCase())
+                                                        : null
+                                                    }
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.modelForVendor
+                                                        .company_name,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.modelForVendor,
+                                                        "company_name",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "modelForVendor.company_name"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
+                                              },
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    label: "Company Address",
+                                                    clearable: ""
+                                                  },
+                                                  on: {
+                                                    input: function(val) {
+                                                      return _vm.modelForVendor
+                                                        .address
+                                                        ? (_vm.modelForVendor.address = _vm.modelForVendor.address.toUpperCase())
+                                                        : null
+                                                    }
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.modelForVendor
+                                                        .address,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.modelForVendor,
+                                                        "address",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "modelForVendor.address"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
+                                              },
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    label: "Contact Person",
+                                                    clearable: ""
+                                                  },
+                                                  on: {
+                                                    input: function(val) {
+                                                      return _vm.modelForVendor
+                                                        .contact_person
+                                                        ? (_vm.modelForVendor.contact_person = _vm.modelForVendor.contact_person.toUpperCase())
+                                                        : null
+                                                    }
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.modelForVendor
+                                                        .contact_person,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.modelForVendor,
+                                                        "contact_person",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "modelForVendor.contact_person"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
+                                              },
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    label: "Contact Number",
+                                                    clearable: ""
+                                                  },
+                                                  on: {
+                                                    input: function(val) {
+                                                      return _vm.modelForVendor
+                                                        .contact_number
+                                                        ? (_vm.modelForVendor.contact_number = _vm.modelForVendor.contact_number.toUpperCase())
+                                                        : null
+                                                    }
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.modelForVendor
+                                                        .contact_number,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.modelForVendor,
+                                                        "contact_number",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "modelForVendor.contact_number"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-actions",
+                                  { staticClass: "justify-end" },
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          color: "primary",
+                                          disabled:
+                                            _vm.modelForVendor.company_name ==
+                                              "" ||
+                                            _vm.modelForVendor.company_name ==
+                                              null ||
+                                            _vm.modelForVendor.address == "" ||
+                                              _vm.modelForVendor.address ==
+                                                null ||
+                                            _vm.modelForVendor.contact_number ==
+                                              "" ||
+                                              _vm.modelForVendor
+                                                .contact_number == null ||
+                                            _vm.modelForVendor.contact_person ==
+                                              "" ||
+                                              _vm.modelForVendor
+                                                .contact_person == null
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.addVendor()
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Save\n                        ")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { text: "" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.close()
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Close\n                    ")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.tab == 4
+                          ? _c(
+                              "div",
+                              [
+                                _c(
+                                  "v-toolbar",
+                                  { attrs: { color: "primary", dark: "" } },
+                                  [
+                                    _vm._v(
+                                      "Add Payment Terms\n                "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-text",
+                                  [
+                                    _c(
+                                      "v-container",
+                                      [
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: { cols: "12", md: "12" }
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticStyle: {
+                                                      "background-color":
+                                                        "#2196F3",
+                                                      padding: "10px"
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "span",
+                                                      {
+                                                        staticStyle: {
+                                                          color: "white",
+                                                          "font-weight": "bold",
+                                                          "letter-spacing":
+                                                            "2px"
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "Add a Payment Term"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-row",
+                                          [
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: {
+                                                  cols: "12",
+                                                  sm: "6",
+                                                  md: "4"
+                                                }
+                                              },
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    label: "Payment Term",
+                                                    clearable: ""
+                                                  },
+                                                  on: {
+                                                    input: function(val) {
+                                                      return _vm.payment_term
+                                                        ? (_vm.payment_term = _vm.payment_term.toUpperCase())
+                                                        : null
+                                                    }
+                                                  },
+                                                  model: {
+                                                    value: _vm.payment_term,
+                                                    callback: function($$v) {
+                                                      _vm.payment_term = $$v
+                                                    },
+                                                    expression: "payment_term"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-actions",
+                                  { staticClass: "justify-end" },
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { color: "primary" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.addPaymentTerm()
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Save\n                        ")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { text: "" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.close()
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Close\n                    ")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e()
+                      ])
+                    ]
+                  }
+                }
+              ],
+              null,
+              false,
+              1381801166
+            ),
+            model: {
+              value: _vm.dialog,
+              callback: function($$v) {
+                _vm.dialog = $$v
+              },
+              expression: "dialog"
             }
-          }
-        ]),
-        model: {
-          value: _vm.dialog,
-          callback: function($$v) {
-            _vm.dialog = $$v
-          },
-          expression: "dialog"
-        }
-      }),
+          })
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "v-dialog",

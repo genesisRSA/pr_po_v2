@@ -85,6 +85,7 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::get('/getUpdatedPrice', [DashboardController::class, 'getUpdatedPrice'])->name('getUpdatedPrice');
     Route::get('/getUpdatedPriceItemList', [DashboardController::class, 'getUpdatedPriceItemList'])->name('getUpdatedPriceItemList');
     Route::get('/getAvailableDept', [DashboardController::class, 'getAvailableDept'])->name('getAvailableDept');
+    Route::get('/getPermissionForDM',[DashboardController::class, 'getPermissionForDM'])->name('getPermissionForDM');
     
     Route::post('/addOrEditUserPermission', [DashboardController::class, 'addOrEditUserPermission'])->name('addOrEditUserPermission');
     Route::post('/deleteUser', [DashboardController::class, 'deleteUser'])->name('deleteUser');

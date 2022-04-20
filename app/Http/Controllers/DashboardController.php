@@ -863,6 +863,36 @@ class DashboardController extends Controller
 
         return response()->json($detection);
     }
+
+    public function getPermissionForDM(){
+        
+        if(Auth::user()->role_as == 1){
+
+            $perm = ['true','true','true','true'];
+
+        } else {
+
+            if(Auth::user()->permission->count() == 0){
+
+                $perm = ['false','false','false','false'];
+
+            } else {
+
+                $perm = Auth::user()->permission[3]->permission;
+
+                $exp = explode(',',$perm);
+
+                $arr = array();
+
+                foreach($exp as $ex){
+                    $arr[] = $ex;
+                }
+
+                $perm = $arr;
+            }
+        }
+        return response()->json($perm);
+    }
     /**
      * Show the form for creating a new resource.
      *
