@@ -893,6 +893,7 @@
           });
       },
 
+
       addOrEditUserPermission(email){
         let params = {
           'email' : email,
