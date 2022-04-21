@@ -1,0 +1,256 @@
+This is my first schedulerThis is my first schedulerHello GenesisHello GenesisHello Genesis
+   BadMethodCallException 
+
+  Method Illuminate\Database\Eloquent\Collection::delete does not exist.
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Macroable\Traits\Macroable.php:113
+    109▕      */
+    110▕     public function __call($method, $parameters)
+    111▕     {
+    112▕         if (! static::hasMacro($method)) {
+  ➜ 113▕             throw new BadMethodCallException(sprintf(
+    114▕                 'Method %s::%s does not exist.', static::class, $method
+    115▕             ));
+    116▕         }
+    117▕
+
+  • Bad Method Call: Did you mean Illuminate\Database\Eloquent\Collection::modelKeys() ? 
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:45
+      Illuminate\Support\Collection::__call("delete", [])
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\DailyMessage::handle()
+
+   BadMethodCallException 
+
+  Method Illuminate\Database\Eloquent\Collection::delete does not exist.
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Macroable\Traits\Macroable.php:113
+    109▕      */
+    110▕     public function __call($method, $parameters)
+    111▕     {
+    112▕         if (! static::hasMacro($method)) {
+  ➜ 113▕             throw new BadMethodCallException(sprintf(
+    114▕                 'Method %s::%s does not exist.', static::class, $method
+    115▕             ));
+    116▕         }
+    117▕
+
+  • Bad Method Call: Did you mean Illuminate\Database\Eloquent\Collection::modelKeys() ? 
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:45
+      Illuminate\Support\Collection::__call("delete", [])
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\DailyMessage::handle()
+
+   Error 
+
+  Class 'App\Console\Commands\App\Mail\NoticeMail' not found
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:50
+     46▕             'title' => 'Expiration Notice',
+     47▕             'body' => 'The TNR certificate of will be expired at ' . Carbon::now()->addMonth()->format('Y-m-d')
+     48▕         ];
+     49▕        
+  ➜  50▕         Mail::to('saturnolicious@gmail.com')->send(new App\Mail\NoticeMail($details));
+     51▕ 
+     52▕     }
+     53▕ }
+     54▕
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\DailyMessage::handle()
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\Util.php:40
+      Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+
+   Error 
+
+  Class 'App\Console\Commands\App\Mail\NoticeMail' not found
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:50
+     46▕             'title' => 'Expiration Notice',
+     47▕             'body' => 'The TNR certificate of will be expired at ' . Carbon::now()->addMonth()->format('Y-m-d')
+     48▕         ];
+     49▕        
+  ➜  50▕         Mail::to('saturnolicious@gmail.com')->send(new App\Mail\NoticeMail($details));
+     51▕ 
+     52▕ 
+     53▕     }
+     54▕ }
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\DailyMessage::handle()
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\Util.php:40
+      Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+
+   Error 
+
+  Class 'App\Console\Commands\User' not found
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:45
+     41▕      */
+     42▕     public function handle()
+     43▕     {
+     44▕ 
+  ➜  45▕         $user = User::first();
+     46▕        
+     47▕         $user->notify( new App\Notifications\DailyMessage());
+     48▕ 
+     49▕
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\DailyMessage::handle()
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\Util.php:40
+      Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+
+   Error 
+
+  Class 'App\Console\Commands\App\Notifications\DailyMessage' not found
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:48
+     44▕     {
+     45▕ 
+     46▕         $user = User::first();
+     47▕        
+  ➜  48▕         $user->notify( new App\Notifications\DailyMessage());
+     49▕ 
+     50▕ 
+     51▕     }
+     52▕ }
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\DailyMessage::handle()
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\Util.php:40
+      Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+
+   Error 
+
+  Class 'App\Console\Commands\App\Notifications\DailyMessage' not found
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:48
+     44▕     {
+     45▕ 
+     46▕         $user = User::first();
+     47▕        
+  ➜  48▕         $user->notify( new App\Notifications\DailyMessage());
+     49▕ 
+     50▕ 
+     51▕     }
+     52▕ }
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\DailyMessage::handle()
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\Util.php:40
+      Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+
+   Error 
+
+  Class 'App\Console\Commands\Auth' not found
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:46
+     42▕      */
+     43▕     public function handle()
+     44▕     {
+     45▕ 
+  ➜  46▕         $user = Auth::user();
+     47▕        
+     48▕         $user->notify( new App\Notifications\DailyMessage());
+     49▕ 
+     50▕
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\DailyMessage::handle()
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\Util.php:40
+      Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+
+   Error 
+
+  Class 'App\Console\Commands\Auth' not found
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:46
+     42▕      */
+     43▕     public function handle()
+     44▕     {
+     45▕ 
+  ➜  46▕         $user = Auth::user();
+     47▕        
+     48▕         $user->notify( new App\Notifications\DailyMessage());
+     49▕ 
+     50▕
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\DailyMessage::handle()
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\Util.php:40
+      Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+
+   Symfony\Component\Routing\Exception\RouteNotFoundException 
+
+  Route [send-mail] not defined.
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Routing\UrlGenerator.php:444
+    440▕         if (! is_null($route = $this->routes->getByName($name))) {
+    441▕             return $this->toRoute($route, $parameters, $absolute);
+    442▕         }
+    443▕ 
+  ➜ 444▕         throw new RouteNotFoundException("Route [{$name}] not defined.");
+    445▕     }
+    446▕ 
+    447▕     /**
+    448▕      * Get the URL for a given route instance.
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Routing\Redirector.php:176
+      Illuminate\Routing\UrlGenerator::route("send-mail", [])
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:46
+      Illuminate\Routing\Redirector::route("send-mail")
+
+   Symfony\Component\Routing\Exception\RouteNotFoundException 
+
+  Route [send-mail] not defined.
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Routing\UrlGenerator.php:444
+    440▕         if (! is_null($route = $this->routes->getByName($name))) {
+    441▕             return $this->toRoute($route, $parameters, $absolute);
+    442▕         }
+    443▕ 
+  ➜ 444▕         throw new RouteNotFoundException("Route [{$name}] not defined.");
+    445▕     }
+    446▕ 
+    447▕     /**
+    448▕      * Get the URL for a given route instance.
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Routing\Redirector.php:176
+      Illuminate\Routing\UrlGenerator::route("send-mail", [])
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:46
+      Illuminate\Routing\Redirector::route("send-mail")
+
+   Error 
+
+  Class 'App\Console\Commands\Auth' not found
+
+  at C:\Users\Software Developer\code\cert_tracking_v2\app\Console\Commands\DailyMessage.php:67
+     63▕             'title' => 'Expiration Notice',
+     64▕             'body' => 'The TNR certificate of will be expired at ' . Carbon::now()->addMonth()->format('Y-m-d')
+     65▕         ];
+     66▕        
+  ➜  67▕         Mail::to(Auth::user()->email)->send(new App\Mail\NoticeMail($details));
+     68▕ 
+     69▕ 
+     70▕     }
+     71▕ }
+
+  1   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\DailyMessage::handle()
+
+  2   C:\Users\Software Developer\code\cert_tracking_v2\vendor\laravel\framework\src\Illuminate\Container\Util.php:40
+      Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
