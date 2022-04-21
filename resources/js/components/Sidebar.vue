@@ -12,7 +12,7 @@
 <v-toolbar-title class='toolbar_title'><img :src="require('../../../public/images/resbanner.png').default" style="width:270px; height:205px; position: relative; bottom: 55px; right:10px;"></v-toolbar-title>
 <v-toolbar-title class='toolbar_title'></v-toolbar-title>
 </div>
-        <div class="mb-40" style="position:relative; bottom:100px; color: white;  font-weight: bold; left:20px;">Hello Genesis!</div>
+        <div class="mb-40" style="position:relative; bottom:100px; color: white;  font-weight: bold; left:20px;">{{ AuthUser }}</div>
       </v-sheet>
                                   <v-dialog transition="fab-transition"
                                 v-model="logout_dialog"
@@ -162,11 +162,13 @@
       canViewPR : '',
       canViewPO : '',
       canViewDM : '',
+      AuthUser: ''
     }),
 
     created: function(){
         this.is_admin()
         this.canView()
+        this.authUserForSideBar()
     },
 
     methods: {
@@ -195,7 +197,20 @@
               .finally(() => {
                   
               });
-        }
+        },
+        authUserForSideBar() {
+               axios.get('/authUserForSideBar')
+              .then(response =>{
+                    this.AuthUser = 'Hello, '+response.data+' !'
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+                  
+              });
+        },
+
     },
   }
 </script>

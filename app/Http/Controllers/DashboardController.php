@@ -162,16 +162,17 @@ class DashboardController extends Controller
     }
 
     public function getEmpUser(){
-       $getEmp =  User::where('role_as','!=',1)->get()->map( function($query){
+       $getEmp =  User::all()->map( function($query){
            return [
                'name' => $query->name,
                'emp_id' => $query->emp_id,
                'email' => $query->email,
                'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
                'updated_at' => Carbon::parse($query->updated_at)->format('Y-m-d'),
+               'role_as' => $query->role_as
            ];
        })->toArray();
-       return response()->json($getEmp);
+       return response()->json([$getEmp]);
     }
 
     public function getUserAuthorization(Request $request){
@@ -892,6 +893,14 @@ class DashboardController extends Controller
             }
         }
         return response()->json($perm);
+    }
+
+    public function authUserForSideBar(){
+        $user = ucwords(Auth::user()->name);
+
+        $exp = explode(' ',$user);
+
+        return response()->json($exp[0]);
     }
     /**
      * Show the form for creating a new resource.

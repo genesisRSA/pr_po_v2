@@ -36,7 +36,6 @@
                         :page.sync="page"
                         :items-per-page="itemsPerPage"
                         @page-count="pageCount = $event"
-                        sort-by="name"
                         class="elevation-1"
                     >
                         <template v-slot:top>
@@ -50,7 +49,16 @@
                             >
                             <v-card>
                                 <v-card-title>
-                                <span class="text-h5">{{ formTitle }}</span>
+                                      <span class="text-h5">{{ formTitle }}</span>
+                                </v-card-title>
+                                <v-card-title>
+                                    <v-col cols="12"
+                                        sm="6"
+                                        md="6">
+                                      <v-select placeholder='Select User Config'
+                                      :items='itemsForUserConfig' @input='getUserConfig($event)' v-model='selectedUserConfig'>
+                                      </v-select>
+                                    </v-col>
                                 </v-card-title>
 
                                 <v-card-text>
@@ -71,6 +79,7 @@
                                     <v-checkbox
                                       v-model="checkbox[0].view_rfq"
                                       label="Can View?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -81,6 +90,7 @@
                                     <v-checkbox
                                       v-model="checkbox[0].add_rfq"
                                       label="Can Add?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -91,6 +101,7 @@
                                     <v-checkbox
                                       v-model="checkbox[0].update_rfq"
                                       label="Can Update?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -101,6 +112,7 @@
                                     <v-checkbox
                                       v-model="checkbox[0].delete_rfq"
                                       label="Can Delete?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     </v-row>
@@ -120,6 +132,7 @@
                                     <v-checkbox
                                       v-model="checkbox[1].view_pr"
                                       label="Can View?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -130,6 +143,7 @@
                                     <v-checkbox
                                       v-model="checkbox[1].add_pr"
                                       label="Can Add?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -140,6 +154,7 @@
                                     <v-checkbox
                                       v-model="checkbox[1].update_pr"
                                       label="Can Update?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -150,6 +165,7 @@
                                     <v-checkbox
                                       v-model="checkbox[1].delete_pr"
                                       label="Can Delete?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     </v-row>
@@ -169,6 +185,7 @@
                                     <v-checkbox
                                       v-model="checkbox[2].view_po"
                                       label="Can View?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -179,6 +196,7 @@
                                     <v-checkbox
                                       v-model="checkbox[2].add_po"
                                       label="Can Add?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -189,6 +207,7 @@
                                     <v-checkbox
                                       v-model="checkbox[2].update_po"
                                       label="Can Update?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -199,6 +218,7 @@
                                     <v-checkbox
                                       v-model="checkbox[2].delete_po"
                                       label="Can Delete?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     </v-row>
@@ -218,6 +238,7 @@
                                     <v-checkbox
                                       v-model="checkbox[3].view_dm"
                                       label="Can View?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -228,6 +249,7 @@
                                     <v-checkbox
                                       v-model="checkbox[3].add_dm"
                                       label="Can Add?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -238,6 +260,7 @@
                                     <v-checkbox
                                       v-model="checkbox[3].update_dm"
                                       label="Can Update?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     <v-col
@@ -248,6 +271,7 @@
                                     <v-checkbox
                                       v-model="checkbox[3].delete_dm"
                                       label="Can Delete?"
+                                      disabled
                                     ></v-checkbox>
                                     </v-col>
                                     </v-row>
@@ -299,6 +323,8 @@
                         </template>
                         <template v-slot:item.actions="{ item }">
 
+                        <div class='d-flex' v-if='item.role_as==0'>
+
                         <v-tooltip bottom>
                           <template v-slot:activator="{ on, attrs }">
                               <v-icon
@@ -313,6 +339,7 @@
                           </template>
                           <span>Edit Permission</span>
                         </v-tooltip>
+
 
                         <v-tooltip bottom>
                           <template v-slot:activator="{ on, attrs }">
@@ -342,6 +369,16 @@
                           </template>
                           <span>Delete User</span>
                         </v-tooltip>
+                        </div>
+                        <div v-else>
+                              <v-icon
+                                  small
+                                  class="mr-2"
+                              >
+                                  mdi-shield-account
+                              </v-icon>
+                              <span style='position: relative; right: 8px;'>ADMIN</span>
+                        </div>
 
                         </template>
                     </v-data-table>
@@ -681,7 +718,10 @@
                   dept_name: null
                 },
 
-                selectedDept:{}
+                selectedDept:{},
+
+                itemsForUserConfig: ['Requestor','Buyer','Purchase Mngr.','President','CEO'],
+                selectedUserConfig: ''
 
     }),
 
@@ -719,7 +759,7 @@
 
               axios.get('/getEmpUser')
               .then(response =>{
-                    this.users = response.data
+                    this.users = response.data[0]
               })
               .catch(error =>{
                     console.log(error.response);
@@ -797,6 +837,7 @@
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
           this.selectedUserPerm = ''
+          this.selectedUserConfig = ''
         })
       },
 
@@ -969,6 +1010,118 @@
 
       addDept(){
         this.dialogAddDept = true
+      },
+
+      getUserConfig(params){
+        if(params=='Buyer'){
+          this.checkbox[0].view_rfq = false;
+          this.checkbox[0].add_rfq= false;
+          this.checkbox[0].update_rfq = false;
+          this.checkbox[0].delete_rfq = false;
+
+          this.checkbox[1].view_pr = true;
+          this.checkbox[1].add_pr = true;
+          this.checkbox[1].update_pr = true;
+          this.checkbox[1].delete_pr = true;
+
+          this.checkbox[2].view_po = true;
+          this.checkbox[2].add_po = true;
+          this.checkbox[2].update_po = true;
+          this.checkbox[2].delete_po = true;
+
+          this.checkbox[3].view_dm = true;
+          this.checkbox[3].add_dm = true;
+          this.checkbox[3].update_dm = true;
+          this.checkbox[3].delete_dm = true;
+        }
+
+        if(params=='President'){
+          this.checkbox[0].view_rfq = false;
+          this.checkbox[0].add_rfq= false;
+          this.checkbox[0].update_rfq = false;
+          this.checkbox[0].delete_rfq = false;
+
+          this.checkbox[1].view_pr = true;
+          this.checkbox[1].add_pr = true;
+          this.checkbox[1].update_pr = true;
+          this.checkbox[1].delete_pr = true;
+
+          this.checkbox[2].view_po = true;
+          this.checkbox[2].add_po = true;
+          this.checkbox[2].update_po = true;
+          this.checkbox[2].delete_po = true;
+
+          this.checkbox[3].view_dm = false;
+          this.checkbox[3].add_dm = false;
+          this.checkbox[3].update_dm = false;
+          this.checkbox[3].delete_dm = false;
+        }
+
+        if(params=='CEO'){
+          this.checkbox[0].view_rfq = false;
+          this.checkbox[0].add_rfq= false;
+          this.checkbox[0].update_rfq = false;
+          this.checkbox[0].delete_rfq = false;
+
+          this.checkbox[1].view_pr = true;
+          this.checkbox[1].add_pr = true;
+          this.checkbox[1].update_pr = true;
+          this.checkbox[1].delete_pr = true;
+
+          this.checkbox[2].view_po = true;
+          this.checkbox[2].add_po = true;
+          this.checkbox[2].update_po = true;
+          this.checkbox[2].delete_po = true;
+
+          this.checkbox[3].view_dm = false;
+          this.checkbox[3].add_dm = false;
+          this.checkbox[3].update_dm = false;
+          this.checkbox[3].delete_dm = false;
+        }
+
+        if(params=='Requestor'){
+          this.checkbox[0].view_rfq = false;
+          this.checkbox[0].add_rfq= false;
+          this.checkbox[0].update_rfq = false;
+          this.checkbox[0].delete_rfq = false;
+
+          this.checkbox[1].view_pr = true;
+          this.checkbox[1].add_pr = true;
+          this.checkbox[1].update_pr = false;
+          this.checkbox[1].delete_pr = true;
+
+          this.checkbox[2].view_po = true;
+          this.checkbox[2].add_po = true;
+          this.checkbox[2].update_po = false;
+          this.checkbox[2].delete_po = true;
+
+          this.checkbox[3].view_dm = false;
+          this.checkbox[3].add_dm = false;
+          this.checkbox[3].update_dm = false;
+          this.checkbox[3].delete_dm = false;
+        }
+
+        if(params=='Purchase Mngr.'){
+          this.checkbox[0].view_rfq = false;
+          this.checkbox[0].add_rfq= false;
+          this.checkbox[0].update_rfq = false;
+          this.checkbox[0].delete_rfq = false;
+
+          this.checkbox[1].view_pr = true;
+          this.checkbox[1].add_pr = true;
+          this.checkbox[1].update_pr = true;
+          this.checkbox[1].delete_pr = true;
+
+          this.checkbox[2].view_po = true;
+          this.checkbox[2].add_po = true;
+          this.checkbox[2].update_po = true;
+          this.checkbox[2].delete_po = true;
+
+          this.checkbox[3].view_dm = true;
+          this.checkbox[3].add_dm = true;
+          this.checkbox[3].update_dm = true;
+          this.checkbox[3].delete_dm = true;
+        }
       }
 
     },

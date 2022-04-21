@@ -4302,6 +4302,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4405,7 +4442,9 @@ __webpack_require__.r(__webpack_exports__);
         dept_code: null,
         dept_name: null
       },
-      selectedDept: {}
+      selectedDept: {},
+      itemsForUserConfig: ['Requestor', 'Buyer', 'Purchase Mngr.', 'President', 'CEO'],
+      selectedUserConfig: ''
     };
   },
   created: function created() {
@@ -4439,7 +4478,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('/getEmpUser').then(function (response) {
-        _this.users = response.data;
+        _this.users = response.data[0];
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
@@ -4504,6 +4543,7 @@ __webpack_require__.r(__webpack_exports__);
         _this4.editedItem = Object.assign({}, _this4.defaultItem);
         _this4.editedIndex = -1;
         _this4.selectedUserPerm = '';
+        _this4.selectedUserConfig = '';
       });
     },
     closeDialogAddDept: function closeDialogAddDept() {
@@ -4650,6 +4690,102 @@ __webpack_require__.r(__webpack_exports__);
     },
     addDept: function addDept() {
       this.dialogAddDept = true;
+    },
+    getUserConfig: function getUserConfig(params) {
+      if (params == 'Buyer') {
+        this.checkbox[0].view_rfq = false;
+        this.checkbox[0].add_rfq = false;
+        this.checkbox[0].update_rfq = false;
+        this.checkbox[0].delete_rfq = false;
+        this.checkbox[1].view_pr = true;
+        this.checkbox[1].add_pr = true;
+        this.checkbox[1].update_pr = true;
+        this.checkbox[1].delete_pr = true;
+        this.checkbox[2].view_po = true;
+        this.checkbox[2].add_po = true;
+        this.checkbox[2].update_po = true;
+        this.checkbox[2].delete_po = true;
+        this.checkbox[3].view_dm = true;
+        this.checkbox[3].add_dm = true;
+        this.checkbox[3].update_dm = true;
+        this.checkbox[3].delete_dm = true;
+      }
+
+      if (params == 'President') {
+        this.checkbox[0].view_rfq = false;
+        this.checkbox[0].add_rfq = false;
+        this.checkbox[0].update_rfq = false;
+        this.checkbox[0].delete_rfq = false;
+        this.checkbox[1].view_pr = true;
+        this.checkbox[1].add_pr = true;
+        this.checkbox[1].update_pr = true;
+        this.checkbox[1].delete_pr = true;
+        this.checkbox[2].view_po = true;
+        this.checkbox[2].add_po = true;
+        this.checkbox[2].update_po = true;
+        this.checkbox[2].delete_po = true;
+        this.checkbox[3].view_dm = false;
+        this.checkbox[3].add_dm = false;
+        this.checkbox[3].update_dm = false;
+        this.checkbox[3].delete_dm = false;
+      }
+
+      if (params == 'CEO') {
+        this.checkbox[0].view_rfq = false;
+        this.checkbox[0].add_rfq = false;
+        this.checkbox[0].update_rfq = false;
+        this.checkbox[0].delete_rfq = false;
+        this.checkbox[1].view_pr = true;
+        this.checkbox[1].add_pr = true;
+        this.checkbox[1].update_pr = true;
+        this.checkbox[1].delete_pr = true;
+        this.checkbox[2].view_po = true;
+        this.checkbox[2].add_po = true;
+        this.checkbox[2].update_po = true;
+        this.checkbox[2].delete_po = true;
+        this.checkbox[3].view_dm = false;
+        this.checkbox[3].add_dm = false;
+        this.checkbox[3].update_dm = false;
+        this.checkbox[3].delete_dm = false;
+      }
+
+      if (params == 'Requestor') {
+        this.checkbox[0].view_rfq = false;
+        this.checkbox[0].add_rfq = false;
+        this.checkbox[0].update_rfq = false;
+        this.checkbox[0].delete_rfq = false;
+        this.checkbox[1].view_pr = true;
+        this.checkbox[1].add_pr = true;
+        this.checkbox[1].update_pr = false;
+        this.checkbox[1].delete_pr = true;
+        this.checkbox[2].view_po = true;
+        this.checkbox[2].add_po = true;
+        this.checkbox[2].update_po = false;
+        this.checkbox[2].delete_po = true;
+        this.checkbox[3].view_dm = false;
+        this.checkbox[3].add_dm = false;
+        this.checkbox[3].update_dm = false;
+        this.checkbox[3].delete_dm = false;
+      }
+
+      if (params == 'Purchase Mngr.') {
+        this.checkbox[0].view_rfq = false;
+        this.checkbox[0].add_rfq = false;
+        this.checkbox[0].update_rfq = false;
+        this.checkbox[0].delete_rfq = false;
+        this.checkbox[1].view_pr = true;
+        this.checkbox[1].add_pr = true;
+        this.checkbox[1].update_pr = true;
+        this.checkbox[1].delete_pr = true;
+        this.checkbox[2].view_po = true;
+        this.checkbox[2].add_po = true;
+        this.checkbox[2].update_po = true;
+        this.checkbox[2].delete_po = true;
+        this.checkbox[3].view_dm = true;
+        this.checkbox[3].add_dm = true;
+        this.checkbox[3].update_dm = true;
+        this.checkbox[3].delete_dm = true;
+      }
     }
   }
 });
@@ -8095,12 +8231,14 @@ __webpack_require__.r(__webpack_exports__);
       canViewRFQS: '',
       canViewPR: '',
       canViewPO: '',
-      canViewDM: ''
+      canViewDM: '',
+      AuthUser: ''
     };
   },
   created: function created() {
     this.is_admin();
     this.canView();
+    this.authUserForSideBar();
   },
   methods: {
     logout: function logout() {
@@ -8123,6 +8261,15 @@ __webpack_require__.r(__webpack_exports__);
         _this.canViewPR = response.data[1];
         _this.canViewPO = response.data[2];
         _this.canViewDM = response.data[3];
+      })["catch"](function (error) {
+        console.log(error.response);
+      })["finally"](function () {});
+    },
+    authUserForSideBar: function authUserForSideBar() {
+      var _this2 = this;
+
+      axios.get('/authUserForSideBar').then(function (response) {
+        _this2.AuthUser = 'Hello, ' + response.data + ' !';
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
@@ -48513,8 +48660,7 @@ var render = function() {
                           "hide-default-footer": "",
                           search: _vm.search,
                           page: _vm.page,
-                          "items-per-page": _vm.itemsPerPage,
-                          "sort-by": "name"
+                          "items-per-page": _vm.itemsPerPage
                         },
                         on: {
                           "update:page": function($event) {
@@ -48563,6 +48709,54 @@ var render = function() {
                                                   ]
                                                 )
                                               ]),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-card-title",
+                                                [
+                                                  _c(
+                                                    "v-col",
+                                                    {
+                                                      attrs: {
+                                                        cols: "12",
+                                                        sm: "6",
+                                                        md: "6"
+                                                      }
+                                                    },
+                                                    [
+                                                      _c("v-select", {
+                                                        attrs: {
+                                                          placeholder:
+                                                            "Select User Config",
+                                                          items:
+                                                            _vm.itemsForUserConfig
+                                                        },
+                                                        on: {
+                                                          input: function(
+                                                            $event
+                                                          ) {
+                                                            return _vm.getUserConfig(
+                                                              $event
+                                                            )
+                                                          }
+                                                        },
+                                                        model: {
+                                                          value:
+                                                            _vm.selectedUserConfig,
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.selectedUserConfig = $$v
+                                                          },
+                                                          expression:
+                                                            "selectedUserConfig"
+                                                        }
+                                                      })
+                                                    ],
+                                                    1
+                                                  )
+                                                ],
+                                                1
+                                              ),
                                               _vm._v(" "),
                                               _c(
                                                 "v-card-text",
@@ -48635,7 +48829,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can View?"
+                                                                    "Can View?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -48673,7 +48868,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Add?"
+                                                                    "Can Add?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -48711,7 +48907,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Update?"
+                                                                    "Can Update?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -48749,7 +48946,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Delete?"
+                                                                    "Can Delete?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -48842,7 +49040,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can View?"
+                                                                    "Can View?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -48880,7 +49079,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Add?"
+                                                                    "Can Add?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -48918,7 +49118,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Update?"
+                                                                    "Can Update?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -48956,7 +49157,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Delete?"
+                                                                    "Can Delete?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -49049,7 +49251,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can View?"
+                                                                    "Can View?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -49087,7 +49290,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Add?"
+                                                                    "Can Add?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -49125,7 +49329,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Update?"
+                                                                    "Can Update?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -49163,7 +49368,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Delete?"
+                                                                    "Can Delete?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -49256,7 +49462,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can View?"
+                                                                    "Can View?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -49294,7 +49501,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Add?"
+                                                                    "Can Add?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -49332,7 +49540,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Update?"
+                                                                    "Can Update?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -49370,7 +49579,8 @@ var render = function() {
                                                               _c("v-checkbox", {
                                                                 attrs: {
                                                                   label:
-                                                                    "Can Delete?"
+                                                                    "Can Delete?",
+                                                                  disabled: ""
                                                                 },
                                                                 model: {
                                                                   value:
@@ -49625,169 +49835,220 @@ var render = function() {
                               fn: function(ref) {
                                 var item = ref.item
                                 return [
-                                  _c(
-                                    "v-tooltip",
-                                    {
-                                      attrs: { bottom: "" },
-                                      scopedSlots: _vm._u(
+                                  item.role_as == 0
+                                    ? _c(
+                                        "div",
+                                        { staticClass: "d-flex" },
                                         [
-                                          {
-                                            key: "activator",
-                                            fn: function(ref) {
-                                              var on = ref.on
-                                              var attrs = ref.attrs
-                                              return [
-                                                _c(
-                                                  "v-icon",
-                                                  _vm._g(
-                                                    _vm._b(
-                                                      {
-                                                        staticClass: "mr-2",
-                                                        attrs: { small: "" },
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            return _vm.editItem(
-                                                              item
+                                          _c(
+                                            "v-tooltip",
+                                            {
+                                              attrs: { bottom: "" },
+                                              scopedSlots: _vm._u(
+                                                [
+                                                  {
+                                                    key: "activator",
+                                                    fn: function(ref) {
+                                                      var on = ref.on
+                                                      var attrs = ref.attrs
+                                                      return [
+                                                        _c(
+                                                          "v-icon",
+                                                          _vm._g(
+                                                            _vm._b(
+                                                              {
+                                                                staticClass:
+                                                                  "mr-2",
+                                                                attrs: {
+                                                                  small: ""
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    return _vm.editItem(
+                                                                      item
+                                                                    )
+                                                                  }
+                                                                }
+                                                              },
+                                                              "v-icon",
+                                                              attrs,
+                                                              false
+                                                            ),
+                                                            on
+                                                          ),
+                                                          [
+                                                            _vm._v(
+                                                              "\n                              mdi-pencil\n                          "
                                                             )
-                                                          }
-                                                        }
-                                                      },
-                                                      "v-icon",
-                                                      attrs,
-                                                      false
-                                                    ),
-                                                    on
-                                                  ),
-                                                  [
-                                                    _vm._v(
-                                                      "\n                              mdi-pencil\n                          "
-                                                    )
-                                                  ]
-                                                )
-                                              ]
-                                            }
-                                          }
+                                                          ]
+                                                        )
+                                                      ]
+                                                    }
+                                                  }
+                                                ],
+                                                null,
+                                                true
+                                              )
+                                            },
+                                            [
+                                              _vm._v(" "),
+                                              _c("span", [
+                                                _vm._v("Edit Permission")
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-tooltip",
+                                            {
+                                              attrs: { bottom: "" },
+                                              scopedSlots: _vm._u(
+                                                [
+                                                  {
+                                                    key: "activator",
+                                                    fn: function(ref) {
+                                                      var on = ref.on
+                                                      var attrs = ref.attrs
+                                                      return [
+                                                        _c(
+                                                          "v-icon",
+                                                          _vm._g(
+                                                            _vm._b(
+                                                              {
+                                                                staticClass:
+                                                                  "mr-2",
+                                                                attrs: {
+                                                                  small: ""
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    return _vm.voidItem(
+                                                                      item
+                                                                    )
+                                                                  }
+                                                                }
+                                                              },
+                                                              "v-icon",
+                                                              attrs,
+                                                              false
+                                                            ),
+                                                            on
+                                                          ),
+                                                          [
+                                                            _vm._v(
+                                                              "\n                              mdi-lock-reset\n                          "
+                                                            )
+                                                          ]
+                                                        )
+                                                      ]
+                                                    }
+                                                  }
+                                                ],
+                                                null,
+                                                true
+                                              )
+                                            },
+                                            [
+                                              _vm._v(" "),
+                                              _c("span", [
+                                                _vm._v("Void Permission")
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-tooltip",
+                                            {
+                                              attrs: { bottom: "" },
+                                              scopedSlots: _vm._u(
+                                                [
+                                                  {
+                                                    key: "activator",
+                                                    fn: function(ref) {
+                                                      var on = ref.on
+                                                      var attrs = ref.attrs
+                                                      return [
+                                                        _c(
+                                                          "v-icon",
+                                                          _vm._g(
+                                                            _vm._b(
+                                                              {
+                                                                attrs: {
+                                                                  small: ""
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    return _vm.deleteItem(
+                                                                      item
+                                                                    )
+                                                                  }
+                                                                }
+                                                              },
+                                                              "v-icon",
+                                                              attrs,
+                                                              false
+                                                            ),
+                                                            on
+                                                          ),
+                                                          [
+                                                            _vm._v(
+                                                              "\n                              mdi-delete\n                          "
+                                                            )
+                                                          ]
+                                                        )
+                                                      ]
+                                                    }
+                                                  }
+                                                ],
+                                                null,
+                                                true
+                                              )
+                                            },
+                                            [
+                                              _vm._v(" "),
+                                              _c("span", [
+                                                _vm._v("Delete User")
+                                              ])
+                                            ]
+                                          )
                                         ],
-                                        null,
-                                        true
+                                        1
                                       )
-                                    },
-                                    [
-                                      _vm._v(" "),
-                                      _c("span", [_vm._v("Edit Permission")])
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-tooltip",
-                                    {
-                                      attrs: { bottom: "" },
-                                      scopedSlots: _vm._u(
+                                    : _c(
+                                        "div",
                                         [
-                                          {
-                                            key: "activator",
-                                            fn: function(ref) {
-                                              var on = ref.on
-                                              var attrs = ref.attrs
-                                              return [
-                                                _c(
-                                                  "v-icon",
-                                                  _vm._g(
-                                                    _vm._b(
-                                                      {
-                                                        staticClass: "mr-2",
-                                                        attrs: { small: "" },
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            return _vm.voidItem(
-                                                              item
-                                                            )
-                                                          }
-                                                        }
-                                                      },
-                                                      "v-icon",
-                                                      attrs,
-                                                      false
-                                                    ),
-                                                    on
-                                                  ),
-                                                  [
-                                                    _vm._v(
-                                                      "\n                              mdi-lock-reset\n                          "
-                                                    )
-                                                  ]
-                                                )
-                                              ]
-                                            }
-                                          }
+                                          _c(
+                                            "v-icon",
+                                            {
+                                              staticClass: "mr-2",
+                                              attrs: { small: "" }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                              mdi-shield-account\n                          "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "span",
+                                            {
+                                              staticStyle: {
+                                                position: "relative",
+                                                right: "8px"
+                                              }
+                                            },
+                                            [_vm._v("ADMIN")]
+                                          )
                                         ],
-                                        null,
-                                        true
+                                        1
                                       )
-                                    },
-                                    [
-                                      _vm._v(" "),
-                                      _c("span", [_vm._v("Void Permission")])
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-tooltip",
-                                    {
-                                      attrs: { bottom: "" },
-                                      scopedSlots: _vm._u(
-                                        [
-                                          {
-                                            key: "activator",
-                                            fn: function(ref) {
-                                              var on = ref.on
-                                              var attrs = ref.attrs
-                                              return [
-                                                _c(
-                                                  "v-icon",
-                                                  _vm._g(
-                                                    _vm._b(
-                                                      {
-                                                        attrs: { small: "" },
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            return _vm.deleteItem(
-                                                              item
-                                                            )
-                                                          }
-                                                        }
-                                                      },
-                                                      "v-icon",
-                                                      attrs,
-                                                      false
-                                                    ),
-                                                    on
-                                                  ),
-                                                  [
-                                                    _vm._v(
-                                                      "\n                              mdi-delete\n                          "
-                                                    )
-                                                  ]
-                                                )
-                                              ]
-                                            }
-                                          }
-                                        ],
-                                        null,
-                                        true
-                                      )
-                                    },
-                                    [
-                                      _vm._v(" "),
-                                      _c("span", [_vm._v("Delete User")])
-                                    ]
-                                  )
                                 ]
                               }
                             }
@@ -57167,7 +57428,7 @@ var render = function() {
                 left: "20px"
               }
             },
-            [_vm._v("Hello Genesis!")]
+            [_vm._v(_vm._s(_vm.AuthUser))]
           )
         ]
       ),
