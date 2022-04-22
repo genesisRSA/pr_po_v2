@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\UserPosition;
 use App\Models\SitePermission;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -47,5 +48,9 @@ class User extends Authenticatable
 
     public function permission(){
         return $this->hasMany(SitePermission::class, 'requestor', 'id');
+    }
+
+    public function user_position(){
+        return $this->hasOne(UserPosition::class);
     }
 }

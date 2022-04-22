@@ -38,6 +38,13 @@
                         @page-count="pageCount = $event"
                         class="elevation-1"
                     >
+                       <template v-slot:item.name="{ item }">
+                                    <span
+                                    :class="getColor(item.position)"
+                                    >
+                                    {{ item.name }}
+                                    </span>
+                        </template>
                         <template v-slot:top>
                         <v-toolbar
                             flat
@@ -67,8 +74,8 @@
                                         <v-col cols="12" md="12">
                                               <div style="background-color: #2196F3; padding:10px;">
                                                   <span style="color:white; font-weight:bold; letter-spacing: 2px;">Request for Quotation module</span>
-                                              </div> 
-                                        </v-col>  
+                                              </div>
+                                        </v-col>
                                     </v-row>
                                     <v-row>
                                     <v-col
@@ -120,8 +127,8 @@
                                         <v-col cols="12" md="12">
                                               <div style="background-color: #2196F3; padding:10px;">
                                                   <span style="color:white; font-weight:bold; letter-spacing: 2px;">Purchase Request module</span>
-                                              </div> 
-                                        </v-col>  
+                                              </div>
+                                        </v-col>
                                     </v-row>
                                     <v-row>
                                     <v-col
@@ -173,8 +180,8 @@
                                         <v-col cols="12" md="12">
                                               <div style="background-color: #2196F3; padding:10px;">
                                                   <span style="color:white; font-weight:bold; letter-spacing: 2px;">Purchase Order module</span>
-                                              </div> 
-                                        </v-col>  
+                                              </div>
+                                        </v-col>
                                     </v-row>
                                     <v-row>
                                     <v-col
@@ -226,8 +233,8 @@
                                         <v-col cols="12" md="12">
                                               <div style="background-color: #2196F3; padding:10px;">
                                                   <span style="color:white; font-weight:bold; letter-spacing: 2px;">Data Management module</span>
-                                              </div> 
-                                        </v-col>  
+                                              </div>
+                                        </v-col>
                                     </v-row>
                                     <v-row>
                                     <v-col
@@ -653,7 +660,7 @@
                     { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
                 ],
                 users: [],
-                checkbox:[ 
+                checkbox:[
                   {
                     view_rfq: false,
                     add_rfq: false,
@@ -720,7 +727,7 @@
 
                 selectedDept:{},
 
-                itemsForUserConfig: ['Requestor','Buyer','Purchase Mngr.','President','CEO'],
+                itemsForUserConfig: ['REQUESTOR','BUYER','PURCHASE MNGR.','PRESIDENT','CEO'],
                 selectedUserConfig: ''
 
     }),
@@ -765,9 +772,9 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
               });
-        
+
       },
       getAvailableDept(){
               axios.get('/getAvailableDept')
@@ -778,7 +785,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
               });
       },
 
@@ -827,11 +834,12 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
           });
       },
 
       close () {
+        this.initialize()
         this.dialog = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
@@ -869,11 +877,13 @@
       getUserPermission(email){
           axios.get('/getUserAuthorization',{params : {'email': email}})
               .then(response =>{
-                if(response.data == 'none'){
+                if(response.data[0] == 'none'){
                   this.defaultChkBox()
                 } else {
-                  this.checkbox = response.data
+                  this.checkbox = response.data[0]
                 }
+                this.selectedUserConfig = response.data[1]
+                //console.log(response.data)
               })
               .catch(error =>{
                     console.log(error.response);
@@ -883,20 +893,22 @@
           });
       },
 
+
       addOrEditUserPermission(email){
         let params = {
           'email' : email,
           'chk' : this.checkbox,
+          'selected' : this.selectedUserConfig
         }
-              axios.post('/addOrEditUserPermission',{ params })
+            axios.post('/addOrEditUserPermission',{ params })
               .then(response =>{
-
+                  //console.log(response.data)
               })
               .catch(error =>{
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
           });
       },
 
@@ -913,7 +925,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
           });
       },
 
@@ -938,7 +950,7 @@
         this.checkbox[3].update_dm = false;
         this.checkbox[3].delete_dm = false;
       },
-       
+
        deleteUser(email){
               axios.post('/deleteUser',{ email })
               .then(response =>{
@@ -948,7 +960,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
           });
        },
 
@@ -958,7 +970,7 @@
         this.selectedUserPerm = item.email
         this.dialogVoid = true
        },
-       
+
       voidItemConfirm () {
         this.voidSelectedUser(this.selectedUserPerm)
         this.closeVoid()
@@ -966,6 +978,7 @@
 
 
       closeVoid(){
+        this.initialize()
         this.dialogVoid = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
@@ -987,7 +1000,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
           });
       },
 
@@ -1004,7 +1017,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
           });
       },
 
@@ -1013,7 +1026,7 @@
       },
 
       getUserConfig(params){
-        if(params=='Buyer'){
+        if(params=='BUYER'){
           this.checkbox[0].view_rfq = false;
           this.checkbox[0].add_rfq= false;
           this.checkbox[0].update_rfq = false;
@@ -1035,7 +1048,7 @@
           this.checkbox[3].delete_dm = true;
         }
 
-        if(params=='President'){
+        if(params=='PRESIDENT'){
           this.checkbox[0].view_rfq = false;
           this.checkbox[0].add_rfq= false;
           this.checkbox[0].update_rfq = false;
@@ -1079,7 +1092,7 @@
           this.checkbox[3].delete_dm = false;
         }
 
-        if(params=='Requestor'){
+        if(params=='REQUESTOR'){
           this.checkbox[0].view_rfq = false;
           this.checkbox[0].add_rfq= false;
           this.checkbox[0].update_rfq = false;
@@ -1101,7 +1114,7 @@
           this.checkbox[3].delete_dm = false;
         }
 
-        if(params=='Purchase Mngr.'){
+        if(params=='PURCHASE MNGR.'){
           this.checkbox[0].view_rfq = false;
           this.checkbox[0].add_rfq= false;
           this.checkbox[0].update_rfq = false;
@@ -1122,7 +1135,12 @@
           this.checkbox[3].update_dm = true;
           this.checkbox[3].delete_dm = true;
         }
-      }
+      },
+     getColor (calories) {
+
+            if (calories != null && (calories.position =='PRESIDENT' || calories.position =='CEO' || calories.position =='PURCHASE MNGR.')) return 'blue--text'
+            else return
+        },
 
     },
     }

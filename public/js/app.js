@@ -4339,6 +4339,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4443,7 +4450,7 @@ __webpack_require__.r(__webpack_exports__);
         dept_name: null
       },
       selectedDept: {},
-      itemsForUserConfig: ['Requestor', 'Buyer', 'Purchase Mngr.', 'President', 'CEO'],
+      itemsForUserConfig: ['REQUESTOR', 'BUYER', 'PURCHASE MNGR.', 'PRESIDENT', 'CEO'],
       selectedUserConfig: ''
     };
   },
@@ -4538,6 +4545,7 @@ __webpack_require__.r(__webpack_exports__);
     close: function close() {
       var _this4 = this;
 
+      this.initialize();
       this.dialog = false;
       this.$nextTick(function () {
         _this4.editedItem = Object.assign({}, _this4.defaultItem);
@@ -4576,11 +4584,13 @@ __webpack_require__.r(__webpack_exports__);
           'email': email
         }
       }).then(function (response) {
-        if (response.data == 'none') {
+        if (response.data[0] == 'none') {
           _this6.defaultChkBox();
         } else {
-          _this6.checkbox = response.data;
+          _this6.checkbox = response.data[0];
         }
+
+        _this6.selectedUserConfig = response.data[1]; //console.log(response.data)
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
@@ -4588,11 +4598,13 @@ __webpack_require__.r(__webpack_exports__);
     addOrEditUserPermission: function addOrEditUserPermission(email) {
       var params = {
         'email': email,
-        'chk': this.checkbox
+        'chk': this.checkbox,
+        'selected': this.selectedUserConfig
       };
       axios.post('/addOrEditUserPermission', {
         params: params
-      }).then(function (response) {})["catch"](function (error) {
+      }).then(function (response) {//console.log(response.data)
+      })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
     },
@@ -4654,6 +4666,7 @@ __webpack_require__.r(__webpack_exports__);
     closeVoid: function closeVoid() {
       var _this9 = this;
 
+      this.initialize();
       this.dialogVoid = false;
       this.$nextTick(function () {
         _this9.editedItem = Object.assign({}, _this9.defaultItem);
@@ -4692,7 +4705,7 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogAddDept = true;
     },
     getUserConfig: function getUserConfig(params) {
-      if (params == 'Buyer') {
+      if (params == 'BUYER') {
         this.checkbox[0].view_rfq = false;
         this.checkbox[0].add_rfq = false;
         this.checkbox[0].update_rfq = false;
@@ -4711,7 +4724,7 @@ __webpack_require__.r(__webpack_exports__);
         this.checkbox[3].delete_dm = true;
       }
 
-      if (params == 'President') {
+      if (params == 'PRESIDENT') {
         this.checkbox[0].view_rfq = false;
         this.checkbox[0].add_rfq = false;
         this.checkbox[0].update_rfq = false;
@@ -4749,7 +4762,7 @@ __webpack_require__.r(__webpack_exports__);
         this.checkbox[3].delete_dm = false;
       }
 
-      if (params == 'Requestor') {
+      if (params == 'REQUESTOR') {
         this.checkbox[0].view_rfq = false;
         this.checkbox[0].add_rfq = false;
         this.checkbox[0].update_rfq = false;
@@ -4768,7 +4781,7 @@ __webpack_require__.r(__webpack_exports__);
         this.checkbox[3].delete_dm = false;
       }
 
-      if (params == 'Purchase Mngr.') {
+      if (params == 'PURCHASE MNGR.') {
         this.checkbox[0].view_rfq = false;
         this.checkbox[0].add_rfq = false;
         this.checkbox[0].update_rfq = false;
@@ -4786,6 +4799,9 @@ __webpack_require__.r(__webpack_exports__);
         this.checkbox[3].update_dm = true;
         this.checkbox[3].delete_dm = true;
       }
+    },
+    getColor: function getColor(calories) {
+      if (calories != null && (calories.position == 'PRESIDENT' || calories.position == 'CEO' || calories.position == 'PURCHASE MNGR.')) return 'blue--text';else return;
     }
   }
 });
@@ -48672,6 +48688,25 @@ var render = function() {
                         },
                         scopedSlots: _vm._u(
                           [
+                            {
+                              key: "item.name",
+                              fn: function(ref) {
+                                var item = ref.item
+                                return [
+                                  _c(
+                                    "span",
+                                    { class: _vm.getColor(item.position) },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(item.name) +
+                                          "\n                                "
+                                      )
+                                    ]
+                                  )
+                                ]
+                              }
+                            },
                             {
                               key: "top",
                               fn: function() {

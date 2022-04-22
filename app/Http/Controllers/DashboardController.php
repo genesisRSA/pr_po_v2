@@ -18,6 +18,7 @@ use App\Models\PaymentTerm;
 use App\Models\PlatingCostUpdate;
 use App\Models\ItemListCostUpdate;
 use App\Models\Department;
+use App\Models\UserPosition;
 use PDF;
 use Auth;
 use Akaunting\Money\Currency;
@@ -169,7 +170,8 @@ class DashboardController extends Controller
                'email' => $query->email,
                'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
                'updated_at' => Carbon::parse($query->updated_at)->format('Y-m-d'),
-               'role_as' => $query->role_as
+               'role_as' => $query->role_as,
+               'position' => $query->user_position
            ];
        })->toArray();
        return response()->json([$getEmp]);
@@ -177,7 +179,7 @@ class DashboardController extends Controller
 
     public function getUserAuthorization(Request $request){
         $user = User::where('email',$request->email)->first();
-
+        $user_pos = $user->user_position;
         $modules = [
                         ['view_rfq','add_rfq','update_rfq','delete_rfq'],
                         ['view_pr','add_pr','update_pr','delete_pr'],
@@ -202,11 +204,39 @@ class DashboardController extends Controller
         }
 
 
-        return response()->json($result ? $result : 'none');
+        return response()->json([$result ? $result : 'none', $user_pos ? $user_pos->position : '']);
     }
 
     public function addOrEditUserPermission(Request $request){
         $user = User::where('email',$request['params']['email'])->first();
+
+        $isCEO = 0;
+        $isPresident = 0;
+        $isPurchaseMNGR = 0;
+
+        if($request['params']['selected'] == 'CEO'){
+            if(UserPosition::where('position','CEO')->count() > 0){
+                return response()->json();
+            }
+        }
+        if($request['params']['selected'] == 'PRESIDENT'){
+            if(UserPosition::where('position','PRESIDENT')->count() > 0){
+                return response()->json();
+            }
+        }
+        if($request['params']['selected'] == 'PURCHASE MNGR.'){
+            if(UserPosition::where('position','PURCHASE MNGR.')->count() > 0){
+                return response()->json();
+            }
+        }
+
+            UserPosition::updateOrCreate([
+                'user_id' => $user->id
+            ],[
+                'position' => $request['params']['selected']
+            ]);
+
+
 
         $collection = array();
         foreach($request->params['chk'] as $key => $chk){
@@ -245,7 +275,7 @@ class DashboardController extends Controller
             }
         }
 
-        return response()->json('success');
+        return response()->json($request);
     }
 
     public function deleteUser(Request $request){
@@ -253,6 +283,10 @@ class DashboardController extends Controller
 
         if($user->permission->count() > 0){
             $user->permission()->delete();
+        }
+
+        if($user->user_position->count() > 0){
+            $user->user_position()->delete();
         }
 
         $user->delete();
@@ -263,6 +297,7 @@ class DashboardController extends Controller
     public function voidUser(Request $request){
         $user = User::where('email',$request->user)->first();
         $user->permission()->delete();
+        $user->user_position()->delete();
         return response()->json('user permission has been voided successfully.');
     }
 
@@ -351,7 +386,7 @@ class DashboardController extends Controller
             if(in_array(strtolower($request->subcat_name), $arr)){
                 $detection += 1;
             }
-        
+
 
 
         $catval->subcategory_items()->updateOrCreate(['subcategory_name'=>ucwords($request->subcat_name)],['subcategory_name'=>ucwords($request->subcat_name)]);
@@ -563,7 +598,7 @@ class DashboardController extends Controller
     }
 
     public function getAvailablePlatingProcesses(){
-        
+
         $all = PlatingProcess::all()
         ->map( function($query){
             return [
@@ -601,16 +636,16 @@ class DashboardController extends Controller
                 'type'            => $request->params['type'] == null ? '' : strtoupper($request->params['type']),
                 'price_per_square_inch' => $price
             ]);
-            
+
            PlatingCostUpdate::create([
                'plating_process_item_id' => $id,
                'updated_cost' => $price
            ]);
-            
+
 
         }
 
-        
+
         return response()->json(  $detection );
     }
 
@@ -644,7 +679,7 @@ class DashboardController extends Controller
             PlatingProcess::findOrFail($request->params['id'])->update([
                 'plating_process' => strtoupper($request->params['plating_process']),
                 'type' => $request->params['type'] == null ? '' : strtoupper($request->params['type']),
-                'price_per_square_inch' => $price 
+                'price_per_square_inch' => $price
             ]);
 
         }
@@ -732,7 +767,7 @@ class DashboardController extends Controller
         $detection = 0;
 
         foreach (PaymentTerm::all() as $item) {
-            if (in_array(strtoupper($request->params), 
+            if (in_array(strtoupper($request->params),
                         [strtoupper($item->payment_term)]) ) {
                 $detection += 1;
             }
@@ -751,7 +786,7 @@ class DashboardController extends Controller
         $detection = 0;
 
         foreach (PaymentTerm::all() as $item) {
-            if (in_array(strtoupper($request->params['payment_type']), 
+            if (in_array(strtoupper($request->params['payment_type']),
                         [strtoupper($item->payment_term)]) ) {
                 $detection += 1;
             }
@@ -816,9 +851,9 @@ class DashboardController extends Controller
         $detection = 0;
 
         foreach (Department::all() as $item) {
-            if (in_array(strtoupper($request->params['updated']['dept_code']), 
+            if (in_array(strtoupper($request->params['updated']['dept_code']),
                         [strtoupper($item->dept_code)]) &&
-                in_array(strtoupper($request->params['updated']['dept_name']), 
+                in_array(strtoupper($request->params['updated']['dept_name']),
                         [strtoupper($item->dept_name)])) {
                 $detection += 1;
             }
@@ -846,9 +881,9 @@ class DashboardController extends Controller
         $detection = 0;
 
         foreach (Department::all() as $item) {
-            if (in_array(strtoupper($request->params['dept']['dept_code']), 
+            if (in_array(strtoupper($request->params['dept']['dept_code']),
                         [strtoupper($item->dept_code)]) &&
-                in_array(strtoupper($request->params['dept']['dept_name']), 
+                in_array(strtoupper($request->params['dept']['dept_name']),
                         [strtoupper($item->dept_name)])) {
                 $detection += 1;
             }
@@ -866,7 +901,7 @@ class DashboardController extends Controller
     }
 
     public function getPermissionForDM(){
-        
+
         if(Auth::user()->role_as == 1){
 
             $perm = ['true','true','true','true'];
