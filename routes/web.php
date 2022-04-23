@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImagesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\PurchaseRequestController;
 
 use App\Models\CertificationType;
 use App\Models\Employee;
@@ -14,6 +15,7 @@ use App\Models\SitePermission;
 use App\Models\User;
 use App\Models\PaymentTerm;
 use App\Models\PlatingProcess;
+use App\Models\PurchaseRequestList;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,7 +28,8 @@ use App\Models\PlatingProcess;
 */
 Route::get('/test', function(){
 
-    dd(PlatingProcess::find(1)->updated_costs);
+    PurchaseRequestList::find(1)->delete();
+    return 'deleted successfully!';
     // $item = PaymentTerm::find(1);
     // $item->update([
     //     'payment_term' => 'CASH ON DELIVERY'
@@ -87,7 +90,7 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::get('/getAvailableDept', [DashboardController::class, 'getAvailableDept'])->name('getAvailableDept');
     Route::get('/getPermissionForDM',[DashboardController::class, 'getPermissionForDM'])->name('getPermissionForDM');
     Route::get('/authUserForSideBar',[DashboardController::class, 'authUserForSideBar'])->name('authUserForSideBar');
-    
+
     Route::post('/addOrEditUserPermission', [DashboardController::class, 'addOrEditUserPermission'])->name('addOrEditUserPermission');
     Route::post('/deleteUser', [DashboardController::class, 'deleteUser'])->name('deleteUser');
     Route::post('/voidUser', [DashboardController::class, 'voidUser'])->name('voidUser');
@@ -110,6 +113,16 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::post('/updateDept', [DashboardController::class, 'updateDept'])->name('updateDept');
     Route::post('/deleteDeptConfirm', [DashboardController::class, 'deleteDeptConfirm'])->name('deleteDeptConfirm');
     Route::post('/addConfirmDept', [DashboardController::class, 'addConfirmDept'])->name('addConfirmDept');
+
+    Route::get('/getUserPositionPR', [PurchaseRequestController::class, 'getUserPositionPR'])->name('getUserPositionPR');
+
+    ///////////Requestor-API//////////////
+    Route::get('/getMyPRlistRequestor', [PurchaseRequestController::class, 'getMyPRlist'])->name('getMyPRlist');
+    Route::get('/getPRNumberRequestor', [PurchaseRequestController::class, 'getPRNumber'])->name('getPRNumber');
+    Route::get('/getSubCatValRequestor',[PurchaseRequestController::class, 'getSubCatVal'])->name('getSubCatVal');
+    Route::get('/getPartNameValRequestor',[PurchaseRequestController::class,'getPartNameVal'])->name('getPartNameVal');
+    Route::get('/getMaterialValRequestor',[PurchaseRequestController::class, 'getMaterialVal'])->name('getMaterialVal');
+    Route::get('/getDimensionValRequestor',[PurchaseRequestController::class, 'getDimensionVal'])->name('getDimensionVal');
 });
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {
