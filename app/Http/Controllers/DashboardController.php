@@ -506,8 +506,7 @@ class DashboardController extends Controller
                in_array(strtolower($request->params['material']), [strtolower($item->material)]) &&
                in_array(strtolower($request->params['dimension']), [strtolower($item->dimension)]) &&
                in_array(strtolower($cat_val), [strtolower($item->category_item_id)]) &&
-               in_array(strtolower($subcat_val), [strtolower($item->sub_category_item_id)]) &&
-               in_array($unit_price, [$item->unit_price]) ) {
+               in_array(strtolower($subcat_val), [strtolower($item->sub_category_item_id)]) ) {
                 $detection += 1;
             }
         }
@@ -544,8 +543,7 @@ class DashboardController extends Controller
                in_array(strtolower($request->material_val), [strtolower($item->material)]) &&
                in_array(strtolower($request->dimension), [strtolower($item->dimension)]) &&
                in_array(strtolower($request->cat_val), [strtolower($item->category_item_id)]) &&
-               in_array(strtolower($request->subcat_val), [strtolower($item->sub_category_item_id)]) &&
-               in_array($price,[$item->unit_price])) {
+               in_array(strtolower($request->subcat_val), [strtolower($item->sub_category_item_id)]) ) {
                 $detection += 1;
             }
         }

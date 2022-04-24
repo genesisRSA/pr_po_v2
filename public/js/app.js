@@ -4346,6 +4346,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -7806,6 +7815,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {},
   data: function data() {
@@ -7864,6 +7908,10 @@ __webpack_require__.r(__webpack_exports__);
         value: 'dimension',
         "class": "yellow"
       }, {
+        text: 'Quantity',
+        value: 'quantity',
+        "class": "yellow"
+      }, {
         text: 'Remarks',
         value: 'remarks',
         "class": "yellow"
@@ -7890,7 +7938,6 @@ __webpack_require__.r(__webpack_exports__);
         "class": "yellow"
       }],
       addPRdialog: false,
-      raw_unit_price_for_list_item: null,
       options: {
         locale: "en-US",
         prefix: "₱",
@@ -7913,7 +7960,7 @@ __webpack_require__.r(__webpack_exports__);
         material: '',
         quantity: '',
         remarks: '',
-        unit_cost: ''
+        raw_unit_price_for_list_item: ''
       },
       departmentOptions: [],
       categoryOptions: [],
@@ -7969,6 +8016,8 @@ __webpack_require__.r(__webpack_exports__);
         this.dimensionOptions = [];
         this.pr_items.material = null;
         this.materialOptions = [];
+        this.pr_items.quantity = null;
+        this.pr_items.raw_unit_price_for_list_item = null;
       }
 
       axios.get('/getSubCatValRequestor', {
@@ -7993,6 +8042,8 @@ __webpack_require__.r(__webpack_exports__);
         this.dimensionOptions = [];
         this.pr_items.material = null;
         this.materialOptions = [];
+        this.pr_items.quantity = null;
+        this.pr_items.raw_unit_price_for_list_item = null;
       }
 
       axios.get('/getPartNameValRequestor', {
@@ -8016,6 +8067,8 @@ __webpack_require__.r(__webpack_exports__);
       if (params == null) {
         this.pr_items.dimension = null;
         this.dimensionOptions = [];
+        this.pr_items.quantity = null;
+        this.pr_items.raw_unit_price_for_list_item = null;
       }
 
       axios.get('/getMaterialValRequestor', {
@@ -8036,6 +8089,12 @@ __webpack_require__.r(__webpack_exports__);
         'part_name': this.pr_items.part_name,
         'material': params
       };
+
+      if (params == null) {
+        this.pr_items.quantity = null;
+        this.pr_items.raw_unit_price_for_list_item = null;
+      }
+
       axios.get('/getDimensionValRequestor', {
         params: sample
       }).then(function (response) {
@@ -8044,6 +8103,76 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         console.log(error.response);
       })["finally"](function () {});
+    },
+    quantityAndPriceState: function quantityAndPriceState(params) {
+      if (this.pr_items.dimension == null) {
+        this.pr_items.quantity = null;
+        this.pr_items.raw_unit_price_for_list_item = null;
+      }
+    },
+    computedVal: function computedVal(event) {
+      var _this7 = this;
+
+      if (this.pr_items.category && this.pr_items.subcategory && this.pr_items.part_name && this.pr_items.material && this.pr_items.dimension) {
+        if (this.pr_items.quantity == null || this.pr_items.quantity == '') {
+          this.pr_items.raw_unit_price_for_list_item = null;
+          return;
+        }
+
+        axios.get('/getComputedPRprice', {
+          params: this.pr_items
+        }).then(function (response) {
+          _this7.pr_items.raw_unit_price_for_list_item = response.data * _this7.pr_items.quantity;
+
+          if (_this7.pr_items.raw_unit_price_for_list_item == 0) {
+            _this7.pr_items.raw_unit_price_for_list_item = null;
+          }
+        })["catch"](function (error) {
+          console.log(error.response);
+        })["finally"](function () {});
+      }
+    },
+    isNumber: function isNumber(event, quantity) {
+      if (!/\d/.test(event.key) && (event.key !== "." || /\./.test(quantity)) || event.key == '0' && quantity.length == 0) return event.preventDefault();
+    },
+    add_item_disable: function add_item_disable() {
+      if (this.pr_details.so_no == null || this.pr_details.so_no == '' || this.pr_details.department == null || this.pr_details.department == '' || this.pr_items.category == null || this.pr_items.category == '' || this.pr_items.subcategory == null || this.pr_items.subcategory == '' || this.pr_items.part_name == null || this.pr_items.part_name == '' || this.pr_items.dimension == null || this.pr_items.dimension == '' || this.pr_items.material == null || this.pr_items.material == '' || this.pr_items.quantity == null || this.pr_items.quantity == '' || this.pr_items.raw_unit_price_for_list_item == null || this.pr_items.raw_unit_price_for_list_item == '') {
+        return true;
+      }
+    },
+    addToItemList: function addToItemList() {
+      this.addedItems.push({
+        item: this.addedItems.length + 1,
+        part_name: this.pr_items.part_name,
+        material: this.pr_items.material,
+        dimension: this.pr_items.dimension,
+        quantity: this.pr_items.quantity,
+        remarks: this.pr_items.remarks,
+        supplier_one: 'PENDING',
+        supplier_two: 'PENDING',
+        supplier_three: 'PENDING',
+        target_cost: this.pr_items.raw_unit_price_for_list_item.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'PHP'
+        })
+      });
+      this.pr_items.category = null;
+      this.pr_items.subcategory = null;
+      this.pr_items.part_name = null;
+      this.pr_items.material = null;
+      this.pr_items.dimension = null;
+      this.pr_items.quantity = null;
+      this.pr_items.remarks = null;
+      this.pr_items.raw_unit_price_for_list_item = null;
+    },
+    getColorForAddedItem: function getColorForAddedItem(params) {
+      if (params == 'PENDING') {
+        return 'orange';
+      }
+    },
+    deleteItem: function deleteItem(params) {
+      var selectedDelete = this.addedItems.indexOf(params);
+      this.addedItems.splice(selectedDelete, 1);
     }
   }
 });
@@ -13803,7 +13932,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.position_add{\r\n   position: fixed;\r\n   bottom: 15px;\r\n   right: 37px;\n}\n.usage_pos{\r\n   position: relative;\r\n   bottom: -18px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.position_add{\n   position: fixed;\n   bottom: 15px;\n   right: 37px;\n}\n.usage_pos{\n   position: relative;\n   bottom: -18px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -49497,7 +49626,36 @@ var render = function() {
                                           "\n                                "
                                       )
                                     ]
-                                  )
+                                  ),
+                                  _vm._v(" "),
+                                  item.position != null &&
+                                  (item.position.position == "PRESIDENT" ||
+                                    item.position.position == "CEO" ||
+                                    item.position.position == "PURCHASE MNGR.")
+                                    ? _c(
+                                        "v-icon",
+                                        _vm._g(
+                                          _vm._b(
+                                            {
+                                              staticClass: "mr-2",
+                                              attrs: {
+                                                small: "",
+                                                color: "blue"
+                                              }
+                                            },
+                                            "v-icon",
+                                            _vm.attrs,
+                                            false
+                                          ),
+                                          _vm.on
+                                        ),
+                                        [
+                                          _vm._v(
+                                            "\n                                    mdi-account-check\n                                "
+                                          )
+                                        ]
+                                      )
+                                    : _vm._e()
                                 ]
                               }
                             },
@@ -56854,7 +57012,14 @@ var render = function() {
                                 { attrs: { cols: "12", sm: "6", md: "4" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "SO No." }
+                                    attrs: { label: "SO No." },
+                                    model: {
+                                      value: _vm.pr_details.so_no,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.pr_details, "so_no", $$v)
+                                      },
+                                      expression: "pr_details.so_no"
+                                    }
                                   })
                                 ],
                                 1
@@ -57068,6 +57233,11 @@ var render = function() {
                                       label: "Dimension",
                                       clearable: ""
                                     },
+                                    on: {
+                                      input: function($event) {
+                                        return _vm.quantityAndPriceState($event)
+                                      }
+                                    },
                                     model: {
                                       value: _vm.pr_items.dimension,
                                       callback: function($$v) {
@@ -57085,7 +57255,25 @@ var render = function() {
                                 { attrs: { cols: "12", sm: "6", md: "4" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "Quantity" }
+                                    attrs: { label: "Quantity" },
+                                    on: {
+                                      keypress: function($event) {
+                                        return _vm.isNumber(
+                                          $event,
+                                          _vm.pr_items.quantity
+                                        )
+                                      },
+                                      keyup: function($event) {
+                                        return _vm.computedVal($event)
+                                      }
+                                    },
+                                    model: {
+                                      value: _vm.pr_items.quantity,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.pr_items, "quantity", $$v)
+                                      },
+                                      expression: "pr_items.quantity"
+                                    }
                                   })
                                 ],
                                 1
@@ -57107,6 +57295,13 @@ var render = function() {
                                       name: "input-7-4",
                                       label: "Remarks",
                                       placeholder: "Drop a feedback here"
+                                    },
+                                    model: {
+                                      value: _vm.pr_items.remarks,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.pr_items, "remarks", $$v)
+                                      },
+                                      expression: "pr_items.remarks"
                                     }
                                   })
                                 ],
@@ -57130,12 +57325,17 @@ var render = function() {
                                         },
                                         model: {
                                           value:
-                                            _vm.raw_unit_price_for_list_item,
+                                            _vm.pr_items
+                                              .raw_unit_price_for_list_item,
                                           callback: function($$v) {
-                                            _vm.raw_unit_price_for_list_item = $$v
+                                            _vm.$set(
+                                              _vm.pr_items,
+                                              "raw_unit_price_for_list_item",
+                                              $$v
+                                            )
                                           },
                                           expression:
-                                            "raw_unit_price_for_list_item"
+                                            "pr_items.raw_unit_price_for_list_item"
                                         }
                                       })
                                     ],
@@ -57156,7 +57356,17 @@ var render = function() {
                                 [
                                   _c(
                                     "v-btn",
-                                    { attrs: { color: "primary" } },
+                                    {
+                                      attrs: {
+                                        color: "primary",
+                                        disabled: _vm.add_item_disable()
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.addToItemList()
+                                        }
+                                      }
+                                    },
                                     [
                                       _c(
                                         "v-icon",
@@ -57213,6 +57423,86 @@ var render = function() {
                                             )
                                           ]
                                         }
+                                      },
+                                      {
+                                        key: "item.supplier_one",
+                                        fn: function(ref) {
+                                          var item = ref.item
+                                          return [
+                                            _c(
+                                              "v-chip",
+                                              {
+                                                attrs: {
+                                                  color: _vm.getColorForAddedItem(
+                                                    item.supplier_one
+                                                  ),
+                                                  dark: ""
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                        " +
+                                                    _vm._s(item.supplier_one) +
+                                                    "\n                                                    "
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        key: "item.supplier_two",
+                                        fn: function(ref) {
+                                          var item = ref.item
+                                          return [
+                                            _c(
+                                              "v-chip",
+                                              {
+                                                attrs: {
+                                                  color: _vm.getColorForAddedItem(
+                                                    item.supplier_two
+                                                  ),
+                                                  dark: ""
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                        " +
+                                                    _vm._s(item.supplier_two) +
+                                                    "\n                                                    "
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        key: "item.supplier_three",
+                                        fn: function(ref) {
+                                          var item = ref.item
+                                          return [
+                                            _c(
+                                              "v-chip",
+                                              {
+                                                attrs: {
+                                                  color: _vm.getColorForAddedItem(
+                                                    item.supplier_three
+                                                  ),
+                                                  dark: ""
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                        " +
+                                                    _vm._s(
+                                                      item.supplier_three
+                                                    ) +
+                                                    "\n                                                    "
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        }
                                       }
                                     ])
                                   })
@@ -57233,9 +57523,16 @@ var render = function() {
                     "v-card-actions",
                     { staticClass: "justify-end" },
                     [
-                      _c("v-btn", { attrs: { color: "primary" } }, [
-                        _vm._v("Save")
-                      ]),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: {
+                            color: "primary",
+                            disabled: _vm.addedItems.length == 0 ? true : false
+                          }
+                        },
+                        [_vm._v("Save")]
+                      ),
                       _vm._v(" "),
                       _c("v-btn", { attrs: { text: "" } }, [_vm._v("Close")])
                     ],

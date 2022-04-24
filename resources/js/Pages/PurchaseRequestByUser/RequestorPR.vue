@@ -163,6 +163,7 @@
                                     >
                                     <v-text-field
                                         label="SO No."
+                                        v-model='pr_details.so_no'
                                         ></v-text-field>
                                     </v-col>
 
@@ -269,6 +270,7 @@
                                         :item-text="dimensionOptions.text"
                                         :item-value="dimensionOptions.value"
                                         v-model='pr_items.dimension'
+                                        @input='quantityAndPriceState($event)'
                                         label="Dimension"
                                         clearable
                                     ></v-select>
@@ -282,6 +284,9 @@
                                     >
                                     <v-text-field
                                         label="Quantity"
+                                        @keypress="isNumber($event, pr_items.quantity)"
+                                        @keyup="computedVal($event)"
+                                        v-model="pr_items.quantity"
                                     ></v-text-field>
                                     </v-col>
 
@@ -298,6 +303,7 @@
                                             outlined
                                             name="input-7-4"
                                             label="Remarks"
+                                            v-model="pr_items.remarks"
                                             placeholder="Drop a feedback here"
                                         ></v-textarea>
                                     </v-col>
@@ -309,7 +315,7 @@
                                     >
                                         <div>
                                             <vuetify-money
-                                            v-model="raw_unit_price_for_list_item"
+                                            v-model="pr_items.raw_unit_price_for_list_item"
                                             label="Unit Price Cost"
                                             placeholder=" "
                                             :outlined="true"
@@ -318,7 +324,6 @@
                                             />
                                         </div>
                                     </v-col>
-
                                 </v-row>
 
                                 <v-row>
@@ -327,7 +332,7 @@
                                         sm="6"
                                         md="6"
                                     >
-                                    <v-btn color='primary'><v-icon color="white">mdi-plus-circle</v-icon>Add Item</v-btn>
+                                    <v-btn color='primary' :disabled='add_item_disable()' @click="addToItemList()"><v-icon color="white">mdi-plus-circle</v-icon>Add Item</v-btn>
                                     </v-col>
                                 </v-row>
 
@@ -340,6 +345,7 @@
                                             sort-by="calories"
                                             class="elevation-1"
                                         >
+
                                             <template v-slot:item.actions="{ item }">
                                                 <!-- <v-icon
                                                     small
@@ -354,6 +360,34 @@
                                                     mdi-delete
                                                 </v-icon>
                                                 </template>
+
+                                                <template v-slot:item.supplier_one="{ item }">
+                                                        <v-chip
+                                                            :color="getColorForAddedItem(item.supplier_one)"
+                                                            dark
+                                                        >
+                                                            {{ item.supplier_one }}
+                                                        </v-chip>
+                                                </template>
+
+                                                <template v-slot:item.supplier_two="{ item }">
+                                                        <v-chip
+                                                            :color="getColorForAddedItem(item.supplier_two)"
+                                                            dark
+                                                        >
+                                                            {{ item.supplier_two }}
+                                                        </v-chip>
+                                                </template>
+
+                                                <template v-slot:item.supplier_three="{ item }">
+                                                        <v-chip
+                                                            :color="getColorForAddedItem(item.supplier_three)"
+                                                            dark
+                                                        >
+                                                            {{ item.supplier_three }}
+                                                        </v-chip>
+                                                </template>
+
                                         </v-data-table>
                                     </v-col>
                                 </v-row>
@@ -364,6 +398,7 @@
                         <v-card-actions class="justify-end">
                         <v-btn
                          color="primary"
+                         :disabled="addedItems.length == 0 ? true : false"
                         >Save</v-btn>
                         <v-btn
                             text
@@ -412,6 +447,7 @@
                     },
                     { text: 'Material', value: 'material', class: "yellow"},
                     { text: 'Dimension', value: 'dimension', class: "yellow" },
+                    { text: 'Quantity', value: 'quantity', class: "yellow" },
                     { text: 'Remarks', value: 'remarks', class: "yellow" },
                     { text: 'Supplier 1', value: 'supplier_one', class: "yellow" },
                     { text: 'Supplier 2', value: 'supplier_two', class: "yellow" },
@@ -420,7 +456,6 @@
                     { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
                 ],
                 addPRdialog : false,
-                raw_unit_price_for_list_item : null,
                 options: {
                 locale: "en-US",
                 prefix: "₱",
@@ -445,7 +480,7 @@
                     material : '',
                     quantity : '',
                     remarks : '',
-                    unit_cost : ''
+                    raw_unit_price_for_list_item : ''
                 },
 
                 departmentOptions: [],
@@ -524,6 +559,9 @@
 
                  this.pr_items.material = null
                  this.materialOptions = []
+
+                this.pr_items.quantity = null
+                this.pr_items.raw_unit_price_for_list_item = null
              }
               axios.get('/getSubCatValRequestor', { params : params })
               .then(response =>{
@@ -550,6 +588,9 @@
 
                  this.pr_items.material = null
                  this.materialOptions = []
+
+                 this.pr_items.quantity = null
+                this.pr_items.raw_unit_price_for_list_item = null
             }
 
             axios.get('/getPartNameValRequestor', { params : sample })
@@ -575,6 +616,9 @@
              if(params == null){
                  this.pr_items.dimension = null
                  this.dimensionOptions = []
+
+                this.pr_items.quantity = null
+                this.pr_items.raw_unit_price_for_list_item = null
             }
 
              axios.get('/getMaterialValRequestor', { params : sample })
@@ -591,11 +635,17 @@
         },
 
         getDimensionValRequestor(params){
+
             let sample = {
                 'cat' : this.pr_items.category,
                 'subcat' : this.pr_items.subcategory,
                 'part_name' : this.pr_items.part_name,
                 'material' : params
+            }
+
+            if(params == null){
+                this.pr_items.quantity = null
+                this.pr_items.raw_unit_price_for_list_item = null
             }
 
             axios.get('/getDimensionValRequestor', { params : sample })
@@ -610,6 +660,98 @@
 
             });
         },
+
+        quantityAndPriceState(params){
+            if(this.pr_items.dimension == null){
+                this.pr_items.quantity = null
+                this.pr_items.raw_unit_price_for_list_item = null
+            }
+        },
+
+        computedVal(event){
+            if((this.pr_items.category) &&
+               (this.pr_items.subcategory) &&
+               (this.pr_items.part_name) &&
+               (this.pr_items.material) &&
+               (this.pr_items.dimension)){
+
+                    if(this.pr_items.quantity == null || this.pr_items.quantity == ''){
+                         this.pr_items.raw_unit_price_for_list_item = null
+                         return
+                     }
+                    axios.get('/getComputedPRprice', { params : this.pr_items })
+                    .then(response =>{
+                            this.pr_items.raw_unit_price_for_list_item = response.data * this.pr_items.quantity
+                            if(this.pr_items.raw_unit_price_for_list_item == 0){
+                                this.pr_items.raw_unit_price_for_list_item = null
+                            }
+                    })
+                    .catch(error =>{
+                            console.log(error.response);
+                    })
+                    .finally(() => {
+
+                    });
+               }
+
+        },
+        isNumber(event, quantity) {
+
+            if ((!/\d/.test(event.key) &&
+                (event.key !== "." || /\./.test(quantity)) || event.key =='0' && quantity.length == 0)
+            )
+                return event.preventDefault();
+
+        },
+
+        add_item_disable(){
+            if(
+            (this.pr_details.so_no == null || this.pr_details.so_no == '') ||
+            (this.pr_details.department == null || this.pr_details.department == '') ||
+            (this.pr_items.category == null || this.pr_items.category == '')||
+            (this.pr_items.subcategory == null || this.pr_items.subcategory == '')||
+            (this.pr_items.part_name == null || this.pr_items.part_name == '')||
+            (this.pr_items.dimension == null || this.pr_items.dimension == '')||
+            (this.pr_items.material == null || this.pr_items.material == '')||
+            (this.pr_items.quantity == null || this.pr_items.quantity == '')||
+            (this.pr_items.raw_unit_price_for_list_item == null || this.pr_items.raw_unit_price_for_list_item == '')){
+                return true;
+            }
+        },
+
+        addToItemList(){
+
+         this.addedItems.push({item : this.addedItems.length + 1,
+                              part_name : this.pr_items.part_name,
+                              material : this.pr_items.material,
+                              dimension : this.pr_items.dimension,
+                              quantity : this.pr_items.quantity,
+                              remarks : this.pr_items.remarks,
+                              supplier_one : 'PENDING',
+                              supplier_two : 'PENDING',
+                              supplier_three : 'PENDING',
+                              target_cost : this.pr_items.raw_unit_price_for_list_item.toLocaleString('en-US',{style:'currency',currency:'PHP'})
+              })
+            this.pr_items.category = null
+            this.pr_items.subcategory = null
+            this.pr_items.part_name = null
+            this.pr_items.material = null
+            this.pr_items.dimension = null
+            this.pr_items.quantity = null
+            this.pr_items.remarks = null
+            this.pr_items.raw_unit_price_for_list_item = null
+        },
+
+        getColorForAddedItem(params){
+            if(params == 'PENDING'){
+                return 'orange'
+            }
+        },
+
+        deleteItem(params){
+              let selectedDelete = this.addedItems.indexOf(params)
+              this.addedItems.splice(selectedDelete,1)
+        }
 
         },
     }

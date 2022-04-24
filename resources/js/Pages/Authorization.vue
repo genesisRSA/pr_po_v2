@@ -44,6 +44,15 @@
                                     >
                                     {{ item.name }}
                                     </span>
+                                    <v-icon v-if="item.position != null && (item.position.position =='PRESIDENT' || item.position.position =='CEO' || item.position.position =='PURCHASE MNGR.')"
+                                        small
+                                        class="mr-2"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        color="blue"
+                                    >
+                                        mdi-account-check
+                                    </v-icon>
                         </template>
                         <template v-slot:top>
                         <v-toolbar

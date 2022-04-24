@@ -88,8 +88,8 @@
                                         <v-col cols="12" md="12">
                                             <div style="background-color: #2196F3; padding:10px;">
                                                 <span style="color:white; font-weight:bold; letter-spacing: 2px;">Item Details</span>
-                                            </div> 
-                                       </v-col>   
+                                            </div>
+                                       </v-col>
                                     </v-row>
                                     <v-row>
                                         <v-col cols="12" md="6">
@@ -187,7 +187,7 @@
                                     </v-row>
                                     <v-row>
                                         <v-col cols="12" md="2">
-                                            <v-btn color="primary" @click="pushItem" :disabled="!valid"> 
+                                            <v-btn color="primary" @click="pushItem" :disabled="!valid">
                                                 <v-icon color="white">mdi-plus-circle</v-icon>
                                                 Add Item
                                             </v-btn>
@@ -197,8 +197,8 @@
                                         <v-col cols="12" md="12">
                                             <div style="background-color: #2196F3; padding:10px;">
                                                 <span style="color:white; font-weight:bold; letter-spacing: 2px;">Item List</span>
-                                            </div> 
-                                       </v-col>   
+                                            </div>
+                                       </v-col>
                                     </v-row>
                                     <v-row>
                                         <v-col cols="12" md="12">
@@ -224,7 +224,7 @@
                                                     </v-icon>
                                                     </template>
                                             </v-data-table>
-                                       </v-col>   
+                                       </v-col>
                                     </v-row>
                                     </v-container>
                                 </v-tab-item>
@@ -268,7 +268,7 @@
                 valid: true,
                 dialog : false,
                 usage : ['office use','project use'],
-                units : [          
+                units : [
                     { text: 'Millimeter(s)     (mm.)', value: 'mm' },
                     { text: 'Centimeter(s)     (cm.)', value: 'cm' },
                     { text: 'Inch(es)     (in.)', value: 'in' },
@@ -281,7 +281,7 @@
                 pr_code: '',
                 purpose: '',
                 remarks: '',
-                quantity: '', 
+                quantity: '',
                 unit_of_measure: '',
                 selectedItemCode: '',
                 description: '',
@@ -323,7 +323,7 @@
                 ],
                 data_items: [],
                 successSnackbar : false,
-                
+
     }),
 
     created: function(){
@@ -354,7 +354,7 @@
               this.getRandomRFQCode()
           },
           pushItem(){
-              this.data_items.push({pr_code : this.pr_code, 
+              this.data_items.push({pr_code : this.pr_code,
                               item_code : this.selectedItemCode,
                               description : this.description,
                               quantity : this.quantity,
@@ -384,7 +384,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
               });
           },
 
@@ -410,10 +410,10 @@
             });
           },
           isNumber(event, quantity) {
-            if (!/\d/.test(event.key) &&  
-                (event.key !== "." || /\./.test(quantity))  
-            )  
-                return event.preventDefault();  
+            if (!/\d/.test(event.key) &&
+                (event.key !== "." || /\./.test(quantity))
+            )
+                return event.preventDefault();
             }
 
         },

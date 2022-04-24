@@ -145,8 +145,8 @@ class PurchaseRequestController extends Controller
         $item = ItemList::where('category_item_id',$request->cat)->where('sub_category_item_id',$request->subcat)->get()
         ->map( function($query){
             return [
-                'text' => $query->part_name,
-                'value' => $query->part_name
+                'text' => $query->part_name == '' ? 'N/A' : $query->part_name,
+                'value' => $query->part_name == '' ? 'N/A' : $query->part_name
             ];
         });
 
@@ -157,12 +157,12 @@ class PurchaseRequestController extends Controller
 
         $item = ItemList::where('category_item_id',$request->cat)
                         ->where('sub_category_item_id',$request->subcat)
-                        ->where('part_name',$request->part_name)
+                        ->where('part_name',$request->part_name == 'N/A' ? '' : $request->part_name)
                         ->get()
                         ->map( function($query){
                         return [
-                        'text' => $query->material,
-                        'value' => $query->material
+                        'text' => $query->material == '' ? 'N/A' : $query->material,
+                        'value' => $query->material == '' ? 'N/A' : $query->material
                         ];
                         });
         return response()->json($item);
@@ -172,8 +172,8 @@ class PurchaseRequestController extends Controller
 
         $item = ItemList::where('category_item_id',$request->cat)
                         ->where('sub_category_item_id',$request->subcat)
-                        ->where('part_name',$request->part_name)
-                        ->where('material',$request->material)
+                        ->where('part_name',$request->part_name == 'N/A' ? '' : $request->part_name)
+                        ->where('material',$request->material == 'N/A' ? '' : $request->material)
                         ->get()
         ->map( function($query){
             return [
@@ -182,5 +182,17 @@ class PurchaseRequestController extends Controller
             ];
         });
         return response()->json($item);
+    }
+
+    public function getComputedPRprice(Request $request){
+
+        $price = ItemList::where('category_item_id',$request->category)
+                ->where('sub_category_item_id',$request->subcategory)
+                ->where('part_name',$request->part_name == 'N/A' ? '' : $request->part_name)
+                ->where('material',$request->material == 'N/A' ? '' : $request->material)
+                ->where('dimension',$request->dimension == 'N/A' ? '' : $request->dimension)
+                ->first();
+
+        return response()->json(str_replace('₱ ','',$price->unit_price));
     }
 }

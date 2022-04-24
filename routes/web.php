@@ -123,6 +123,7 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::get('/getPartNameValRequestor',[PurchaseRequestController::class,'getPartNameVal'])->name('getPartNameVal');
     Route::get('/getMaterialValRequestor',[PurchaseRequestController::class, 'getMaterialVal'])->name('getMaterialVal');
     Route::get('/getDimensionValRequestor',[PurchaseRequestController::class, 'getDimensionVal'])->name('getDimensionVal');
+    Route::get('/getComputedPRprice',[PurchaseRequestController::class, 'getComputedPRprice'])->name('getComputedPRprice');
 });
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {
