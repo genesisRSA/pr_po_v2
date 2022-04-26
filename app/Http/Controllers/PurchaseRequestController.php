@@ -255,6 +255,7 @@ class PurchaseRequestController extends Controller
     }
 
     public function viewPR(Request $request){
-        return response()->json($request[0]);
+        $list = PurchaseRequestList::findOrFail($request[0]);
+        return response()->json($list->pr_items);
     }
 }

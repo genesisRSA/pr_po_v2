@@ -456,6 +456,21 @@
                                 </v-card-actions>
                             </v-card>
               </v-dialog>
+
+              <v-dialog v-model="viewDialogPR" max-width="850px">
+                            <v-card>
+                                <v-card-title class="text-h5">{{ prIdViewDialog }}</v-card-title>
+                                <v-card-text>
+                                        <v-data-table
+                                            :headers="headersForViewItem"
+                                            hide-default-footer
+                                            :items="viewedItems"
+                                            class="elevation-1"
+                                        >
+                                        </v-data-table>
+                                </v-card-text>
+                            </v-card>
+              </v-dialog>
         </v-row>
     </div>
 </template>
@@ -506,6 +521,22 @@
                     { text: 'Target Cost', value: 'target_cost', class: "yellow" },
                     { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
                 ],
+
+                headersForViewItem : [
+                    {
+                    text: 'Part Name',
+                    value: 'part_name',
+                    class: "yellow"
+                    },
+                    { text: 'Material', value: 'material', class: "yellow"},
+                    { text: 'Dimension', value: 'dimension', class: "yellow" },
+                    { text: 'Quantity', value: 'quantity', class: "yellow" },
+                    { text: 'Remarks', value: 'remarks', class: "yellow" },
+                    { text: 'Supplier 1', value: 'supplier_one', class: "yellow" },
+                    { text: 'Supplier 2', value: 'supplier_two', class: "yellow" },
+                    { text: 'Supplier 3', value: 'supplier_three', class: "yellow" },
+                    { text: 'Target Cost', value: 'target_cost', class: "yellow" },
+                ],
                 addPRdialog : false,
                 dialogDeletePR : false,
                 options: {
@@ -544,8 +575,12 @@
                 materialOptions: [],
 
                 addedItems: [],
+                viewedItems: [],
 
-                selectedIndex : null
+                selectedIndex : null,
+
+                viewDialogPR: false,
+                prIdViewDialog: null
     }),
 
     created: function(){
@@ -598,7 +633,9 @@
         viewPR(item){
                axios.get('/viewPRRequestor',{ params : item.id })
               .then(response =>{
-                    console.log(response.data)
+                    this.prIdViewDialog = item.pr_no
+                    this.viewDialogPR = true
+                    this.viewedItems = response.data
               })
               .catch(error =>{
                     console.log(error.response);

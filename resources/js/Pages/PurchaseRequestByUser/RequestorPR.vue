@@ -380,6 +380,13 @@
                                                             dark
                                                         >
                                                             {{ item.supplier_one }}
+                                                            <v-icon
+                                                                small
+                                                                class="mr-1"
+                                                                style="position: relative; left: 3px; bottom: 1px;"
+                                                            >
+                                                                mdi-clock
+                                                            </v-icon>
                                                         </v-chip>
                                                 </template>
 
@@ -389,6 +396,13 @@
                                                             dark
                                                         >
                                                             {{ item.supplier_two }}
+                                                            <v-icon
+                                                                small
+                                                                class="mr-1"
+                                                                style="position: relative; left: 3px; bottom: 1px;"
+                                                            >
+                                                                mdi-clock
+                                                            </v-icon>
                                                         </v-chip>
                                                 </template>
 
@@ -398,6 +412,13 @@
                                                             dark
                                                         >
                                                             {{ item.supplier_three }}
+                                                            <v-icon
+                                                                small
+                                                                class="mr-1"
+                                                                style="position: relative; left: 3px; bottom: 1px;"
+                                                            >
+                                                                mdi-clock
+                                                            </v-icon>
                                                         </v-chip>
                                                 </template>
 
@@ -433,6 +454,21 @@
                                 <v-btn color="blue darken-1" text @click="deletePRConfirm">OK</v-btn>
                                 <v-spacer></v-spacer>
                                 </v-card-actions>
+                            </v-card>
+              </v-dialog>
+
+              <v-dialog v-model="viewDialogPR" max-width="850px">
+                            <v-card>
+                                <v-card-title class="text-h5">{{ prIdViewDialog }}</v-card-title>
+                                <v-card-text>
+                                        <v-data-table
+                                            :headers="headersForViewItem"
+                                            hide-default-footer
+                                            :items="viewedItems"
+                                            class="elevation-1"
+                                        >
+                                        </v-data-table>
+                                </v-card-text>
                             </v-card>
               </v-dialog>
         </v-row>
@@ -484,6 +520,22 @@
                     { text: 'Target Cost', value: 'target_cost', class: "yellow" },
                     { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
                 ],
+
+                headersForViewItem : [
+                    {
+                    text: 'Part Name',
+                    value: 'part_name',
+                    class: "yellow"
+                    },
+                    { text: 'Material', value: 'material', class: "yellow"},
+                    { text: 'Dimension', value: 'dimension', class: "yellow" },
+                    { text: 'Quantity', value: 'quantity', class: "yellow" },
+                    { text: 'Remarks', value: 'remarks', class: "yellow" },
+                    { text: 'Supplier 1', value: 'supplier_one', class: "yellow" },
+                    { text: 'Supplier 2', value: 'supplier_two', class: "yellow" },
+                    { text: 'Supplier 3', value: 'supplier_three', class: "yellow" },
+                    { text: 'Target Cost', value: 'target_cost', class: "yellow" },
+                ],
                 addPRdialog : false,
                 dialogDeletePR : false,
                 options: {
@@ -522,8 +574,12 @@
                 materialOptions: [],
 
                 addedItems: [],
+                viewedItems: [],
 
-                selectedIndex : null
+                selectedIndex : null,
+
+                viewDialogPR: false,
+                prIdViewDialog: null
     }),
 
     created: function(){
@@ -576,7 +632,9 @@
         viewPR(item){
                axios.get('/viewPRRequestor',{ params : item.id })
               .then(response =>{
-                    console.log(response.data)
+                    this.prIdViewDialog = item.pr_no
+                    this.viewDialogPR = true
+                    this.viewedItems = response.data
               })
               .catch(error =>{
                     console.log(error.response);
@@ -861,7 +919,7 @@
 </script>
 
 <style>
-  tbody tr:nth-of-type(even) {
+   tbody tr:nth-of-type(even) {
     background-color: rgba(0, 0, 0, .05);
   }
   .position_add{
