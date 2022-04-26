@@ -20,6 +20,7 @@ use App\Models\Vendor;
 use App\Models\PaymentTerm;
 use App\Models\PlatingCostUpdate;
 use App\Models\ItemListCostUpdate;
+use App\Models\PurchaseRequestItem;
 use App\Models\Department;
 use App\Models\UserPosition;
 use Akaunting\Money\Currency;
@@ -54,13 +55,13 @@ class PurchaseRequestController extends Controller
             $myPR = PurchaseRequestList::all()->map( function($query){
                 return[
                     'id' => $query->id,
-                    'user_id' => $query->user_id,
+                    'user_id' => User::findOrFail($query->user_id)->name,
                     'pr_no' => strtoupper($query->pr_no),
                     'so_no' => strtoupper($query->so_no),
                     'department' => strtoupper($query->department),
-                    'item_category' => strtoupper($query->item_category),
+                    'item_category' => $query->item_category,
                     'status' => strtoupper($query->status),
-                    'created_at' => $query->created_at
+                    'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                 ];
             });
 
@@ -74,7 +75,7 @@ class PurchaseRequestController extends Controller
                         'pr_no' => strtoupper($query->pr_no),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
-                        'item_category' => strtoupper($query->item_category),
+                        'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
                         'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                     ];
@@ -194,5 +195,66 @@ class PurchaseRequestController extends Controller
                 ->first();
 
         return response()->json(str_replace('₱ ','',$price->unit_price));
+    }
+
+    public function savePr(Request $request){
+
+        $detection = 0;
+
+        foreach(PurchaseRequestList::all() as $list){
+            if(in_array($request->params['pr_details']['pr_no'],[$list->pr_no])){
+                $detection += 1;
+            }
+        }
+
+        if($detection==0){
+
+            $dept = Department::where('id',$request->params['pr_details']['department'])->first();
+
+            $arr = array();
+            foreach($request->params['pr_items'] as $key => $a){
+                $arr[] = json_decode(str_replace(',','',mb_substr($a['target_cost'],1)));
+            }
+            $grand_total = '₱'.number_format(array_sum($arr),2, '.', ',');
+
+            $pr_id = PurchaseRequestList::insertGetId([
+                'user_id' => Auth::id(),
+                'pr_no' => $request->params['pr_details']['pr_no'],
+                'so_no' => $request->params['pr_details']['so_no'],
+                'department' => $dept->dept_code,
+                'item_category' => $grand_total,
+                'status' => 'FOR CANVASSING',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+
+            foreach($request->params['pr_items'] as $key => $b){
+                PurchaseRequestItem::create([
+                    'purchase_request_list_id' => $pr_id,
+                    'part_name' => $b['part_name'] == 'N/A' ? '' : $b['part_name'],
+                    'material' => $b['material'] == 'N/A' ? '' : $b['material'],
+                    'dimension' => $b['dimension'] == 'N/A' ? '' : $b['dimension'],
+                    'quantity' => $b['quantity'],
+                    'remarks' => $b['remarks'] == null ? '' : $b['remarks'],
+                    'supplier_one' => $b['supplier_one'],
+                    'supplier_two' => $b['supplier_two'],
+                    'supplier_three' => $b['supplier_three'],
+                    'target_cost' => $b['target_cost']
+                ]);
+            }
+
+            return response()->json();
+        } else {
+            return response()->json('dupli');
+        }
+    }
+
+    public function deletePr(Request $request){
+        PurchaseRequestList::findOrFail($request->params)->delete();
+        return response()->json('Successfully deleted!');
+    }
+
+    public function viewPR(Request $request){
+        return response()->json($request[0]);
     }
 }

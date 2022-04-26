@@ -124,6 +124,10 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::get('/getMaterialValRequestor',[PurchaseRequestController::class, 'getMaterialVal'])->name('getMaterialVal');
     Route::get('/getDimensionValRequestor',[PurchaseRequestController::class, 'getDimensionVal'])->name('getDimensionVal');
     Route::get('/getComputedPRprice',[PurchaseRequestController::class, 'getComputedPRprice'])->name('getComputedPRprice');
+    Route::get('/viewPRRequestor',[PurchaseRequestController::class, 'viewPR'])->name('viewPR');
+
+    Route::post('/savePrRequestor',[PurchaseRequestController::class, 'savePr'])->name('savePr');
+    Route::post('/deletePrRequestor',[PurchaseRequestController::class, 'deletePr'])->name('deletePr');
 });
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {

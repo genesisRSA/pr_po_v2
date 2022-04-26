@@ -1,5 +1,18 @@
 <template>
     <div>
+        <v-snackbar
+                v-model="dupliRecordSnackbar"
+                :timeout="3000"
+                :value="true"
+                bottom
+                color="warning"
+                success
+                top
+                right
+                >
+                <v-icon>mdi-flag-triangle</v-icon>
+                Whoops, a duplicate PR ID has been recognized, try again.
+        </v-snackbar>
         <v-row>
           <v-col
             v-for="card in cards"
@@ -399,14 +412,29 @@
                         <v-btn
                          color="primary"
                          :disabled="addedItems.length == 0 ? true : false"
+                         @click='savePR()'
                         >Save</v-btn>
                         <v-btn
                             text
+                        @click='closeAddPRdialog()'
                         >Close</v-btn>
                         </v-card-actions>
 
                 </v-card>
             </v-dialog>
+
+
+            <v-dialog v-model="dialogDeletePR" max-width="500px">
+                            <v-card>
+                                <v-card-title class="text-h5">Are you sure you want to delete this PR?</v-card-title>
+                                <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" text @click="closeDeletePR">Cancel</v-btn>
+                                <v-btn color="blue darken-1" text @click="deletePRConfirm">OK</v-btn>
+                                <v-spacer></v-spacer>
+                                </v-card-actions>
+                            </v-card>
+              </v-dialog>
         </v-row>
     </div>
 </template>
@@ -417,6 +445,7 @@
 
         },
             data: () => ({
+                dupliRecordSnackbar : false,
                 cards: ['Purchase Request'],
                 page: 1,
                 pageCount: 0,
@@ -432,7 +461,7 @@
                     class: "yellow"
                     },
                     { text: 'Department', value: 'department', class: "yellow"},
-                    { text: 'Item Category', value: 'item_category', class: "yellow" },
+                    { text: 'Grand Total', value: 'item_category', class: "yellow" },
                     { text: 'Date Created', value: 'created_at', class: "yellow" },
                     { text: 'Status', value: 'status', class: "yellow" },
                     { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
@@ -456,6 +485,7 @@
                     { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
                 ],
                 addPRdialog : false,
+                dialogDeletePR : false,
                 options: {
                 locale: "en-US",
                 prefix: "₱",
@@ -491,7 +521,9 @@
                 dimensionOptions: [],
                 materialOptions: [],
 
-                addedItems: []
+                addedItems: [],
+
+                selectedIndex : null
     }),
 
     created: function(){
@@ -503,7 +535,9 @@
     },
 
     watch: {
-
+        addPRdialog (val) {
+            val || this.closeAddPRdialog()
+        },
     },
 
     methods: {
@@ -540,7 +574,16 @@
         },
 
         viewPR(item){
-            console.log(item)
+               axios.get('/viewPRRequestor',{ params : item.id })
+              .then(response =>{
+                    console.log(response.data)
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+            });
         },
 
         addPR(){
@@ -751,6 +794,66 @@
         deleteItem(params){
               let selectedDelete = this.addedItems.indexOf(params)
               this.addedItems.splice(selectedDelete,1)
+        },
+
+        closeAddPRdialog(){
+            this.addPRdialog = false
+            this.pr_details.so_no = null
+            this.pr_details.department = null
+
+            this.pr_items.category = null
+            this.pr_items.subcategory = null
+            this.pr_items.part_name = null
+            this.pr_items.material = null
+            this.pr_items.dimension = null
+            this.pr_items.quantity = null
+            this.pr_items.remarks = null
+            this.pr_items.raw_unit_price_for_list_item = null
+            this.addedItems = []
+        },
+
+        savePR(){
+            let params = {
+                pr_details : this.pr_details,
+                pr_items : this.addedItems
+            }
+               axios.post('/savePrRequestor', { params : params })
+              .then(response =>{
+                    if(response.data == 'dupli'){
+                        this.dupliRecordSnackbar = true
+                    }
+                    this.closeAddPRdialog()
+                    this.getMyPRlist()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+            });
+        },
+
+        deletePR(item){
+            this.dialogDeletePR = true
+            this.selectedIndex = item.id
+        },
+
+        closeDeletePR(){
+            this.dialogDeletePR = false
+        },
+
+        deletePRConfirm(){
+              axios.post('/deletePrRequestor', { params : this.selectedIndex })
+              .then(response =>{
+                    this.closeDeletePR()
+                    this.getMyPRlist()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+            });
         }
 
         },
@@ -758,6 +861,9 @@
 </script>
 
 <style>
+  tbody tr:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, .05);
+  }
   .position_add{
    position: fixed;
    bottom: 15px;
