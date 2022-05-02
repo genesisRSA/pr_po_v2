@@ -6,6 +6,12 @@
         <div v-if="userType=='ADMIN'">
             <admin></admin>
         </div>
+        <div v-if="userType=='BUYER'">
+            <buyer></buyer>
+        </div>
+        <div v-if="userType=='PURCHASE MNGR.'">
+            <purchase></purchase>
+        </div>
    </app-layout>
 </template>
 
@@ -13,12 +19,17 @@
     import AppLayout from '../Layouts/AppLayout'
     import Requestor from './PurchaseRequestByUser/RequestorPR'
     import Admin from './PurchaseRequestByUser/AdminPR'
+    import Buyer from './PurchaseRequestByUser/BuyerPR'
+    import Purchase from './PurchaseRequestByUser/ManagerPR'
     export default {
         components: {
             AppLayout,
+            Purchase,
             Requestor,
-            Admin
+            Admin,
+            Buyer,
         },
+
             data: () => ({
                 userType : null
     }),

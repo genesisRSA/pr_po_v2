@@ -701,10 +701,11 @@ class DashboardController extends Controller
         $detection = 0;
 
         foreach (Vendor::all() as $item) {
-            if (in_array(strtoupper($request->params['company_name']), [strtoupper($item->company_name)]) &&
+            if ((in_array(strtoupper($request->params['company_name']), [strtoupper($item->company_name)]) &&
                 in_array(strtoupper($request->params['address']), [strtoupper($item->address)]) &&
                 in_array(strtoupper($request->params['contact_person']), [strtoupper($item->contact_person)]) &&
-                in_array(strtoupper($request->params['contact_number']), [strtoupper($item->contact_number)])) {
+                in_array(strtoupper($request->params['contact_number']), [strtoupper($item->contact_number)])
+            ) || (in_array(strtoupper($request->params['company_name']), [strtoupper($item->company_name)]))) {
                 $detection += 1;
             }
         }

@@ -457,9 +457,9 @@
                             </v-card>
               </v-dialog>
 
-              <v-dialog v-model="viewDialogPR" max-width="850px">
+              <v-dialog v-model="viewDialogPR" max-width="1000px">
                             <v-card>
-                                <v-card-title class="text-h5">{{ prIdViewDialog }}</v-card-title>
+                                <v-card-title class="text-h5"><span style='color:red;'>PR No : </span><span style='position:relative; left:5px;'>{{ prIdViewDialog }}</span><v-spacer></v-spacer>{{ dateCreated }}</v-card-title>
                                 <v-card-text>
                                         <v-data-table
                                             :headers="headersForViewItem"
@@ -467,6 +467,68 @@
                                             :items="viewedItems"
                                             class="elevation-1"
                                         >
+                                                <template v-slot:item.supplier_one="{ item }">
+                                                    <div v-if='item.supplier_one == "PENDING"'>
+                                                        <v-chip
+                                                            :color="getColorForAddedItem(item.supplier_one)"
+                                                            dark
+                                                        >
+                                                            {{ item.supplier_one }}
+                                                            <v-icon
+                                                                small
+                                                                class="mr-1"
+                                                                style="position: relative; left: 3px; bottom: 1px;"
+                                                            >
+                                                                mdi-clock
+                                                            </v-icon>
+                                                        </v-chip>
+                                                    </div>
+                                                    <div v-else>
+                                                        {{ item.supplier_one}}
+                                                    </div>
+                                                </template>
+
+                                                <template v-slot:item.supplier_two="{ item }">
+                                                    <div v-if='item.supplier_one == "PENDING"'>
+                                                        <v-chip
+                                                            :color="getColorForAddedItem(item.supplier_two)"
+                                                            dark
+                                                        >
+                                                            {{ item.supplier_two }}
+                                                            <v-icon
+                                                                small
+                                                                class="mr-1"
+                                                                style="position: relative; left: 3px; bottom: 1px;"
+                                                            >
+                                                                mdi-clock
+                                                            </v-icon>
+                                                        </v-chip>
+                                                    </div>
+                                                    <div v-else>
+                                                        {{ item.supplier_two}}
+                                                    </div>
+                                                </template>
+
+                                                <template v-slot:item.supplier_three="{ item }">
+                                                    <div v-if='item.supplier_one == "PENDING"'>
+                                                        <v-chip
+                                                            :color="getColorForAddedItem(item.supplier_three)"
+                                                            dark
+                                                        >
+                                                            {{ item.supplier_three }}
+                                                            <v-icon
+                                                                small
+                                                                class="mr-1"
+                                                                style="position: relative; left: 3px; bottom: 1px;"
+                                                            >
+                                                                mdi-clock
+                                                            </v-icon>
+                                                        </v-chip>
+                                                    </div>
+                                                    <div v-else>
+                                                        {{ item.supplier_three}}
+                                                    </div>
+                                                </template>
                                         </v-data-table>
                                 </v-card-text>
                             </v-card>
@@ -580,7 +642,9 @@
                 selectedIndex : null,
 
                 viewDialogPR: false,
-                prIdViewDialog: null
+                prIdViewDialog: null,
+
+                dateCreated: null
     }),
 
     created: function(){
@@ -635,7 +699,9 @@
               .then(response =>{
                     this.prIdViewDialog = item.pr_no
                     this.viewDialogPR = true
-                    this.viewedItems = response.data
+                    this.viewedItems = response.data[0]
+                    console.log(response.data[0])
+                    this.dateCreated = item.created_at
               })
               .catch(error =>{
                     console.log(error.response);
@@ -923,6 +989,10 @@
    tbody tr:nth-of-type(even) {
     background-color: rgba(0, 0, 0, .05);
   }
+
+ table th + th { border-left:1px solid #dddddd; }
+ table td + td { border-left:1px solid #dddddd; }
+ 
   .position_add{
    position: fixed;
    bottom: 15px;

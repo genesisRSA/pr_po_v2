@@ -1159,6 +1159,10 @@
   tbody tr:nth-of-type(even) {
     background-color: rgba(0, 0, 0, .05);
   }
+
+ table th + th { border-left:1px solid #dddddd; }
+ table td + td { border-left:1px solid #dddddd; }
+
   .void-text{
    font-size: 150% !important;
   }

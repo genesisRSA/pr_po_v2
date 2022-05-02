@@ -351,21 +351,23 @@
                                     class="mt-5"
                                     >
                                         <template v-slot:item.actions="{ item }">
-                                            <v-icon
-                                                small
-                                                class="mr-2"
-                                                @click="editVendor(item)"
-                                                :disabled="permToEdit=='false'"
-                                            >
-                                                mdi-pencil
-                                            </v-icon>
-                                            <v-icon
-                                                small
-                                                @click="deleteItem(item)"
-                                                :disabled="permToDelete=='false'"
-                                            >
-                                                mdi-delete
-                                            </v-icon>
+                                            <div class='d-flex'>
+                                                <v-icon
+                                                    small
+                                                    class="mr-2"
+                                                    @click="editVendor(item)"
+                                                    :disabled="permToEdit=='false'"
+                                                >
+                                                    mdi-pencil
+                                                </v-icon>
+                                                <v-icon
+                                                    small
+                                                    @click="deleteItem(item)"
+                                                    :disabled="permToDelete=='false'"
+                                                >
+                                                    mdi-delete
+                                                </v-icon>
+                                            </div>
                                         </template>
                                     </v-data-table>
                                     <div class="text-center pt-2">
@@ -2283,6 +2285,10 @@
   tbody tr:nth-of-type(even) {
     background-color: rgba(0, 0, 0, .05);
   }
+
+   table th + th { border-left:1px solid #dddddd; }
+   table td + td { border-left:1px solid #dddddd; }
+ 
   .void-text{
    font-size: 150% !important;
   }

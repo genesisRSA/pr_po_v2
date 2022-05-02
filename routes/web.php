@@ -128,6 +128,17 @@ Route::middleware(['auth:sanctum'])->group( function(){
 
     Route::post('/savePrRequestor',[PurchaseRequestController::class, 'savePr'])->name('savePr');
     Route::post('/deletePrRequestor',[PurchaseRequestController::class, 'deletePr'])->name('deletePr');
+
+    ///////////Buyer-API//////////////
+    Route::get('/getSuppInfo', [PurchaseRequestController::class, 'getSuppInfo'])->name('getSuppInfo');
+    Route::get('/checkIfNoSupplier', [PurchaseRequestController::class, 'checkIfNoSupplier'])->name('checkIfNoSupplier');
+
+    Route::post('/saveVendor',[PurchaseRequestController::class, 'saveEditedSupp'])->name('saveEditedSupp');
+    Route::post('/saveEditedVendor',[PurchaseRequestController::class, 'saveEditedVendor'])->name('saveEditedVendor');
+    Route::post('/saveSuppInfo', [PurchaseRequestController::class, 'saveSuppInfo'])->name('saveSuppInfo');
+
+    ///////////Manager////////////////
+    Route::post('/getSelectedFinalSupp',[PurchaseRequestController::class, 'getSelectedFinalSupp'])->name('getSelectedFinalSupp');
 });
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {

@@ -10,7 +10,7 @@
       </v-btn>
 
       <v-btn icon color="primary">
-        <v-icon>mdi-heart</v-icon>
+        <v-icon>mdi-cog</v-icon>
       </v-btn>
 
       <v-btn icon color="primary">

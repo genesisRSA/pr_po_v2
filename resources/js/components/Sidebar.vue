@@ -131,12 +131,42 @@
                 <v-divider></v-divider>
             </div>
             <v-list-item>
+            </v-list-item>
+            <v-list-item>
+            </v-list-item>
+            <v-list-item>
+            </v-list-item>
+            <v-list-item>
+            </v-list-item>
+            <v-list-item>
+            </v-list-item>
+            <v-list-item>
+            </v-list-item>
+            <v-list-item>
+            </v-list-item>
+            <v-list-item>
+            </v-list-item>
+            <v-list-item>
+            </v-list-item>
+            <v-list-item>
+            </v-list-item>
+            <v-list-item>
+            </v-list-item>
+            <v-list-item>
                 <form class="d-inline-flex align-center" @click.prevent="logout_dialog=!logout_dialog">
                     <v-hover v-slot="{ hover }">
-                        <v-btn text type="submit" class="sideBarButton" color="gray" x-large :style="{ 'background-color': hover ? 'gold' : '' }">
-                            <v-icon color="gray" left small>mdi-logout</v-icon>
-                            Logout
+                    <v-container fluid class='mt-3'>
+                        <v-btn
+                        fab
+                        dark
+                        large
+                        color="primary"
+                        >
+                        <v-icon dark>
+                            mdi-power
+                        </v-icon>
                         </v-btn>
+                    </v-container>
                     </v-hover>
                 </form>
             </v-list-item>

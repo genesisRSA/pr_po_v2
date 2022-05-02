@@ -21,10 +21,12 @@ use App\Models\PaymentTerm;
 use App\Models\PlatingCostUpdate;
 use App\Models\ItemListCostUpdate;
 use App\Models\PurchaseRequestItem;
+use App\Models\SupplierDetails;
 use App\Models\Department;
 use App\Models\UserPosition;
 use Akaunting\Money\Currency;
 use Akaunting\Money\Money;
+use PDO;
 
 class PurchaseRequestController extends Controller
 {
@@ -67,7 +69,7 @@ class PurchaseRequestController extends Controller
 
         } else {
 
-            if($user->user_position->position = 'REQUESTOR'){
+            if($user->user_position->position == 'REQUESTOR'){
                 $myPR = $user->purchase_requests->map( function($query){
                     return[
                         'id' => $query->id,
@@ -82,20 +84,42 @@ class PurchaseRequestController extends Controller
                 });
             }
 
-            if($user->user_position->position = 'CEO'){
+            if($user->user_position->position == 'CEO'){
 
             }
 
-            if($user->user_position->position = 'PRESIDENT'){
+            if($user->user_position->position == 'PRESIDENT'){
 
             }
 
-            if($user->user_position->position = 'PURCHASE MNGR.'){
-
+            if($user->user_position->position == 'PURCHASE MNGR.'){
+                $myPR = PurchaseRequestList::all()->map( function($query){
+                    return[
+                        'id' => $query->id,
+                        'user_id' => User::findOrFail($query->user_id)  ->name,
+                        'pr_no' => strtoupper($query->pr_no),
+                        'so_no' => strtoupper($query->so_no),
+                        'department' => strtoupper($query->department),
+                        'item_category' => $query->item_category,
+                        'status' => strtoupper($query->status),
+                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                    ];
+                });
             }
 
-            if($user->user_position->position = 'BUYER'){
-
+            if($user->user_position->position == 'BUYER'){
+                $myPR = PurchaseRequestList::all()->map( function($query){
+                    return[
+                        'id' => $query->id,
+                        'user_id' => User::findOrFail($query->user_id)->name,
+                        'pr_no' => strtoupper($query->pr_no),
+                        'so_no' => strtoupper($query->so_no),
+                        'department' => strtoupper($query->department),
+                        'item_category' => $query->item_category,
+                        'status' => strtoupper($query->status),
+                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                    ];
+                });
             }
 
         }
@@ -256,6 +280,177 @@ class PurchaseRequestController extends Controller
 
     public function viewPR(Request $request){
         $list = PurchaseRequestList::findOrFail($request[0]);
-        return response()->json($list->pr_items);
+        $vendors = Vendor::all()->map( function($query){
+            return [
+                'text' => $query->company_name,
+                'value' => $query->company_name,
+                'id' => $query->id
+            ];
+        });
+
+        if($list->status == 'FOR CANVASSING'){
+            $canChoose = false;
+        } else {
+            $canChoose = true;
+        }
+        return response()->json([$list->pr_items,$vendors,$canChoose]);
     }
+
+    public function saveEditedSupp(Request $request){
+        $item = PurchaseRequestItem::where('purchase_request_list_id',$request->params[0]['purchase_request_list_id'])->get();
+        foreach($item as $k => $val){
+            $item[$k]->update(['supplier_one' => $request->params[$k]['supplier_one'],
+                               'supplier_two' => $request->params[$k]['supplier_two'],
+                               'supplier_three' => $request->params[$k]['supplier_three'],
+                            ]);
+        }
+        if($item[0]->pr_list->status == 'FOR CANVASSING' || $item[0]->pr_list->status == 'FOR SUPPLIER APPROVAL' ){
+            $item[0]->pr_list->update(['status' => 'FOR SUPPLIER APPROVAL']);
+        }
+        return response()->json($request);
+    }
+
+    public function getSuppInfo(Request $request){
+
+
+        $supp = json_decode($request[0]);
+
+
+        $getSuppDetails = SupplierDetails::where('purchase_request_item_id',$supp->id)
+                                         ->where('supplier_no',$request[1])
+                                        ->get()
+                                        ->map( function($query){
+                                            return [
+                                                'id'          => $query->id,
+                                                'is_preferred' => json_decode($query->is_preferred),
+                                                'supplier_cost' => json_decode(str_replace(',','',mb_substr($query->supplier_cost,1))),
+                                                'payment_method' => json_decode($query->payment_method),
+                                                'eta' => $query->eta
+                                            ];
+                                        });
+
+        $payment_term = PaymentTerm::all()
+        ->map(function($query) {
+            return [
+                'text' => $query->payment_term,
+                'value' => $query->id
+            ];
+        });;
+
+
+
+       return response()->json([$getSuppDetails,$payment_term]);
+    }
+
+    public function saveEditedVendor(Request $request){
+       $owl =PurchaseRequestItem::where('id',$request->params['one']['id'])->first();
+
+       $owl->update([
+           'supplier_one' => $request->params['two']['supplier_one'],
+           'supplier_two' => $request->params['two']['supplier_two'],
+           'supplier_three' => $request->params['two']['supplier_three']
+       ]);
+        return response()->json('success');
+    }
+
+    public function saveSuppInfo(Request $request){
+
+        $getSupp = SupplierDetails::where('id',$request->params['id'])->first();
+
+        if($request->params['id'] == null){
+            SupplierDetails::create([
+            'purchase_request_item_id' => $request->local_supp_id,
+            'supplier_no' => $request->supp_no,
+            'is_preferred' => $request->params['isPreferred'],
+            'supplier_cost' => '₱'.number_format($request->params['supplier_cost'],2, '.', ','),
+            'payment_method' => $request->params['payment_method'][0]['value'],
+            'eta' => $request->params['eta'],
+            ]);
+        } else {
+            SupplierDetails::where('id',$request->params['id'])->update([
+                'purchase_request_item_id' => $getSupp->supp_detail->id,
+                'supplier_no' => $request->supp_no,
+                'is_preferred' => $request->params['isPreferred'],
+                'supplier_cost' => '₱'.number_format($request->params['supplier_cost'],2, '.', ','),
+                'payment_method' => $request->params['payment_method'][0]['value'],
+                'eta' => $request->params['eta']
+            ]);
+        }
+
+        // $getSupp->updateOrCreate([
+        //     'id' => $request->params['id']
+        // ],[
+        //     'purchase_request_item_id' => $getSupp->supp_detail->id,
+        //     'supplier_no' => $request->supp_no,
+        //     'is_preferred' => $request->params['isPreferred'],
+        //     'supplier_cost' => '₱'.number_format($request->params['supplier_cost'],2, '.', ','),
+        //     'payment_method' => $request->params['payment_method'][0]['value'],
+        //     'eta' => $request->params['eta'],
+        // ]);
+
+        return response()->json($request);
+    }
+
+    public function getSelectedFinalSupp(Request $request){
+
+        $getSelected = PurchaseRequestItem::findOrFail($request->params['id']);
+        $getSelected->update(['chosen_supplier' => $request->params['chosen_supplier']]);
+
+        $items = PurchaseRequestItem::where('purchase_request_list_id',$getSelected->purchase_request_list_id)->get();
+
+        $arr = array();
+        foreach($items as $item){
+            $arr[] = $item->chosen_supplier;
+        }
+
+        $detection = 0;
+        if(in_array(null,$arr)){
+            $detection += 1;
+        }
+
+        if($detection == 0){
+            PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->update(['status'=>'FOR PR APPROVAL']);
+        }
+
+
+        return response()->json($detection);
+    }
+
+    public function checkIfNoSupplier(Request $request){
+
+        $obj_count = 0;
+
+        foreach(request()->all() as $req){
+             $obj_count += 3;
+        }
+
+
+      $arr = array();
+      foreach(request()->all() as $req){
+          $arr[] = json_decode($req);
+      }
+
+      $count_id = array();
+      foreach($arr as $ar){
+        $count_id[] = $ar->id;
+      }
+
+      $count_item = 0;
+      foreach(SupplierDetails::all() as $supp){
+        if(in_array($supp->purchase_request_item_id,$count_id)){
+            $count_item += 1;
+        }
+      }
+
+      if($count_item == $obj_count){
+            $message = 'Good';
+      } else {
+            $message = 'Some supplier info is not yet filled!';
+      }
+
+
+
+        return response()->json($message);
+    }
+
 }
