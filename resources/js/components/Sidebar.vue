@@ -114,7 +114,7 @@
                     </v-hover>
                 </form>
             </v-list-item>
-            <v-divider></v-divider> 
+            <v-divider></v-divider>
             </div>
             <!-- /////////////////////////////////////////////////////////////////// -->
             <div v-if="is_Admin==true">
@@ -225,7 +225,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
               });
         },
         authUserForSideBar() {
@@ -237,7 +237,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-                  
+
               });
         },
 
