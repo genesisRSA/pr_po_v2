@@ -936,6 +936,11 @@ class DashboardController extends Controller
 
         return response()->json($exp[0]);
     }
+
+    public function getDepartmentRegister(){
+        $getDept = Department::orderBy('dept_code')->pluck('dept_code')->toArray();
+        return response()->json($getDept);
+    }
     /**
      * Show the form for creating a new resource.
      *

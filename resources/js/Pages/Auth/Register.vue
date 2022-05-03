@@ -28,6 +28,14 @@
                                 :rules="emp_id_Rules"
                             ></v-text-field>
 
+                            <v-select
+                            label='Department'
+                            :items="deptItem"
+                            v-model="form.dept"
+                            :rules="dept_Rules"
+                            clearable>
+                            </v-select>
+
                             <v-text-field
                                 v-model="form.name"
                                 :counter="50"
@@ -87,15 +95,19 @@
                 valid : true,
                 form: this.$inertia.form({
                     emp_id: '',
+                    dept: '',
                     name: '',
                     email: '',
                     password: '',
-                    password_confirmation: ''
+                    password_confirmation: '',
                 }),
                 show1: false,
                 show2: false,
                 emp_id_Rules: [
                     v => !!v || 'Employee ID is required',
+                ],
+                dept_Rules: [
+                    v => !!v || 'Department designation is required',
                 ],
                 nameRules: [
                     v => !!v || 'Name is required',
@@ -109,7 +121,14 @@
                     v => !!v || 'Password is required',
                     v => (v && v.length >= 8) || 'Password must be atleast 8 characters',
                 ],
+
+                deptItem : [],
+                selectedDept : null
             }
+        },
+
+        created: function(){
+            this.getDepartmentRegister();
         },
         computed: {
             passwordConfirmationRule() {
@@ -120,6 +139,18 @@
             }
         },
         methods: {
+            getDepartmentRegister(){
+              axios.get('/getDepartmentRegister')
+              .then(response =>{
+                    this.deptItem = response.data
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+            },
             register() {
                 this.form.post(this.route('register'), {
                     onFinish: () => this.form.reset('password', 'password_confirmation')

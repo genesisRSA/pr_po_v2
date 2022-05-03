@@ -59,6 +59,7 @@ Route::get('/test', function(){
 // });
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+Route::get('/getDepartmentRegister', [DashboardController::class, 'getDepartmentRegister'])->name('getDepartmentRegister');
 
 Route::middleware(['auth:sanctum','isAdmin'])->group(function() {
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');

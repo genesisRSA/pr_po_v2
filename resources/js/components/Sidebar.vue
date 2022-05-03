@@ -130,33 +130,11 @@
                     </v-list-item>
                 <v-divider></v-divider>
             </div>
-            <v-list-item>
-            </v-list-item>
-            <v-list-item>
-            </v-list-item>
-            <v-list-item>
-            </v-list-item>
-            <v-list-item>
-            </v-list-item>
-            <v-list-item>
-            </v-list-item>
-            <v-list-item>
-            </v-list-item>
-            <v-list-item>
-            </v-list-item>
-            <v-list-item>
-            </v-list-item>
-            <v-list-item>
-            </v-list-item>
-            <v-list-item>
-            </v-list-item>
-            <v-list-item>
-            </v-list-item>
-            <v-list-item>
+            <v-list-item class="d-flex flex-column-reverse">
                 <form class="d-inline-flex align-center" @click.prevent="logout_dialog=!logout_dialog">
                     <v-hover v-slot="{ hover }">
-                    <v-container fluid class='mt-3'>
                         <v-btn
+                        class="logout"
                         fab
                         dark
                         large
@@ -166,7 +144,6 @@
                             mdi-power
                         </v-icon>
                         </v-btn>
-                    </v-container>
                     </v-hover>
                 </form>
             </v-list-item>
@@ -280,6 +257,11 @@
         width: 300%;
         background-color: white;
         right: 259px;
+    }
+    .logout{
+    position: fixed;
+    bottom: 15px;
+    left: 30px;
     }
 </style>
 

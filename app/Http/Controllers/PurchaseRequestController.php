@@ -136,7 +136,7 @@ class PurchaseRequestController extends Controller
 
         $today = Carbon::parse(Carbon::today())->format('Y-m-d');
 
-        $dept = Department::all()->map( function($query){
+        $dept = Department::orderBy('dept_code')->get()->map( function($query){
             return [
                 'text' => $query->dept_code,
                 'value' => $query->id
