@@ -31,6 +31,13 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function testPDF(Request $request){
+          
+        $pdf = PDF::loadView('test')->setPaper('a4','portrait');
+    
+        return $pdf->download('itsolutionstuff.pdf');
+    }
     public function index() {
 
         return Inertia::render('Dashboard');
@@ -552,9 +559,9 @@ class DashboardController extends Controller
                   $id =  ItemList::insertGetId([
                     'category_item_id' => $request->cat_val,
                     'sub_category_item_id' => $request->subcat_val,
-                    'part_name' => $request->partname_val == null ? '' : $request->partname_val,
-                    'material' => $request->material_val == null ? '' : $request->material_val,
-                    'dimension' => $request->dimension == null ? '' : $request->dimension,
+                    'part_name' => $request->partname_val == null || $request->partname_val == 'N/A' ? '' : $request->partname_val,
+                    'material' => $request->material_val == null || $request->material_val == 'N/A' ? '' : $request->material_val,
+                    'dimension' => $request->dimension == null || $request->material_val == 'N/A' ? '' : $request->dimension,
                     'unit_price' => $price
                 ]);
 

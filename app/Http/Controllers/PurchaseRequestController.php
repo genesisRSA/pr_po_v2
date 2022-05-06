@@ -21,6 +21,7 @@ use App\Models\PaymentTerm;
 use App\Models\PlatingCostUpdate;
 use App\Models\ItemListCostUpdate;
 use App\Models\PurchaseRequestItem;
+use App\Models\PurchaseOrderList;
 use App\Models\SupplierDetails;
 use App\Models\Department;
 use App\Models\UserPosition;
@@ -85,11 +86,33 @@ class PurchaseRequestController extends Controller
             }
 
             if($user->user_position->position == 'CEO'){
-
+                $myPR = PurchaseRequestList::all()->map( function($query){
+                    return[
+                        'id' => $query->id,
+                        'user_id' => User::findOrFail($query->user_id)->name,
+                        'pr_no' => strtoupper($query->pr_no),
+                        'so_no' => strtoupper($query->so_no),
+                        'department' => strtoupper($query->department),
+                        'item_category' => $query->item_category,
+                        'status' => strtoupper($query->status),
+                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                    ];
+                });
             }
 
             if($user->user_position->position == 'PRESIDENT'){
-
+                $myPR = PurchaseRequestList::all()->map( function($query){
+                    return[
+                        'id' => $query->id,
+                        'user_id' => User::findOrFail($query->user_id)->name,
+                        'pr_no' => strtoupper($query->pr_no),
+                        'so_no' => strtoupper($query->so_no),
+                        'department' => strtoupper($query->department),
+                        'item_category' => $query->item_category,
+                        'status' => strtoupper($query->status),
+                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                    ];
+                });
             }
 
             if($user->user_position->position == 'PURCHASE MNGR.'){
@@ -275,7 +298,8 @@ class PurchaseRequestController extends Controller
 
     public function deletePr(Request $request){
         PurchaseRequestList::findOrFail($request->params)->delete();
-        return response()->json('Successfully deleted!');
+        PurchaseOrderList::where('pr_id',$request->params)->delete();
+        return response()->json();
     }
 
     public function viewPR(Request $request){
@@ -393,10 +417,12 @@ class PurchaseRequestController extends Controller
 
     public function getSelectedFinalSupp(Request $request){
 
-        $getSelected = PurchaseRequestItem::findOrFail($request->params['id']);
+         $getSelected = PurchaseRequestItem::findOrFail($request->params['id']);
         $getSelected->update(['chosen_supplier' => $request->params['chosen_supplier']]);
 
         $items = PurchaseRequestItem::where('purchase_request_list_id',$getSelected->purchase_request_list_id)->get();
+
+        $list = PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id);
 
         $arr = array();
         foreach($items as $item){
@@ -409,9 +435,31 @@ class PurchaseRequestController extends Controller
         }
 
         if($detection == 0){
-            PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->update(['status'=>'FOR PR APPROVAL']);
-        }
+            $price = json_decode(str_replace(['₱',','],'',PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->item_category));
 
+            if($price <= 10000){
+                $list->update(['status'=>'PR APPROVED']);
+                PurchaseOrderList::create([
+                    'pr_id'=>$list->id,
+                    'user_id'=>$list->user_id,
+                    'pr_no'=>$list->pr_no,
+                    'so_no'=>$list->so_no,
+                    'department'=>$list->department,
+                    'item_category'=>$list->item_category,
+                    'status'=>'PENDING APPROVAL',
+                    'created_at'=>Carbon::now()
+                ]);
+            } else {
+                if(PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR APPROVED' || 
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PENDING PRESIDENTIAL APPROVAL' || 
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PENDING CEO APPROVAL' || 
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR DECLINED BY CEO' || 
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR DECLINED BY PRESIDENT' ){
+                    return response()->json();
+                }
+                $list->update(['status'=>'PENDING PRESIDENTIAL APPROVAL']);
+            }
+        }
 
         return response()->json($detection);
     }
@@ -453,4 +501,51 @@ class PurchaseRequestController extends Controller
         return response()->json($message);
     }
 
+    public function ApprovePRPresident(Request $request){
+        
+        $price = json_decode(str_replace(['₱',','],'',$request->item_category));
+
+        if($price > 20000){
+            PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PENDING CEO APPROVAL']);
+        } else {
+            PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR APPROVED']);
+
+            $list = PurchaseRequestList::findOrFail($request->id);
+            PurchaseOrderList::create([
+                'pr_id'=>$list->id,
+                'user_id'=>$list->user_id,
+                'pr_no'=>$list->pr_no,
+                'so_no'=>$list->so_no,
+                'department'=>$list->department,
+                'item_category'=>$list->item_category,
+                'status'=>'PENDING APPROVAL',
+                'created_at'=>Carbon::now()
+            ]);
+        }
+
+        return response()->json();
+    }
+
+    public function DeclinePRPresident(Request $request){
+        PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR DECLINED BY PRESIDENT']);
+        return response()->json($request);
+    }
+
+    public function ApprovePRCEO(Request $request){
+        PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR APPROVED']);
+        $list = PurchaseRequestList::findOrFail($request->id);
+        PurchaseOrderList::create([
+            'pr_id'=>$list->id,
+            'user_id'=>$list->user_id,
+            'pr_no'=>$list->pr_no,
+            'so_no'=>$list->so_no,
+            'department'=>$list->department,
+            'item_category'=>$list->item_category,
+            'status'=>'PENDING APPROVAL',
+            'created_at'=>Carbon::now()
+        ]);
+    }
+    public function DeclinePRCEO(Request $request){
+        PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR DECLINED BY CEO']);
+    }
 }

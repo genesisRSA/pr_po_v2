@@ -53,7 +53,7 @@
             <td valign="top">
               <img src="{{ public_path('images/rsa_logo.png') }}" alt="" width="250" style="position:relative; top:20px; right:80px;"/>
             </td>
-            <td align="right">
+            <td align="left">
                 <pre class="font" >
                   RTI Systems Automation INC.
                   Email: it.support@rsa.com.ph <br>
@@ -109,8 +109,8 @@
           </td>
           <td align="center"> {{ $item->item_code }}</td>
           <td align="center">{{ $item->description }}</td>
-          <td align="center">{{ $item->quantity }}<</td>
-          <td align="center">{{ $item->unit_of_measure }}<</td>
+          <td align="center">{{ $item->quantity }}</td>
+          <td align="center">{{ $item->unit_of_measure }}</td>
           <td align="center">{{ $item->delivery_date }}</td>
         </tr>
       @endforeach

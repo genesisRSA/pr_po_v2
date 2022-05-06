@@ -57,12 +57,22 @@
                         :headers="headers"
                         :items="prList"
                         hide-default-footer
+                        :loading="isPrTableLoading"
                         :search="search"
                         :page.sync="page"
                         :items-per-page="itemsPerPage"
                         @page-count="pageCount = $event"
                         class="elevation-1"
                     >
+
+                        <template v-slot:item.status="{ item }">
+                            <v-chip
+                                :color="getColorForStatus(item.status)"
+                                dark
+                            >
+                                {{ item.status }}
+                            </v-chip>
+                        </template>
 
                         <template v-slot:item.actions="{ item }">
 
@@ -911,7 +921,10 @@
                         text : 'SUPPLIER 3', value : '3'
                     },
                 ],
-                missingInfoSupp: false
+                missingInfoSupp: false,
+                isPrTableLoading: true,
+
+                selectedForPRChanges: []
     }),
 
     created: function(){
@@ -970,7 +983,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-
+                  this.isPrTableLoading = false
           });
         },
 
@@ -1405,6 +1418,14 @@
               .finally(() => {
 
             });
+        },
+
+        getColorForStatus(params){
+            if(params == 'PR APPROVED'){
+                return 'green'
+            } else {
+                return 'orange'
+            }
         }
 
         },

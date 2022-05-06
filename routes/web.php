@@ -5,6 +5,7 @@ use App\Http\Controllers\ImagesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\PurchaseRequestController;
+use App\Http\Controllers\PurchaseOrderController;
 
 use App\Models\CertificationType;
 use App\Models\Employee;
@@ -16,6 +17,7 @@ use App\Models\User;
 use App\Models\PaymentTerm;
 use App\Models\PlatingProcess;
 use App\Models\PurchaseRequestList;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,16 +28,7 @@ use App\Models\PurchaseRequestList;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/test', function(){
-
-    PurchaseRequestList::find(1)->delete();
-    return 'deleted successfully!';
-    // $item = PaymentTerm::find(1);
-    // $item->update([
-    //     'payment_term' => 'CASH ON DELIVERY'
-    // ]);
-    // dd($item->getChanges('payment_term'));
-});
+Route::get('/test', [DashboardController::class, 'testPDF'])->name('testPDF');
 
 
 // Route::get('/send-mail', function () {
@@ -140,6 +133,28 @@ Route::middleware(['auth:sanctum'])->group( function(){
 
     ///////////Manager////////////////
     Route::post('/getSelectedFinalSupp',[PurchaseRequestController::class, 'getSelectedFinalSupp'])->name('getSelectedFinalSupp');
+
+    //////////President///////////////
+    Route::post('/ApprovePRPresident',[PurchaseRequestController::class, 'ApprovePRPresident'])->name('ApprovePRPresident');
+    Route::post('/DeclinePRPresident',[PurchaseRequestController::class, 'DeclinePRPresident'])->name('DeclinePRPresident');
+
+    /////////CEO//////////////////////
+    Route::post('/ApprovePRCEO',[PurchaseRequestController::class, 'ApprovePRCEO'])->name('ApprovePRCEO');
+    Route::post('/DeclinePRCEO',[PurchaseRequestController::class, 'DeclinePRCEO'])->name('DeclinePRCEO');
+
+////////////////////////////////////////////////////////////////Purchase Order////////////////////////////////////////////////////////////////////////////////////////////
+
+    Route::get('/getMyPOlist',[PurchaseOrderController::class, 'getMyPOlist'])->name('getMyPOlist');
+    Route::get('/viewPORequestor',[PurchaseOrderController::class, 'viewPO'])->name('viewPO');
+
+    Route::post('/ApprovePOManager',[PurchaseOrderController::class,'ApprovePOManager'])->name('ApprovePOManager');
+    Route::post('/DeclinePOManager',[PurchaseOrderController::class,'DeclinePOManager'])->name('DeclinePOManager');
+
+    Route::post('/ApprovePOPresident',[PurchaseOrderController::class,'ApprovePOPresident'])->name('ApprovePOPresident');
+    Route::post('/DeclinePOPresident',[PurchaseOrderController::class,'DeclinePOPresident'])->name('DeclinePOPresident');
+
+    Route::post('/ApprovePOCeo', [PurchaseOrderController::class, 'ApprovePOCeo'])->name('ApprovePOCeo');
+    Route::post('/DeclinePOCeo',[PurchaseOrderController::class,'DeclinePOCeo'])->name('DeclinePOCeo');
 });
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {

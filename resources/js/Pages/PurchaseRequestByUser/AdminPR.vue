@@ -43,6 +43,7 @@
                       <v-data-table
                         :headers="headers"
                         :items="prList"
+                        :loading='isPrTableLoading'
                         hide-default-footer
                         :search="search"
                         :page.sync="page"
@@ -51,6 +52,14 @@
                         class="elevation-1"
                     >
 
+                        <template v-slot:item.status="{ item }">
+                            <v-chip
+                                :color="getColorForStatus(item.status)"
+                                dark
+                            >
+                                {{ item.status }}
+                            </v-chip>
+                        </template>
                         <template v-slot:item.actions="{ item }">
 
                             <v-tooltip bottom>
@@ -459,7 +468,7 @@
 
               <v-dialog v-model="viewDialogPR" max-width="1000px">
                             <v-card>
-                                <v-card-title class="text-h5"><span style='color:red;'>PR No : </span><span style='position:relative; left:5px;'>{{ prIdViewDialog }}</span><v-spacer></v-spacer>{{ dateCreated }}</v-card-title>
+                                <v-card-title class="text-h5"><span style='color:red;'>PR No : </span><span style='position:relative; left:5px;'>{{ prIdViewDialog }}</span><v-spacer></v-spacer><span style='color:red; position: relative; right:5px;'>Date Created : </span>{{ dateCreated }}</v-card-title>
                                 <v-card-text>
                                         <v-data-table
                                             :headers="headersForViewItem"
@@ -644,7 +653,9 @@
                 viewDialogPR: false,
                 prIdViewDialog: null,
 
-                dateCreated: null
+                dateCreated: null,
+
+                isPrTableLoading:true
     }),
 
     created: function(){
@@ -672,7 +683,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-
+                  this.isPrTableLoading = false
           });
         },
 
@@ -979,6 +990,14 @@
               .finally(() => {
 
             });
+        },
+
+        getColorForStatus(params){
+            if(params == 'PR APPROVED'){
+                return 'green'
+            } else {
+                return 'orange'
+            }
         }
 
         },

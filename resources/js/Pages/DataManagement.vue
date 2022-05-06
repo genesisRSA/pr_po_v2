@@ -110,6 +110,7 @@
                                 <v-data-table
                                 :headers="headers"
                                 :items="item_categories"
+                                :loading='loadingCat'
                                 :search="search"
                                 hide-default-footer
                                 :page.sync="page"
@@ -1471,6 +1472,8 @@
                 subcategory_name: '',
             },
 
+            loadingCat: true,
+
 //-------------------- for item list section------------------------------------
 
             pageForItemList: 1,
@@ -1670,7 +1673,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-
+                   
               });
          },
 
@@ -1893,7 +1896,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-
+                  this.loadingCat = false
               });
 
               if(this.tab == 1){
@@ -1905,7 +1908,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-
+        
               });
               }
 
@@ -2107,7 +2110,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-
+    
               });
         },
 
@@ -2275,7 +2278,7 @@
               .finally(() => {
 
               });
-        }
+        },
 
         },
     }

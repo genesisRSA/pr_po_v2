@@ -61,8 +61,18 @@
                         :page.sync="page"
                         :items-per-page="itemsPerPage"
                         @page-count="pageCount = $event"
+                        :loading="isPrTableLoading"
                         class="elevation-1"
                     >
+
+                        <template v-slot:item.status="{ item }">
+                            <v-chip
+                                :color="getColorForStatus(item.status)"
+                                dark
+                            >
+                                {{ item.status }}
+                            </v-chip>
+                        </template>
 
                         <template v-slot:item.actions="{ item }">
 
@@ -876,7 +886,8 @@
 
                 menu: false,
                 dateCreated : null,
-                missingInfoSupp : false
+                missingInfoSupp : false,
+                isPrTableLoading : true
     }),
 
     created: function(){
@@ -935,7 +946,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-
+                  this.isPrTableLoading = false
           });
         },
 
@@ -1351,6 +1362,14 @@
               .finally(() => {
 
             });
+        },
+
+        getColorForStatus(params){
+            if(params == 'PR APPROVED'){
+                return 'green'
+            } else {
+                return 'orange'
+            }
         }
 
 

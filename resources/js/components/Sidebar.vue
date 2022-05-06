@@ -141,7 +141,7 @@
                         color="primary"
                         >
                         <v-icon dark>
-                            mdi-power
+                            mdi-logout
                         </v-icon>
                         </v-btn>
                     </v-hover>

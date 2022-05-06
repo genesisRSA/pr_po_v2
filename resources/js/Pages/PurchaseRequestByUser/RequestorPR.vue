@@ -46,11 +46,20 @@
                         hide-default-footer
                         :search="search"
                         :page.sync="page"
+                        :loading="isPrTableLoading"
                         :items-per-page="itemsPerPage"
                         @page-count="pageCount = $event"
                         class="elevation-1"
                     >
 
+                        <template v-slot:item.status="{ item }">
+                            <v-chip
+                                :color="getColorForStatus(item.status)"
+                                dark
+                            >
+                                {{ item.status }}
+                            </v-chip>
+                        </template>
                         <template v-slot:item.actions="{ item }">
 
                             <v-tooltip bottom>
@@ -642,7 +651,8 @@
 
                 viewDialogPR: false,
                 prIdViewDialog: null,
-                dateCreated : null
+                dateCreated : null,
+                isPrTableLoading : true,
     }),
 
     created: function(){
@@ -670,7 +680,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-
+                  this.isPrTableLoading = false
           });
         },
 
@@ -976,6 +986,14 @@
               .finally(() => {
 
             });
+        },
+
+        getColorForStatus(params){
+            if(params == 'PR APPROVED'){
+                return 'green'
+            } else {
+                return 'orange'
+            }
         }
 
         },
