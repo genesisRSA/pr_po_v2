@@ -136,7 +136,7 @@ class PurchaseOrderController extends Controller
         }
 
         return response()->json($myPR);
-    }   
+    }
 
     public function viewPO(Request $request){
         $list = PurchaseRequestList::findOrFail($request->pr_id);
@@ -165,7 +165,7 @@ class PurchaseOrderController extends Controller
         } else {
             PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING PRESIDENT APPROVAL']);
         }
-        
+
         return response()->json($request);
     }
 
@@ -178,7 +178,7 @@ class PurchaseOrderController extends Controller
 
         $price = json_decode(str_replace(['₱',','],'',$request->item_category));
 
-        if($price <= 20000){
+        if($price <= 50000){
             PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PO APPROVED']);
         } else {
             PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING CEO APPROVAL']);

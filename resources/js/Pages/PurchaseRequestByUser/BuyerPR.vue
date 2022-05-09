@@ -493,15 +493,22 @@
 
                                                 <template v-slot:item.supplier_one="{ item }">
                                                     <div v-if='item.id === editedItem.id' class="d-flex">
-                                                        <v-select v-model="editedItem.supplier_one" :items="supplier_list" :item-text="supplier_list.text" :item-value="supplier_list.value" :hide-details="true" dense single-line :autofocus="true"></v-select>
+                                                        <v-select v-model="editedItem.supplier_one"
+                                                            :items="supplier_list" :item-text="supplier_list.text"
+                                                            :item-value="supplier_list.value"
+                                                            :hide-details="true" dense single-line
+                                                            :item-disabled="checkIsItemDisabled"
+                                                            @input="changeData_suppOne()"
+                                                            :autofocus="true"
+                                                            ></v-select>
                                                     </div>
                                                 <div v-else>
-                                                    <div v-if='item.supplier_one == "PENDING"'>
+                                                    <div v-if='item.supplier_one == "PENDING" || item.supplier_one == null'>
                                                         <v-chip
                                                             :color="getColorForAddedItem(item.supplier_one)"
                                                             dark
                                                         >
-                                                            {{ item.supplier_one }}
+                                                            PENDING
                                                             <v-icon
                                                                 small
                                                                 class="mr-1"
@@ -512,7 +519,9 @@
                                                         </v-chip>
                                                     </div>
                                                     <div v-else>
-                                                        {{ item.supplier_one }}
+                                                        <span :class="getColorPreferredOne(item)">
+                                                            {{ item.supplier_one }}
+                                                        </span>
                                                            <v-icon
                                                                 small
                                                                 class="mr-2"
@@ -526,15 +535,19 @@
 
                                                 <template v-slot:item.supplier_two="{ item }">
                                                     <div v-if='item.id === editedItem.id' class="d-flex">
-                                                        <v-select v-model="editedItem.supplier_two" :items="supplier_list" :item-text="supplier_list.text" :item-value="supplier_list.value" :hide-details="true" dense single-line :autofocus="true"></v-select>
+                                                        <v-select v-model="editedItem.supplier_two" :items="supplier_list"
+                                                        :item-text="supplier_list.text" :item-value="supplier_list.value"
+                                                        :hide-details="true" dense single-line :autofocus="true"
+                                                        :item-disabled="checkIsItemDisabled"
+                                                        @input="changeData_suppOne()"></v-select>
                                                     </div>
                                                 <div v-else>
-                                                    <div v-if='item.supplier_two == "PENDING"'>
+                                                    <div v-if='item.supplier_two == "PENDING" || item.supplier_two == null'>
                                                         <v-chip
                                                             :color="getColorForAddedItem(item.supplier_two)"
                                                             dark
                                                         >
-                                                            {{ item.supplier_two }}
+                                                            PENDING
                                                             <v-icon
                                                                 small
                                                                 class="mr-1"
@@ -545,7 +558,9 @@
                                                         </v-chip>
                                                     </div>
                                                     <div v-else>
-                                                        {{ item.supplier_two }}
+                                                        <span :class="getColorPreferredTwo(item)">
+                                                            {{ item.supplier_two }}
+                                                        </span>
                                                            <v-icon
                                                                 small
                                                                 class="mr-2"
@@ -559,15 +574,19 @@
 
                                                 <template v-slot:item.supplier_three="{ item }">
                                                      <div v-if='item.id === editedItem.id' class="d-flex">
-                                                         <v-select v-model="editedItem.supplier_three" :items="supplier_list" :item-text="supplier_list.text" :item-value="supplier_list.value" :hide-details="true" dense single-line v-if="item.id === editedItem.id" ></v-select>
+                                                         <v-select v-model="editedItem.supplier_three" :items="supplier_list"
+                                                         :item-text="supplier_list.text" :item-value="supplier_list.value"
+                                                         :hide-details="true" dense single-line v-if="item.id === editedItem.id"
+                                                         :item-disabled="checkIsItemDisabled"
+                                                         @input="changeData_suppOne()"></v-select>
                                                      </div>
                                                  <div v-else>
-                                                     <div v-if='item.supplier_three == "PENDING"'>
+                                                     <div v-if='item.supplier_three == "PENDING" || item.supplier_three == null'>
                                                         <v-chip
                                                             :color="getColorForAddedItem(item.supplier_three)"
                                                             dark
                                                         >
-                                                            {{ item.supplier_two }}
+                                                            PENDING
                                                             <v-icon
                                                                 small
                                                                 class="mr-1"
@@ -578,7 +597,9 @@
                                                         </v-chip>
                                                     </div>
                                                     <div v-else>
-                                                        {{ item.supplier_three}}
+                                                        <span :class="getColorPreferredThree(item)">
+                                                            {{ item.supplier_three}}
+                                                        </span>
                                                             <v-icon
                                                                 small
                                                                 class="mr-2"
@@ -868,6 +889,10 @@
                 supplier_three: '',
                 },
 
+                defaultItem: {
+                 id: 0
+                },
+
                 editedIndex : -1,
 
                 suppInfoDialog : false,
@@ -887,7 +912,7 @@
                 menu: false,
                 dateCreated : null,
                 missingInfoSupp : false,
-                isPrTableLoading : true
+                isPrTableLoading : true,
     }),
 
     created: function(){
@@ -932,8 +957,15 @@
 
         close () {
             setTimeout(() => {
-                this.editedItem = Object.assign({}, this.defaultItem);
-                this.editedIndex = -1;
+
+                this.editedItem.supplier_one = null
+                this.editedItem.supplier_two = null
+                this.editedItem.supplier_three = null
+                                const source = { supplier_one: 'PENDING', supplier_two: 'PENDING', supplier_three: 'PENDING' };
+                Object.assign(this.viewedItems[this.editedIndex],source)
+                // this.editedItem = Object.assign({}, this.defaultItem);
+                // this.editedIndex = -1;
+
             }, 300)
         },
 
@@ -969,13 +1001,17 @@
         },
 
         viewPR(item){
+
+            localStorage.setItem('params', JSON.stringify(item));
+            var localItem = JSON.parse(localStorage.getItem('params'));
+
                axios.get('/viewPRRequestor',{ params : item.id })
               .then(response =>{
-                    this.prIdViewDialog = item.pr_no
+                    this.prIdViewDialog = localItem.pr_no
                     this.viewDialogPR = true
                     this.viewedItems = response.data[0]
                     this.supplier_list = response.data[1]
-                    this.dateCreated = item.created_at
+                    this.dateCreated = localItem.created_at
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1185,7 +1221,7 @@
         },
 
         getColorForAddedItem(params){
-            if(params == 'PENDING'){
+            if(params == 'PENDING' || params == null){
                 return 'orange'
             }
         },
@@ -1259,7 +1295,8 @@
             axios.post('/saveEditedVendor', { params : {one : this.viewedItems[this.editedIndex] , two : this.editedItem} })
               .then(response =>{
                     Object.assign(this.viewedItems[this.editedIndex],this.editedItem)
-                    this.close()
+                    this.editedItem = Object.assign({}, this.defaultItem);
+                    this.editedIndex = -1;
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1272,7 +1309,7 @@
         editSupplier(item){
             this.editedIndex = this.viewedItems.indexOf(item)
             this.editedItem = Object.assign({}, item);
-            console.log(this.editedItem)
+            //console.log(this.editedItem)
         },
 
         saveEditedSupp(){
@@ -1318,6 +1355,8 @@
 
         closeViewDialogPR(){
             this.viewDialogPR = false
+            this.editedItem = Object.assign({}, this.defaultItem);
+            this.editedIndex = -1;
         },
 
         closeSuppInfoDialog(){
@@ -1330,7 +1369,7 @@
             this.supp_info_detail.min_date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
             this.supp_info_detail.supplier_cost = null
             this.suppInfoDialog = false
-            localStorage.clear();
+            localStorage.removeItem('supp_detail_id');
         },
 
         saveSuppInfo(){
@@ -1338,6 +1377,7 @@
                 axios.post('/saveSuppInfo', {params: this.supp_info_detail ,supp_no : this.supp_no, local_supp_id : localStorage.getItem("supp_detail_id")} )
                 .then(response =>{
                     this.closeSuppInfoDialog()
+                    this.viewPR(JSON.parse(localStorage.getItem('params')))
                 })
                 .catch(error =>{
                         console.log(error.response);
@@ -1370,8 +1410,33 @@
             } else {
                 return 'orange'
             }
-        }
+        },
 
+      checkIsItemDisabled(item) {
+        let arr = [this.viewedItems[this.editedIndex].supplier_one, this.viewedItems[this.editedIndex].supplier_two, this.viewedItems[this.editedIndex].supplier_three]
+        return arr.includes(item.text)
+      },
+
+    changeData_suppOne(){
+        Object.assign(this.viewedItems[this.editedIndex],this.editedItem)
+        console.log(this.viewedItems[this.editedIndex])
+    },
+
+    getColorPreferredOne(item){
+        if(item.SUPPLIER_ONE == 1){
+            return 'blue--text'
+        }
+    },
+    getColorPreferredTwo(item){
+        if(item.SUPPLIER_TWO == 1){
+            return 'blue--text'
+        }
+    },
+    getColorPreferredThree(item){
+        if(item.SUPPLIER_THREE == 1){
+            return 'blue--text'
+        }
+    }
 
         },
     }
@@ -1384,7 +1449,7 @@
 
  table th + th { border-left:1px solid #dddddd; }
  table td + td { border-left:1px solid #dddddd; }
- 
+
   .position_add{
    position: fixed;
    bottom: 15px;

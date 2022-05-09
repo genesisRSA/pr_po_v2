@@ -276,7 +276,7 @@ class PurchaseRequestController extends Controller
             ]);
 
             foreach($request->params['pr_items'] as $key => $b){
-                PurchaseRequestItem::create([
+                $pr_item_id = PurchaseRequestItem::insertGetId([
                     'purchase_request_list_id' => $pr_id,
                     'part_name' => $b['part_name'] == 'N/A' ? '' : $b['part_name'],
                     'material' => $b['material'] == 'N/A' ? '' : $b['material'],
@@ -288,7 +288,35 @@ class PurchaseRequestController extends Controller
                     'supplier_three' => $b['supplier_three'],
                     'target_cost' => $b['target_cost']
                 ]);
+
+                SupplierDetails::create([
+                    'purchase_request_item_id' => $pr_item_id,
+                    'supplier_no' => 'SUPPLIER ONE',
+                    'is_preferred' => 0,
+                    'supplier_cost' => '',
+                    'payment_method' => '',
+                    'eta' => ''
+                ]);
+
+                SupplierDetails::create([
+                    'purchase_request_item_id' => $pr_item_id,
+                    'supplier_no' => 'SUPPLIER TWO',
+                    'is_preferred' => 0,
+                    'supplier_cost' => '',
+                    'payment_method' => '',
+                    'eta' => ''
+                ]);
+
+                SupplierDetails::create([
+                    'purchase_request_item_id' => $pr_item_id,
+                    'supplier_no' => 'SUPPLIER THREE',
+                    'is_preferred' => 0,
+                    'supplier_cost' => '',
+                    'payment_method' => '',
+                    'eta' => ''
+                ]);
             }
+
 
             return response()->json();
         } else {
@@ -317,7 +345,43 @@ class PurchaseRequestController extends Controller
         } else {
             $canChoose = true;
         }
-        return response()->json([$list->pr_items,$vendors,$canChoose]);
+
+        $a = $list->suppliers()->orderBy('purchase_request_item_id','ASC')->get()->groupBy('purchase_request_item_id');
+
+
+            $key = array();
+            foreach($a as $k => $am){
+                foreach($am as $kk => $ap){
+                   $key[$k][$kk] = str_replace(' ','_',$ap->supplier_no);
+                }
+            }
+
+            $val = array();
+            foreach($a as $k => $am){
+                foreach($am as $kk => $ap){
+                   $val[$k][$kk] = json_decode($ap->is_preferred);
+                }
+            }
+
+            $result = array();
+            foreach($key as $k => $v){
+                $result[] = array_combine($key[$k],$val[$k]);
+            }
+
+
+           $suppItems = PurchaseRequestList::find($request[0])->pr_items->toArray();
+
+           $finalResult = array();
+
+           if($result != null){
+                foreach($suppItems as $kkk => $v){
+                    $finalResult[$kkk] = array_merge($suppItems[$kkk],isset($result[$kkk]) ? $result[$kkk] : ['N/A' => 'N/A']);
+                }
+           } else {
+                    $finalResult = $list->pr_items;
+           }
+
+        return response()->json([$finalResult,$vendors,$canChoose]);
     }
 
     public function saveEditedSupp(Request $request){
@@ -370,9 +434,9 @@ class PurchaseRequestController extends Controller
        $owl =PurchaseRequestItem::where('id',$request->params['one']['id'])->first();
 
        $owl->update([
-           'supplier_one' => $request->params['two']['supplier_one'],
-           'supplier_two' => $request->params['two']['supplier_two'],
-           'supplier_three' => $request->params['two']['supplier_three']
+           'supplier_one' => $request->params['two']['supplier_one'] == null ? 'PENDING' : $request->params['two']['supplier_one'],
+           'supplier_two' => $request->params['two']['supplier_two']  == null ? 'PENDING' : $request->params['two']['supplier_two'],
+           'supplier_three' => $request->params['two']['supplier_three'] == null ? 'PENDING' : $request->params['two']['supplier_three']
        ]);
         return response()->json('success');
     }
@@ -450,10 +514,10 @@ class PurchaseRequestController extends Controller
                     'created_at'=>Carbon::now()
                 ]);
             } else {
-                if(PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR APPROVED' || 
-                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PENDING PRESIDENTIAL APPROVAL' || 
-                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PENDING CEO APPROVAL' || 
-                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR DECLINED BY CEO' || 
+                if(PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR APPROVED' ||
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PENDING PRESIDENTIAL APPROVAL' ||
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PENDING CEO APPROVAL' ||
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR DECLINED BY CEO' ||
                    PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR DECLINED BY PRESIDENT' ){
                     return response()->json();
                 }
@@ -502,10 +566,10 @@ class PurchaseRequestController extends Controller
     }
 
     public function ApprovePRPresident(Request $request){
-        
+
         $price = json_decode(str_replace(['₱',','],'',$request->item_category));
 
-        if($price > 20000){
+        if($price > 50000){
             PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PENDING CEO APPROVAL']);
         } else {
             PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR APPROVED']);
@@ -548,4 +612,5 @@ class PurchaseRequestController extends Controller
     public function DeclinePRCEO(Request $request){
         PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR DECLINED BY CEO']);
     }
+
 }

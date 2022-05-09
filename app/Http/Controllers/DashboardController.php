@@ -33,9 +33,9 @@ class DashboardController extends Controller
      */
 
     public function testPDF(Request $request){
-          
+
         $pdf = PDF::loadView('test')->setPaper('a4','portrait');
-    
+
         return $pdf->download('itsolutionstuff.pdf');
     }
     public function index() {
@@ -198,12 +198,6 @@ class DashboardController extends Controller
             $arr[] = explode(',',$perm->permission);
         }
 
-        $crow = array();
-        foreach($arr as $key => $amp){
-            foreach($amp as $idx => $cool){
-                $crow[$key][$idx] = json_decode($cool);
-            }
-        }
 
         $result = array();
         foreach($crow as $k => $v){

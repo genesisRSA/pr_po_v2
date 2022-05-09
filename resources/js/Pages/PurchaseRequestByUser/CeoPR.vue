@@ -1123,7 +1123,7 @@
 
  table th + th { border-left:1px solid #dddddd; }
  table td + td { border-left:1px solid #dddddd; }
- 
+
   .position_add{
    position: fixed;
    bottom: 15px;

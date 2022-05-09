@@ -28,9 +28,59 @@ use App\Models\PurchaseRequestList;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Route::get('/carbon', function(){
+//     $get = Carbon::now();
+//     return $get->toFormattedDateString();
+// });
 Route::get('/test', [DashboardController::class, 'testPDF'])->name('testPDF');
 
+Route::get('/exp', function(){
+    $list = PurchaseRequestList::findOrFail(48);
 
+    $a = $list->suppliers()->orderBy('purchase_request_item_id','ASC')->get()->groupBy('purchase_request_item_id');
+
+
+        $key = array();
+        foreach($a as $k => $am){
+            foreach($am as $kk => $ap){
+               $key[$k][$kk] = str_replace(' ','_',$ap->supplier_no);
+            }
+        }
+
+        $val = array();
+        foreach($a as $k => $am){
+            foreach($am as $kk => $ap){
+               $val[$k][$kk] = json_decode($ap->is_preferred);
+            }
+        }
+
+        $result = array();
+        foreach($key as $k => $v){
+            $result[] = array_combine($key[$k],$val[$k]);
+        }
+
+
+       $suppItems = PurchaseRequestList::find(48)->pr_items->toArray();
+       $finalResult = array();
+       foreach($suppItems as $kkk => $v){
+           $finalResult[$kkk] = $result[$kkk]?array_merge($suppItems[$kkk],$result[$kkk]) : $suppItems[$kkk];
+       }
+
+    //    $give = array();
+    //    foreach($a as $aaa){
+    //         $give[] = ['a'=>'a'];
+    //    }
+
+    //    $aaaaa= array();
+    //    foreach($a as $ke => $all){
+    //         $aaaaa[]= $all;
+    //    }
+
+    //    $antrum = $list->pr_items()->orderBy('id')->get()->toArray();
+
+    //    $merge = array_merge($aaaaa, [$antrum]);
+        return $a ;
+});
 // Route::get('/send-mail', function () {
 
 
