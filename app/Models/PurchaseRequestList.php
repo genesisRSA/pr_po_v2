@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User;
 use App\Models\PurchaseRequestItem;
 use App\Models\SupplierDetails;
+use App\Models\PurchaseOrderList;
+
 class PurchaseRequestList extends Model
 {
     use HasFactory, SoftDeletes;
@@ -33,5 +35,9 @@ class PurchaseRequestList extends Model
                                     'purchase_request_item_id',
                                     'id',
                                     'id');
+    }
+
+    public function purchase_order(){
+        return $this->hasOne(PurchaseOrderList::class, 'pr_id');
     }
 }

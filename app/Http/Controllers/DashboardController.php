@@ -198,6 +198,12 @@ class DashboardController extends Controller
             $arr[] = explode(',',$perm->permission);
         }
 
+        $crow = array();
+        foreach($arr as $key => $amp){
+            foreach($amp as $idx => $cool){
+                $crow[$key][$idx] = json_decode($cool);
+            }
+        }
 
         $result = array();
         foreach($crow as $k => $v){

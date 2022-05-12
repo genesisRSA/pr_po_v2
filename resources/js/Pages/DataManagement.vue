@@ -55,7 +55,11 @@
 
 
             <!-- //////////dialog/////////// -->
-            <v-card min-height="850">
+            <v-card min-height="870">
+            <v-img lazy-src="https://picsum.photos/id/11/10/6"
+                max-height="870"
+                max-width="1650"
+                src="https://img.wallpapersafari.com/desktop/1600/900/81/18/WewaSt.jpg">
             <div class="mt-5"></div>
               <v-subheader><h1 class="mt-5">{{ card }}</h1></v-subheader>
               <v-card-text>
@@ -453,6 +457,7 @@
                         </v-tabs-items>
                   </v-container>
                </v-card-text>
+               </v-img>
             </v-card>
           </v-col>
         </v-row>

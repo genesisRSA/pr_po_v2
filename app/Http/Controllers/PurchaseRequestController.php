@@ -463,6 +463,9 @@ class PurchaseRequestController extends Controller
                 'payment_method' => $request->params['payment_method'][0]['value'],
                 'eta' => $request->params['eta']
             ]);
+
+            $getSupplier = SupplierDetails::findOrFail($request->params['id']);
+            $getSupplier->supp_detail()->update(['chosen_supp_cost' => '₱'.number_format($request->params['supplier_cost'],2, '.', ',')]);
         }
 
         // $getSupp->updateOrCreate([
@@ -482,7 +485,14 @@ class PurchaseRequestController extends Controller
     public function getSelectedFinalSupp(Request $request){
 
          $getSelected = PurchaseRequestItem::findOrFail($request->params['id']);
-        $getSelected->update(['chosen_supplier' => $request->params['chosen_supplier']]);
+         $getSupp = SupplierDetails::where('purchase_request_item_id',$request->params['id'])->where('supplier_no',($request->params['chosen_supplier'] === '1') ? 'SUPPLIER ONE' : (($request->params['chosen_supplier'] === '2') ? 'SUPPLIER TWO' : 'SUPPLIER THREE' ))->first();
+
+        if($getSupp != null){
+            $getSelected->update(['chosen_supplier' => $request->params['chosen_supplier'],
+            'chosen_supp_cost' => $getSupp->supplier_cost]);
+        } else {
+            $getSelected->update(['chosen_supplier' => $request->params['chosen_supplier']]);
+        }
 
         $items = PurchaseRequestItem::where('purchase_request_list_id',$getSelected->purchase_request_list_id)->get();
 
@@ -550,7 +560,9 @@ class PurchaseRequestController extends Controller
       $count_item = 0;
       foreach(SupplierDetails::all() as $supp){
         if(in_array($supp->purchase_request_item_id,$count_id)){
-            $count_item += 1;
+            if($supp->supplier_cost != '' || $supp->payment_method != '' || $supp->eta != ''){
+                $count_item += 1;
+            }
         }
       }
 

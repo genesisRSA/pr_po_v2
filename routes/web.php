@@ -17,7 +17,8 @@ use App\Models\User;
 use App\Models\PaymentTerm;
 use App\Models\PlatingProcess;
 use App\Models\PurchaseRequestList;
-
+use App\Models\PurchaseOrderList;
+use App\Models\SubCategoryItem;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,55 +33,121 @@ use App\Models\PurchaseRequestList;
 //     $get = Carbon::now();
 //     return $get->toFormattedDateString();
 // });
+
+Route::get('/stamp', function(){
+
+    // $list = PurchaseOrderList::find(6);
+    // $a = $list->suppliers()->orderBy('purchase_request_item_id','ASC')->get()->groupBy('purchase_request_item_id');
+    // $key = array();
+    // foreach($a as $k => $am){
+    //     foreach($am as $kk => $ap){
+    //        $key[$k][$kk] = json_decode(str_replace(',','',mb_substr($ap->supplier_cost,1)));
+    //     }
+    // }
+    // $lou = array();
+
+    // foreach($key as $kk => $l){
+    //     $lou[$kk] = array_sum($l);
+    // }
+
+    $hasManyThrough =  PurchaseOrderList::all();
+
+
+    // $arr = array();
+    // $first = array();
+
+    foreach($hasManyThrough as $k => $a){
+        foreach($a->request_items as $kk => $ap){
+           $key[$k][$kk] = json_decode(str_replace(',','',mb_substr($ap->chosen_supp_cost,1))) ;
+        }
+    }
+
+    $lou = array();
+
+    foreach($key as $kk => $l){
+        $lou[] = '₱'.number_format(array_sum($l),2, '.', ',');
+    }
+
+    $first = array();
+    foreach($lou as $kk => $l){
+        $first[] = 'actual_cost_supp'; 
+    }
+
+    $res = array();
+
+    foreach($first as $keys => $firsts){
+        $res[] = array_combine([$first[$keys]], [$lou[$keys]]);
+    }
+
+    $all_PO = PurchaseOrderList::all()->toArray();
+
+    $finalResult = array();
+
+    foreach($all_PO as $kkk => $v){
+        $finalResult[$kkk] = array_merge($all_PO[$kkk],$res[$kkk]);
+    }
+    dd($finalResult);
+
+    // $hasMany =  PurchaseOrderList::all();
+
+
+    // foreach($hasMany as $k => $a){
+    //     foreach($a->request_items as $kk => $ap){
+    //        $key[$k][$kk] = ($ap->chosen_supplier === '1') ? 'SUPPLIER ONE' : (($ap->chosen_supplier === '2') ? 'SUPPLIER TWO' : 'SUPPLIER THREE' ) ;
+    //     }
+    // }
+
+});
+
 Route::get('/test', [DashboardController::class, 'testPDF'])->name('testPDF');
 
-Route::get('/exp', function(){
-    $list = PurchaseRequestList::findOrFail(48);
+// Route::get('/exp', function(){
+//     $list = PurchaseRequestList::findOrFail(48);
 
-    $a = $list->suppliers()->orderBy('purchase_request_item_id','ASC')->get()->groupBy('purchase_request_item_id');
-
-
-        $key = array();
-        foreach($a as $k => $am){
-            foreach($am as $kk => $ap){
-               $key[$k][$kk] = str_replace(' ','_',$ap->supplier_no);
-            }
-        }
-
-        $val = array();
-        foreach($a as $k => $am){
-            foreach($am as $kk => $ap){
-               $val[$k][$kk] = json_decode($ap->is_preferred);
-            }
-        }
-
-        $result = array();
-        foreach($key as $k => $v){
-            $result[] = array_combine($key[$k],$val[$k]);
-        }
+//     $a = $list->suppliers()->orderBy('purchase_request_item_id','ASC')->get()->groupBy('purchase_request_item_id');
 
 
-       $suppItems = PurchaseRequestList::find(48)->pr_items->toArray();
-       $finalResult = array();
-       foreach($suppItems as $kkk => $v){
-           $finalResult[$kkk] = $result[$kkk]?array_merge($suppItems[$kkk],$result[$kkk]) : $suppItems[$kkk];
-       }
+//         $key = array();
+//         foreach($a as $k => $am){
+//             foreach($am as $kk => $ap){
+//                $key[$k][$kk] = str_replace(' ','_',$ap->supplier_no);
+//             }
+//         }
 
-    //    $give = array();
-    //    foreach($a as $aaa){
-    //         $give[] = ['a'=>'a'];
-    //    }
+//         $val = array();
+//         foreach($a as $k => $am){
+//             foreach($am as $kk => $ap){
+//                $val[$k][$kk] = json_decode($ap->is_preferred);
+//             }
+//         }
 
-    //    $aaaaa= array();
-    //    foreach($a as $ke => $all){
-    //         $aaaaa[]= $all;
-    //    }
+//         $result = array();
+//         foreach($key as $k => $v){
+//             $result[] = array_combine($key[$k],$val[$k]);
+//         }
 
-    //    $antrum = $list->pr_items()->orderBy('id')->get()->toArray();
 
-    //    $merge = array_merge($aaaaa, [$antrum]);
-        return $a ;
-});
+//        $suppItems = PurchaseRequestList::find(48)->pr_items->toArray();
+//        $finalResult = array();
+//        foreach($suppItems as $kkk => $v){
+//            $finalResult[$kkk] = $result[$kkk]?array_merge($suppItems[$kkk],$result[$kkk]) : $suppItems[$kkk];
+//        }
+
+//     //    $give = array();
+//     //    foreach($a as $aaa){
+//     //         $give[] = ['a'=>'a'];
+//     //    }
+
+//     //    $aaaaa= array();
+//     //    foreach($a as $ke => $all){
+//     //         $aaaaa[]= $all;
+//     //    }
+
+//     //    $antrum = $list->pr_items()->orderBy('id')->get()->toArray();
+
+//     //    $merge = array_merge($aaaaa, [$antrum]);
+//         return $a ;
+// });
 // Route::get('/send-mail', function () {
 
 

@@ -64,7 +64,7 @@ class PurchaseOrderController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
-                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                        'created_at' => $query->created_at->toDayDateTimeString()
                     ];
                 });
             }
@@ -80,7 +80,7 @@ class PurchaseOrderController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
-                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                        'created_at' => $query->created_at->toDayDateTimeString()
                     ];
                 });
             }
@@ -96,7 +96,7 @@ class PurchaseOrderController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
-                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                        'created_at' => $query->created_at->toDayDateTimeString()
                     ];
                 });
             }
@@ -112,7 +112,8 @@ class PurchaseOrderController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
-                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                        'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ? Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' : '--/--',
+                        'created_at' => $query->created_at->toDayDateTimeString()
                     ];
                 });
             }
@@ -128,14 +129,50 @@ class PurchaseOrderController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
-                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                        'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ? Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' : '--/--',
+                        'created_at' => $query->created_at->toDayDateTimeString()
                     ];
                 });
             }
 
         }
 
-        return response()->json($myPR);
+        $hasManyThrough =  PurchaseOrderList::all();
+        $arr = array();
+        $first = array();
+    
+        foreach($hasManyThrough as $k => $a){
+            foreach($a->request_items as $kk => $ap){
+               $key[$k][$kk] = json_decode(str_replace(',','',mb_substr($ap->chosen_supp_cost,1))) ;
+            }
+        }
+    
+        $lou = array();
+    
+        foreach($key as $kk => $l){
+            $lou[] = '₱'.number_format(array_sum($l),2, '.', ',');
+        }
+    
+        $first = array();
+        foreach($lou as $kk => $l){
+            $first[] = 'actual_cost_supp'; 
+        }
+    
+        $res = array();
+    
+        foreach($first as $keys => $firsts){
+            $res[] = array_combine([$first[$keys]], [$lou[$keys]]);
+        }
+
+        $all_PO = $myPR;  ////////////// merge the PO list//////////////////
+
+        $finalResult = array();
+    
+        foreach($all_PO as $kkk => $v){
+            $finalResult[$kkk] = array_merge($all_PO[$kkk],$res[$kkk]);
+        }
+
+        return response()->json($finalResult);
     }
 
     public function viewPO(Request $request){
@@ -161,7 +198,7 @@ class PurchaseOrderController extends Controller
         $price = json_decode(str_replace(['₱',','],'',$request->item_category));
 
         if($price <= 10000){
-            PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PO APPROVED']);
+            PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PO APPROVED','pr_approved_date'=>Carbon::now()]);
         } else {
             PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING PRESIDENT APPROVAL']);
         }
@@ -170,7 +207,7 @@ class PurchaseOrderController extends Controller
     }
 
     public function DeclinePOManager(Request $request){
-        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'DECLINED BY MANAGER']);
+        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'DECLINED BY MANAGER','pr_approved_date'=>Carbon::now()]);
         return response()->json($request);
     }
 
@@ -179,7 +216,7 @@ class PurchaseOrderController extends Controller
         $price = json_decode(str_replace(['₱',','],'',$request->item_category));
 
         if($price <= 50000){
-            PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PO APPROVED']);
+            PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PO APPROVED','pr_approved_date'=>Carbon::now()]);
         } else {
             PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING CEO APPROVAL']);
         }
@@ -188,17 +225,17 @@ class PurchaseOrderController extends Controller
     }
 
     public function DeclinePOPresident(Request $request){
-        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'DECLINED BY PRESIDENT']);
+        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'DECLINED BY PRESIDENT','pr_approved_date'=>Carbon::now()]);
         return response()->json($request);
     }
 
     public function ApprovePOCeo(Request $request){
-        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PO APPROVED']);
+        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PO APPROVED','pr_approved_date'=>Carbon::now()]);
         return response()->json($request);
     }
 
     public function DeclinePOCeo(Request $request){
-        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'DECLINED BY CEO']);
+        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'DECLINED BY CEO','pr_approved_date'=>Carbon::now()]);
         return response()->json($request);
     }
 }

@@ -8,6 +8,10 @@
             cols="12"
           >
             <v-card min-height="800">
+            <v-img lazy-src="https://picsum.photos/id/11/10/6"
+                max-height="800"
+                max-width="1650"
+                src="https://img.wallpapersafari.com/desktop/1600/900/81/18/WewaSt.jpg">
             <div class="mt-5"></div>
               <v-subheader><h1 class="mt-5">{{ card }}</h1></v-subheader>
               <v-card-text>
@@ -258,6 +262,7 @@
                     </div>
                   </v-container>
                </v-card-text>
+               </v-img>
             </v-card>
           </v-col>
         </v-row>

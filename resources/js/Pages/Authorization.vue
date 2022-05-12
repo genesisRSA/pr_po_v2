@@ -8,6 +8,10 @@
             cols="12"
           >
             <v-card min-height="800">
+            <v-img lazy-src="https://picsum.photos/id/11/10/6"
+                max-height="800"
+                max-width="1650"
+                src="https://img.wallpapersafari.com/desktop/1600/900/81/18/WewaSt.jpg">
             <div class="mt-5"></div>
               <v-subheader><h1 class="mt-5">{{ card }}</h1></v-subheader>
               <v-card-text>
@@ -407,6 +411,7 @@
                     ></v-pagination>
                     </div>
                </v-card-text>
+               </v-img>
             </v-card>
           </v-col>
         </v-row>
@@ -416,6 +421,10 @@
             cols="12"
           >
             <v-card min-height="800">
+            <v-img lazy-src="https://picsum.photos/id/11/10/6"
+                max-height="800"
+                max-width="1650"
+                src="https://img.wallpapersafari.com/desktop/1600/900/81/18/WewaSt.jpg">
             <div class="mt-5"></div>
               <v-subheader><h1 class="mt-5">{{ deptName }}</h1></v-subheader>
               <v-card-text>
@@ -503,6 +512,7 @@
                     ></v-pagination>
                     </div>
                </v-card-text>
+               </v-img>
             </v-card>
           </v-col>
         </v-row>
@@ -636,7 +646,6 @@
                                 </v-card-actions>
                             </v-card>
           </v-dialog>
-
     </app-layout>
 </template>
 
@@ -706,7 +715,6 @@
                 },
                 selectedUserPerm : '',
 
-
 ////////////////////department list///////////////////
                 pageForDept: 1,
                 pageCountForDept: 0,
@@ -737,8 +745,7 @@
                 selectedDept:{},
 
                 itemsForUserConfig: ['REQUESTOR','BUYER','PURCHASE MNGR.','PRESIDENT','CEO'],
-                selectedUserConfig: ''
-
+                selectedUserConfig: '',
     }),
 
     created: function(){

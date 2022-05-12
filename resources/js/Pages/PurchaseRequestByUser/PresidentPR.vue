@@ -20,6 +20,10 @@
             cols="12"
           >
             <v-card min-height="800">
+            <v-img lazy-src="https://picsum.photos/id/11/10/6"
+                max-height="800"
+                max-width="1650"
+                src="https://img.wallpapersafari.com/desktop/1600/900/81/18/WewaSt.jpg">
             <div class="mt-5"></div>
               <v-subheader><h1 class="mt-5">{{ card }}</h1></v-subheader>
               <v-card-text>
@@ -59,6 +63,12 @@
                             >
                                 {{ item.status }}
                             </v-chip>
+                        </template>
+
+                        <template v-slot:item.item_category="{ item }">
+                            <strong>
+                                {{ item.item_category }}
+                            </strong>
                         </template>
 
                         <template v-slot:item.actions="{ item }">
@@ -141,6 +151,7 @@
                     ></v-pagination>
                     </div>
                </v-card-text>
+               </v-img>
             </v-card>
           </v-col>
           <v-btn
@@ -629,7 +640,7 @@
                     },
                     { text: 'Department', value: 'department', class: "yellow"},
                     { text: 'Requestor', value: 'user_id', class: "yellow"},
-                    { text: 'Grand Total', value: 'item_category', class: "yellow" },
+                    { text: 'Target Cost', value: 'item_category', class: "yellow" },
                     { text: 'Date Created', value: 'created_at', class: "yellow" },
                     { text: 'Status', value: 'status', class: "yellow" },
                     { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
