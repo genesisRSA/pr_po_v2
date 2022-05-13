@@ -195,6 +195,20 @@
                                     @page-count="pageCountForItemList = $event"
                                     class="mt-5"
                                     >
+                                    <template v-slot:item.item_code="{ item }">
+                                        <span
+                                        :class="getColor(item.item_code)"
+                                        >
+                                        {{ item.item_code }}
+                                        </span>
+                                    </template>
+                                    <template v-slot:item.validity_date="{ item }">
+                                        <span
+                                        :class="getColor(item.validity_date)"
+                                        >
+                                        {{ item.validity_date }}
+                                        </span>
+                                    </template>
                                     <template v-slot:item.part_name="{ item }">
                                         <span
                                         :class="getColor(item.part_name)"
@@ -630,6 +644,19 @@
                                 sm="6"
                                 md="4"
                             >
+                            <v-text-field
+                            label='Item Code'
+                            clearable
+                            v-model="item_code_for_list_item">
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
                             <v-select
                             label='Category Name'
                             clearable
@@ -705,6 +732,56 @@
                                     v-bind:options="options"
                                     />
                                 </div>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                             <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                                    <v-menu
+                                    ref="menu"
+                                    v-model="menu"
+                                    :close-on-content-click="false"
+                                    :return-value.sync="price_validity_for_list_item"
+                                    transition="scale-transition"
+                                    offset-y
+                                    min-width="auto"
+                                >
+                                    <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        v-model="price_validity_for_list_item"
+                                        label="Validity Date"
+                                        prepend-icon="mdi-calendar"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                    v-model="price_validity_for_list_item"
+                                    no-title
+                                    scrollable
+                                    :min="min_date"
+                                    >
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="menu = false"
+                                    >
+                                        Cancel
+                                    </v-btn>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="$refs.menu.save(price_validity_for_list_item)"
+                                    >
+                                        OK
+                                    </v-btn>
+                                    </v-date-picker>
+                                </v-menu>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -1050,6 +1127,21 @@
                                         </div>
                                 </v-col>
                             </v-row>
+
+                            <v-row>
+                                 <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                    <v-text-field
+                                    label='Item Code'
+                                    clearable
+                                    v-model="selectedItemList.item_code == 'N/A' ? selectedItemList.item_code = null : selectedItemList.item_code"
+                                    >
+                                    </v-text-field>
+                                </v-col>
+                            </v-row>
                             <v-row>
 
                                 <v-col
@@ -1154,6 +1246,57 @@
 
                                 <!-------end of row 2 ---------->
 
+                            <v-row>
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                    <v-menu
+                                    ref="menu_edit"
+                                    v-model="menu_edit"
+                                    :close-on-content-click="false"
+                                    :return-value.sync="selectedItemList.validity_date == 'N/A' ? selectedItemList.validity_date = null : selectedItemList.validity_date"
+                                    transition="scale-transition"
+                                    offset-y
+                                    min-width="auto"
+                                >
+                                    <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        v-model="selectedItemList.validity_date"
+                                        label="Validity Date"
+                                        prepend-icon="mdi-calendar"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                    v-model="selectedItemList.validity_date"
+                                    no-title
+                                    scrollable
+                                    :min="min_date"
+                                    >
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="menu_edit = false"
+                                    >
+                                        Cancel
+                                    </v-btn>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="$refs.menu_edit.save(selectedItemList.validity_date)"
+                                    >
+                                        OK
+                                    </v-btn>
+                                    </v-date-picker>
+                                </v-menu>
+                                </v-col>
+                            </v-row>
+
 
                         </v-container>
                     </v-card-text>
@@ -1167,6 +1310,7 @@
                                     selectedItemList.material == compareToSelectedItemList.material &&
                                     selectedItemList.part_name == compareToSelectedItemList.part_name &&
                                     selectedItemList.dimension == compareToSelectedItemList.dimension &&
+                                    selectedItemList.item_code == compareToSelectedItemList.item_code &&
                                     selectedItemList.raw_unit_price == compareToSelectedItemList.raw_unit_price)
                                     "
                         >Save Changes</v-btn>
@@ -1486,6 +1630,7 @@
             itemsPerPageForItemList: 10,
 
             headersForItemList: [
+                { text: 'Item Code', value: 'item_code', class: 'yellow' },
                 {
                 text: 'Category Name',
                 align: 'start',
@@ -1497,15 +1642,18 @@
                 { text: 'Material', value: 'material', class: "yellow"},
                 { text: 'Dimension', value: 'dimension', class: "yellow"},
                 { text: 'Unit Price', value: 'unit_price', class: "yellow"},
+                { text: 'Validity Date', value: 'validity_date', class: "yellow"},
                 { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
             ],
 
+            item_code_for_list_item : null,
             category_val_for_list_item : null,
             subcategory_val_for_list_item : null,
             part_name_for_list_item : null,
             material_for_list_item : null,
             dimension_for_list_item : null,
             raw_unit_price_for_list_item : null,
+            price_validity_for_list_item : null,
 
             item_list : [],
             dialogEditItemList : false,
@@ -1519,6 +1667,9 @@
             subcategory_name_for_add_itemList : [],
 
             price_tracker_item_list : null,
+            menu: false,
+            menu_edit: false,
+            min_date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
 
 //-------------------- for plating process section------------------------------------
 
@@ -1683,12 +1834,14 @@
          },
 
          addItemList(){
-            axios.post('/addItemList', {cat_val : this.category_val_for_list_item,
+            axios.post('/addItemList', {item_code : this.item_code_for_list_item,
+                                        cat_val : this.category_val_for_list_item,
                                         subcat_val : this.subcategory_val_for_list_item,
                                         partname_val : this.part_name_for_list_item,
                                         material_val : this.material_for_list_item,
                                         dimension : this.dimension_for_list_item,
-                                        unit_price : this.raw_unit_price_for_list_item})
+                                        unit_price : this.raw_unit_price_for_list_item,
+                                        validity_date : this.price_validity_for_list_item})
               .then(response =>{
                     this.getAvailableItemList()
                     this.close();
@@ -1862,12 +2015,14 @@
               this.getAvailableCateogryItems()
             //   this.rfqs=[],
               this.$nextTick(() => {
+                this.item_code_for_list_item = null
                 this.category_val_for_list_item  = null
                 this.subcategory_val_for_list_item  = null
                 this.part_name_for_list_item  = null
                 this.material_for_list_item  = null
                 this.dimension_for_list_item  = null
                 this.raw_unit_price_for_list_item = null
+                this.price_validity_for_list_item = null
 
                 this.tab == 0 ? this.$refs.category_form.reset() : false
                 this.tab == 0 ? this.$refs.subcategory_form.reset() : false

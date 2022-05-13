@@ -28,6 +28,8 @@
     "dependencies": {
         "@inertiajs/inertia": "^0.8.5",
         "@inertiajs/inertia-vue": "^0.5.5",
+        "moment": "^2.29.3",
+        "vue-moment": "^4.1.0",
         "vuetify": "^2.4.8",
         "vuetify-money": "^1.2.0"
     }

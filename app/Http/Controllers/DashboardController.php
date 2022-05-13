@@ -452,6 +452,7 @@ class DashboardController extends Controller
         $allItems = ItemList::all()->map( function($query){
             return [
                 'id' => $query->id,
+                'item_code' => $query->item_code == null ? 'N/A' : $query->item_code,
                 'category_name' => $query->category_item->category_name,
                 'subcategory_name' => $query->subcategory_item->subcategory_name,
                 'part_name' => $query->part_name == '' ? 'N/A' : $query->part_name,
@@ -460,7 +461,8 @@ class DashboardController extends Controller
                 'cat_val' => ['text'=>$query->category_item->category_name,'value'=>$query->category_item_id],
                 'subcat_val' => ['text'=>$query->subcategory_item->subcategory_name,'value'=>$query->sub_category_item_id],
                 'unit_price' => $query->unit_price == '' ? 'N/A' : $query->unit_price,
-                'raw_unit_price' => str_replace(',','',mb_substr($query->unit_price,2))
+                'raw_unit_price' => str_replace(',','',mb_substr($query->unit_price,2)),
+                'validity_date' => $query->validity_date == null ? 'N/A' : $query->validity_date
             ];
         });
         return response()->json($allItems);
@@ -513,9 +515,17 @@ class DashboardController extends Controller
                in_array(strtolower($request->params['material']), [strtolower($item->material)]) &&
                in_array(strtolower($request->params['dimension']), [strtolower($item->dimension)]) &&
                in_array(strtolower($cat_val), [strtolower($item->category_item_id)]) &&
-               in_array(strtolower($subcat_val), [strtolower($item->sub_category_item_id)]) ) {
+               in_array(strtolower($subcat_val), [strtolower($item->sub_category_item_id)]) &&
+               in_array(strtolower($request->params['item_code']), [strtolower($item->item_code)]) &&
+               in_array(strtolower($request->params['validity_date']), [strtolower($item->validity_date)])) {
                 $detection += 1;
             }
+
+            // if($request->params['item_code'] != null){
+            //     if(in_array(strtolower($request->params['item_code']), [strtolower($item->item_code)] )){
+            //         $detection += 1;
+            //     }
+            // }
         }
 
         if($detection == 0){
@@ -531,7 +541,9 @@ class DashboardController extends Controller
                 'part_name' => $request->params['part_name'] == null ? '' : $request->params['part_name'],
                 'material' => $request->params['material'] == null ? '' : $request->params['material'],
                 'dimension' => $request->params['dimension'] == null ? '' : $request->params['dimension'],
-                'unit_price' => $unit_price == null? '' : $unit_price
+                'unit_price' => $unit_price == null? null : $unit_price,
+                'item_code' => $request->params['item_code'] == null ? '' : $request->params['item_code'],
+                'validity_date' => $request->params['validity_date'] == null ? '' : $request->params['validity_date']
             ]);
         }
 
@@ -553,16 +565,25 @@ class DashboardController extends Controller
                in_array(strtolower($request->subcat_val), [strtolower($item->sub_category_item_id)]) ) {
                 $detection += 1;
             }
+
+            if($request->item_code != null){
+                if(in_array(strtolower($request->item_code), [strtolower($item->item_code)] )){
+                    $detection += 1;
+                }
+            }
+
         }
 
             if($detection == 0){
                   $id =  ItemList::insertGetId([
+                    'item_code' => $request->item_code,
                     'category_item_id' => $request->cat_val,
                     'sub_category_item_id' => $request->subcat_val,
                     'part_name' => $request->partname_val == null || $request->partname_val == 'N/A' ? '' : $request->partname_val,
                     'material' => $request->material_val == null || $request->material_val == 'N/A' ? '' : $request->material_val,
                     'dimension' => $request->dimension == null || $request->material_val == 'N/A' ? '' : $request->dimension,
-                    'unit_price' => $price
+                    'unit_price' => $price,
+                    'validity_date' => $request->validity_date
                 ]);
 
                 ItemListCostUpdate::create([
@@ -947,6 +968,85 @@ class DashboardController extends Controller
     public function getDepartmentRegister(){
         $getDept = Department::orderBy('dept_code')->pluck('dept_code')->toArray();
         return response()->json($getDept);
+    }
+
+    public function getUserForNotif(Request $request){
+
+        $user = User::findOrFail(Auth::id());
+
+        $count = 0;
+
+        $count = $user->notifications()->whereDate('created_at',Carbon::today())->get()->count();
+
+        if($user->role_as == 1){
+
+            $res = 'NOT ALLOWED';
+
+        } else {
+
+            if($user->user_position->position == 'PURCHASE MNGR.'){
+
+                $res = 'ALLOWED';
+                if($count == 1){
+
+                } else {
+                    $user->notifications()->create(['status'=>'new notif']);
+                }
+
+            } else if($user->user_position->position == 'BUYER'){
+
+                $res = 'ALLOWED';
+                if($count == 1){
+
+                } else {
+                    $user->notifications()->create(['status'=>'new notif']);
+                }
+
+            } else if($user->user_position->position == 'PRESIDENT'){
+
+                $res = 'ALLOWED';
+                if($count == 1){
+
+                } else {
+                    $user->notifications()->create(['status'=>'new notif']);
+                }
+
+            } else if($user->user_position->position == 'CEO'){
+
+                $res = 'ALLOWED';
+                if($count == 1){
+
+                } else {
+                    $user->notifications()->create(['status'=>'new notif']);
+                }
+
+            } else {
+
+                $res = 'NOT ALLOWED';
+
+            }
+
+        }
+
+        return response()->json([$res,$count]);
+    }
+
+    public function getBadge(){
+        $user = User::findOrFail(Auth::id());
+        $count = $user->notifications()->whereDate('created_at',Carbon::today())->get()->count();
+
+        if($user->notifications()->whereDate('created_at',Carbon::today())->first()->status == 'new notif'){
+            $response = 'new notif';
+        } else {
+            $response = 'seen';
+        }
+        return response()->json($response);
+    }
+
+    public function seeNotif(){
+        $user = User::findOrFail(Auth::id());
+        $val = $user->notifications()->whereDate('created_at',Carbon::today())->first()->update(['status'=>'seen']);
+        return response()->json($val);
     }
     /**
      * Show the form for creating a new resource.

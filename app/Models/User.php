@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\UserPosition;
+use App\Models\Notification;
 use App\Models\SitePermission;
 use App\Models\PurchaseRequestList;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,5 +59,9 @@ class User extends Authenticatable
 
     public function purchase_requests(){
         return $this->hasMany(PurchaseRequestList::class);
+    }
+
+    public function notifications(){
+        return $this->hasMany(Notification::class);
     }
 }

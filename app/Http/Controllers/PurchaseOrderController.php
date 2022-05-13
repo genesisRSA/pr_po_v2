@@ -112,7 +112,7 @@ class PurchaseOrderController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
-                        'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ? Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' : '--/--',
+                        'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ? (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ? Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date) : Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' ): 'ONGOING',
                         'created_at' => $query->created_at->toDayDateTimeString()
                     ];
                 });
@@ -129,7 +129,7 @@ class PurchaseOrderController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
-                        'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ? Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' : '--/--',
+                        'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ? (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ? Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date) : Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' ): 'ONGOING',
                         'created_at' => $query->created_at->toDayDateTimeString()
                     ];
                 });

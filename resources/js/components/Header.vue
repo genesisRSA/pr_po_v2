@@ -8,42 +8,85 @@
       <v-btn icon color="primary" large>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
-        <div class="text-center">
-            <v-menu offset-y min-width="300" max-height="350">
-            <template v-slot:activator="{ on, attrs }">
-                <v-badge
-                 color="error"
-                overlap
-                content="4">
-                <v-btn
-                icon
-                color="primary"
-                dark
-                v-bind="attrs"
-                v-on="on"
-                large
-                >
-                <v-icon>mdi-earth</v-icon>
-                </v-btn>
-                </v-badge>
-            </template>
-        <v-card>
-          <v-list-item-content class="justify-center">
-            <div class="mx-auto text-center">
-                    <h3>Daily Notifications <v-icon color="primary">mdi-alert-circle-check</v-icon></h3>
-              <v-divider class="my-3"></v-divider>
+        <div class="text-center" v-if='canViewNotif == "ALLOWED"'>
+  
+            <v-menu offset-y min-width="300" max-height="350" v-if="badgeC == 'new notif'">
+                <template v-slot:activator="{ on, attrs }">
 
-              <template v-for="(item, index) in items">
-              <v-list-item class="text-left">
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item>
-              <v-divider class="my-3" v-if="index != items.length - 1"></v-divider>
-              </template>
+                      <v-badge
+                      color="error"
+                      overlap
+                      :content="badgeC">
+                      <v-btn
+                      icon
+                      color="primary"
+                      dark
+                      v-bind="attrs"
+                      v-on="on"
+                      large
+                      @click="seeNotif()"
+                      >
+                      <v-icon>mdi-earth</v-icon>
+                      </v-btn>
+                      </v-badge>
 
-            </div>
-          </v-list-item-content>
-        </v-card>
+                </template>
+                <v-card>
+                  <v-list-item-content class="justify-center">
+                    <div class="mx-auto text-center">
+                            <h3>Daily Notifications <v-icon color="primary">mdi-alert-circle-check</v-icon></h3>
+                      <v-divider class="my-3"></v-divider>
+
+                      <template v-for="(item, index) in items">
+                      <v-list-item class="text-left">
+                          <v-list-item-title>{{ item.title }}</v-list-item-title>
+                      </v-list-item>
+                      <v-divider class="my-3" v-if="index != items.length - 1"></v-divider>
+                      </template>
+
+                    </div>
+                  </v-list-item-content>
+                </v-card>
             </v-menu>
+            <div v-else>
+
+            <v-menu offset-y min-width="300" max-height="350">
+                <template v-slot:activator="{ on, attrs }">
+
+
+                      <v-btn
+                      icon
+                      color="primary"
+                      dark
+                      v-bind="attrs"
+                      v-on="on"
+                      large
+                      >
+                      <v-icon>mdi-earth</v-icon>
+                      </v-btn>
+
+
+                </template>
+                <v-card>
+                  <v-list-item-content class="justify-center">
+                    <div class="mx-auto text-center">
+                            <h3>Daily Notifications <v-icon color="primary">mdi-alert-circle-check</v-icon></h3>
+                      <v-divider class="my-3"></v-divider>
+
+                      <template v-for="(item, index) in items">
+                      <v-list-item class="text-left">
+                          <v-list-item-title>{{ item.title }}</v-list-item-title>
+                      </v-list-item>
+                      <v-divider class="my-3" v-if="index != items.length - 1"></v-divider>
+                      </template>
+
+                    </div>
+                  </v-list-item-content>
+                </v-card>
+            </v-menu>
+          
+            </div>
+
         </div>
 
 
@@ -68,7 +111,62 @@
         { title: 'PA-04 was about to expired on June 12, 2022' },
         { title: 'CW-05 was about to expired on June 23, 2022' },
       ],
+    canViewNotif : null,
+    badgeC : null
     }),
+
+    created: function(){
+        this.getUserForNotif()
+        this.badgeCount()
+    },
+
+    methods: {
+
+       getUserForNotif() {
+               axios.get('/getUserForNotif')
+              .then(response =>{
+                    this.canViewNotif = response.data[0]
+                    console.log(response.data)
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+      }, 
+
+      badgeCount(){
+              axios.get('/getBadge')
+              .then(response =>{
+                    this.badgeC = response.data
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+      },
+
+      seeNotif(){
+              axios.get('/seeNotif')
+              .then(response =>{
+
+                        this.badgeC = response.data
+
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+      }
+
+
+    }
+
   }
 </script>
 

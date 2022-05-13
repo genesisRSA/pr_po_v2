@@ -19,6 +19,7 @@ use App\Models\PlatingProcess;
 use App\Models\PurchaseRequestList;
 use App\Models\PurchaseOrderList;
 use App\Models\SubCategoryItem;
+use App\Models\ItemList;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +34,35 @@ use App\Models\SubCategoryItem;
 //     $get = Carbon::now();
 //     return $get->toFormattedDateString();
 // });
+Route::get('/time', function(){
+
+    // $start_date = Carbon::parse('2022-04-13')->toDateString();
+    // $items = ItemList::pluck('validity_date');
+
+    // $today = Carbon::today()->subMonths(1)->toDateString();
+
+    // $arr = array();
+    // foreach($items as $item){
+    //     $start_date = Carbon::parse($item->validity_date)->toDateString();
+
+    // }
+
+    // if($start_date >= $today){
+    //     return 'true';
+    // }
+    $data = ItemList::select('*')
+            ->where('validity_date', '<',now()->subDays(30)->endOfDay())
+            ->get();
+
+    $lastThirtyDaysRecord = ItemList::whereDate('validity_date','<=',now())
+                            ->whereDate('validity_date','>=',now()->subDays(30)->endOfDay())
+                            ->get();
+
+
+    return array_merge($lastThirtyDaysRecord,$data);
+
+});
+
 
 Route::get('/stamp', function(){
 
@@ -182,6 +212,10 @@ Route::middleware(['auth:sanctum','isAdmin'])->group(function() {
 });
 
 Route::middleware(['auth:sanctum'])->group( function(){
+    Route::get('/getUserForNotif', [DashboardController::class, 'getUserForNotif'])->name('getUserForNotif');
+    Route::get('/getBadge',[DashboardController::class, 'getBadge'])->name('getBadge');
+    Route::get('/seeNotif',[DashboardController::class, 'seeNotif'])->name('seeNotif');
+
     Route::get('/getRandomRFQCode', [DashboardController::class, 'getRandomRFQCode'])->name('getRandomRFQCode');
     Route::get('/submitRFQ', [DashboardController::class, 'submitRFQ'])->name('submitRFQ');
     Route::get('/getSitePermission', [DashboardController::class, 'getSitePermission'])->name('getSitePermission');

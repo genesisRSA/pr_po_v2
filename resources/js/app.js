@@ -7,6 +7,17 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import VuetifyMoney from "vuetify-money";
 
+import moment from 'moment';
+import VueMoment from 'vue-moment';
+
+// Load Locales ('en' comes loaded by default)
+require('moment/locale/es');
+
+// Choose Locale
+moment.locale('es');
+
+Vue.use(VueMoment, { moment });
+
 Vue.mixin({ methods: { route }});
 Vue.use(plugin)
 Vue.use(Vuetify)
