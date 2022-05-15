@@ -57,7 +57,7 @@
             <!-- //////////dialog/////////// -->
             <v-card min-height="870">
             <v-img lazy-src="https://picsum.photos/id/11/10/6"
-                max-height="870"
+                min-height="870"
                 max-width="1650"
                 src="https://img.wallpapersafari.com/desktop/1600/900/81/18/WewaSt.jpg">
             <div class="mt-5"></div>
@@ -437,7 +437,7 @@
                                     class="mt-5"
                                     >
                                         <template v-slot:item.actions="{ item }">
-                                            <v-icon 
+                                            <v-icon
                                                 small
                                                 class="mr-2"
                                                 @click="editPaymentTerm(item)"
@@ -445,7 +445,7 @@
                                             >
                                                 mdi-pencil
                                             </v-icon>
-                                            <v-icon 
+                                            <v-icon
                                                 small
                                                 @click="deleteItem(item)"
                                                 :disabled="permToDelete=='false'"
@@ -752,7 +752,7 @@
                                     <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
                                         v-model="price_validity_for_list_item"
-                                        label="Validity Date"
+                                        label="Price Validity Date"
                                         prepend-icon="mdi-calendar"
                                         readonly
                                         v-bind="attrs"
@@ -949,9 +949,9 @@
                     <v-btn
                          color="primary"
                          @click="addVendor()"
-                         :disabled="(modelForVendor.company_name =='' || modelForVendor.company_name ==null) || 
-                                    (modelForVendor.address =='' || modelForVendor.address ==null) || 
-                                    (modelForVendor.contact_number =='' || modelForVendor.contact_number ==null) || 
+                         :disabled="(modelForVendor.company_name =='' || modelForVendor.company_name ==null) ||
+                                    (modelForVendor.address =='' || modelForVendor.address ==null) ||
+                                    (modelForVendor.contact_number =='' || modelForVendor.contact_number ==null) ||
                                     (modelForVendor.contact_person =='' || modelForVendor.contact_person ==null)"
                         >Save
                         </v-btn>
@@ -1264,7 +1264,7 @@
                                     <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
                                         v-model="selectedItemList.validity_date"
-                                        label="Validity Date"
+                                        label="Price Validity Date"
                                         prepend-icon="mdi-calendar"
                                         readonly
                                         v-bind="attrs"
@@ -1394,9 +1394,9 @@
                     <v-card-actions class="justify-end">
                         <v-btn
                          color="primary"
-                         :disabled="(modelForPlatingProcesses.plating_process == null || 
-                                    modelForPlatingProcesses.raw_price == '' || 
-                                    modelForPlatingProcesses.raw_price == '0.00') || 
+                         :disabled="(modelForPlatingProcesses.plating_process == null ||
+                                    modelForPlatingProcesses.raw_price == '' ||
+                                    modelForPlatingProcesses.raw_price == '0.00') ||
                                     (modelForPlatingProcesses.raw_price == selectedPlatingProcesses.raw_price &&
                                     modelForPlatingProcesses.plating_process == selectedPlatingProcesses.plating_process &&
                                     modelForPlatingProcesses.type == selectedPlatingProcesses.type)"
@@ -1488,9 +1488,9 @@
                     <v-card-actions class="justify-end">
                         <v-btn
                          color="primary"
-                        :disabled="((modelForVendor.company_name =='' || modelForVendor.company_name ==null) || 
-                                    (modelForVendor.address =='' || modelForVendor.address ==null) || 
-                                    (modelForVendor.contact_number =='' || modelForVendor.contact_number ==null) || 
+                        :disabled="((modelForVendor.company_name =='' || modelForVendor.company_name ==null) ||
+                                    (modelForVendor.address =='' || modelForVendor.address ==null) ||
+                                    (modelForVendor.contact_number =='' || modelForVendor.contact_number ==null) ||
                                     (modelForVendor.contact_person =='' || modelForVendor.contact_person ==null)) ||
                                     (modelForVendor.company_name == selectedVendor.company_name &&
                                     modelForVendor.address== selectedVendor.address &&
@@ -1829,7 +1829,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-                   
+
               });
          },
 
@@ -2068,7 +2068,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-        
+
               });
               }
 
@@ -2261,7 +2261,7 @@
                     console.log(response.data)
                     if(response.data > 1){
                         this.dupliRecordSnackbar = true
-                    } 
+                    }
                     this.getAvailableCateogryItems()
                     this.getAvailableItemList()
                     this.dialogEditCategoryItem = false
@@ -2270,7 +2270,7 @@
                     console.log(error.response);
               })
               .finally(() => {
-    
+
               });
         },
 
@@ -2387,10 +2387,10 @@
         },
 
         isNumber(event, quantity) {
-            if (!/\d/.test(event.key) &&  
-                (event.key !== "." || /\./.test(quantity))  
-            )  
-                return event.preventDefault();  
+            if (!/\d/.test(event.key) &&
+                (event.key !== "." || /\./.test(quantity))
+            )
+                return event.preventDefault();
         },
 
         clearSearch(){
@@ -2451,7 +2451,7 @@
 
    table th + th { border-left:1px solid #dddddd; }
    table td + td { border-left:1px solid #dddddd; }
- 
+
   .void-text{
    font-size: 150% !important;
   }

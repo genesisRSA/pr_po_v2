@@ -9,7 +9,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
         <div class="text-center" v-if='canViewNotif == "ALLOWED"'>
-  
+
             <v-menu offset-y min-width="300" max-height="350" v-if="badgeC == 'new notif'">
                 <template v-slot:activator="{ on, attrs }">
 
@@ -37,12 +37,19 @@
                             <h3>Daily Notifications <v-icon color="primary">mdi-alert-circle-check</v-icon></h3>
                       <v-divider class="my-3"></v-divider>
 
+                      <div v-if='items.length > 0'>
                       <template v-for="(item, index) in items">
                       <v-list-item class="text-left">
                           <v-list-item-title>{{ item.title }}</v-list-item-title>
                       </v-list-item>
                       <v-divider class="my-3" v-if="index != items.length - 1"></v-divider>
                       </template>
+                      </div>
+                      <div v-else>
+                          <v-list-item class="text-left">
+                              <v-list-item-title>No items where near expiry date so far.</v-list-item-title>
+                          </v-list-item>
+                      </div>
 
                     </div>
                   </v-list-item-content>
@@ -73,18 +80,25 @@
                             <h3>Daily Notifications <v-icon color="primary">mdi-alert-circle-check</v-icon></h3>
                       <v-divider class="my-3"></v-divider>
 
+                      <div v-if='items.length > 0'>
                       <template v-for="(item, index) in items">
                       <v-list-item class="text-left">
                           <v-list-item-title>{{ item.title }}</v-list-item-title>
                       </v-list-item>
                       <v-divider class="my-3" v-if="index != items.length - 1"></v-divider>
                       </template>
+                      </div>
+                      <div v-else>
+                          <v-list-item class="text-left">
+                              <v-list-item-title>No items where near expiry date so far.</v-list-item-title>
+                          </v-list-item>
+                      </div>
 
                     </div>
                   </v-list-item-content>
                 </v-card>
             </v-menu>
-          
+
             </div>
 
         </div>
@@ -106,10 +120,7 @@
         email: 'john.doe@doe.com',
       },
     items: [
-        { title: 'CW-02 was about to expired on May 09, 2022' },
-        { title: 'DN-03 was about to expired on June 09, 2022' },
-        { title: 'PA-04 was about to expired on June 12, 2022' },
-        { title: 'CW-05 was about to expired on June 23, 2022' },
+
       ],
     canViewNotif : null,
     badgeC : null
@@ -126,7 +137,6 @@
                axios.get('/getUserForNotif')
               .then(response =>{
                     this.canViewNotif = response.data[0]
-                    console.log(response.data)
               })
               .catch(error =>{
                     console.log(error.response);
@@ -134,12 +144,13 @@
               .finally(() => {
 
               });
-      }, 
+      },
 
       badgeCount(){
               axios.get('/getBadge')
               .then(response =>{
-                    this.badgeC = response.data
+                    this.badgeC = response.data[0]
+                    this.items = response.data[1]
               })
               .catch(error =>{
                     console.log(error.response);

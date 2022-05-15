@@ -513,16 +513,28 @@ class PurchaseRequestController extends Controller
 
             if($price <= 10000){
                 $list->update(['status'=>'PR APPROVED']);
-                PurchaseOrderList::create([
-                    'pr_id'=>$list->id,
-                    'user_id'=>$list->user_id,
-                    'pr_no'=>$list->pr_no,
-                    'so_no'=>$list->so_no,
-                    'department'=>$list->department,
-                    'item_category'=>$list->item_category,
-                    'status'=>'PENDING APPROVAL',
-                    'created_at'=>Carbon::now()
-                ]);
+
+                $repeat = 0;
+
+                foreach(PurchaseOrderList::all() as $lol){
+                    if(in_array($list->id,[$lol->pr_id])){
+                        $repeat += 1;
+                    }
+                }
+
+                if($repeat == 0){
+                    PurchaseOrderList::create([
+                        'pr_id'=>$list->id,
+                        'user_id'=>$list->user_id,
+                        'pr_no'=>$list->pr_no,
+                        'so_no'=>$list->so_no,
+                        'department'=>$list->department,
+                        'item_category'=>$list->item_category,
+                        'status'=>'PENDING APPROVAL',
+                        'created_at'=>Carbon::now()
+                    ]);
+                }
+
             } else {
                 if(PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR APPROVED' ||
                    PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PENDING PRESIDENTIAL APPROVAL' ||

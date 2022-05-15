@@ -9,7 +9,7 @@
           >
             <v-card min-height="800">
             <v-img lazy-src="https://picsum.photos/id/11/10/6"
-                max-height="800"
+                min-height="800"
                 max-width="1650"
                 src="https://img.wallpapersafari.com/desktop/1600/900/81/18/WewaSt.jpg">
             <div class="mt-5"></div>
@@ -731,7 +731,7 @@
 
  table th + th { border-left:1px solid #dddddd; }
  table td + td { border-left:1px solid #dddddd; }
- 
+
   .position_add{
    position: fixed;
    bottom: 15px;

@@ -50,16 +50,11 @@ Route::get('/time', function(){
     // if($start_date >= $today){
     //     return 'true';
     // }
-    $data = ItemList::select('*')
-            ->where('validity_date', '<',now()->subDays(30)->endOfDay())
-            ->get();
 
-    $lastThirtyDaysRecord = ItemList::whereDate('validity_date','<=',now())
-                            ->whereDate('validity_date','>=',now()->subDays(30)->endOfDay())
-                            ->get();
+    $lastThirtyDaysRecord = ItemList::whereBetween('validity_date',[now(),now()->addDays(30)])->get();
 
 
-    return array_merge($lastThirtyDaysRecord,$data);
+    return $lastThirtyDaysRecord;
 
 });
 
@@ -100,7 +95,7 @@ Route::get('/stamp', function(){
 
     $first = array();
     foreach($lou as $kk => $l){
-        $first[] = 'actual_cost_supp'; 
+        $first[] = 'actual_cost_supp';
     }
 
     $res = array();
@@ -197,7 +192,6 @@ Route::get('/test', [DashboardController::class, 'testPDF'])->name('testPDF');
 
 //     dd('email sent.');
 // });
-
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::get('/getDepartmentRegister', [DashboardController::class, 'getDepartmentRegister'])->name('getDepartmentRegister');
 

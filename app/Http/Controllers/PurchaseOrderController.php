@@ -112,7 +112,13 @@ class PurchaseOrderController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
-                        'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ? (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ? Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date) : Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' ): 'ONGOING',
+                        'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ?
+                                        (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ?
+                                        str_replace('before','ago',Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date)) :
+                                        Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' ):
+                                        (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ?
+                                        Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date). ' (ONGOING)':
+                                        Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago (ONGOING)' ),
                         'created_at' => $query->created_at->toDayDateTimeString()
                     ];
                 });
@@ -129,7 +135,13 @@ class PurchaseOrderController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
-                        'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ? (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ? Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date) : Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' ): 'ONGOING',
+                        'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ?
+                                        (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ?
+                                        str_replace('before','ago',Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date)) :
+                                        Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' ):
+                                        (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ?
+                                        Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date). ' (ONGOING)':
+                                        Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago (ONGOING)' ),
                         'created_at' => $query->created_at->toDayDateTimeString()
                     ];
                 });
@@ -140,26 +152,26 @@ class PurchaseOrderController extends Controller
         $hasManyThrough =  PurchaseOrderList::all();
         $arr = array();
         $first = array();
-    
+
         foreach($hasManyThrough as $k => $a){
             foreach($a->request_items as $kk => $ap){
                $key[$k][$kk] = json_decode(str_replace(',','',mb_substr($ap->chosen_supp_cost,1))) ;
             }
         }
-    
+
         $lou = array();
-    
+
         foreach($key as $kk => $l){
             $lou[] = '₱'.number_format(array_sum($l),2, '.', ',');
         }
-    
+
         $first = array();
         foreach($lou as $kk => $l){
-            $first[] = 'actual_cost_supp'; 
+            $first[] = 'actual_cost_supp';
         }
-    
+
         $res = array();
-    
+
         foreach($first as $keys => $firsts){
             $res[] = array_combine([$first[$keys]], [$lou[$keys]]);
         }
@@ -167,7 +179,7 @@ class PurchaseOrderController extends Controller
         $all_PO = $myPR;  ////////////// merge the PO list//////////////////
 
         $finalResult = array();
-    
+
         foreach($all_PO as $kkk => $v){
             $finalResult[$kkk] = array_merge($all_PO[$kkk],$res[$kkk]);
         }

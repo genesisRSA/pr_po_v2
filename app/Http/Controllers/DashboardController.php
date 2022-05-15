@@ -984,13 +984,15 @@ class DashboardController extends Controller
 
         } else {
 
+            $countNotif = ItemList::whereBetween('validity_date',[now(),now()->addDays(30)])->get()->count();
+
             if($user->user_position->position == 'PURCHASE MNGR.'){
 
                 $res = 'ALLOWED';
                 if($count == 1){
 
                 } else {
-                    $user->notifications()->create(['status'=>'new notif']);
+                    $user->notifications()->create(['status'=> $countNotif > 0 ? 'new notif' : 'no notif']);
                 }
 
             } else if($user->user_position->position == 'BUYER'){
@@ -999,7 +1001,7 @@ class DashboardController extends Controller
                 if($count == 1){
 
                 } else {
-                    $user->notifications()->create(['status'=>'new notif']);
+                    $user->notifications()->create(['status'=> $countNotif > 0 ? 'new notif' : 'no notif']);
                 }
 
             } else if($user->user_position->position == 'PRESIDENT'){
@@ -1008,7 +1010,7 @@ class DashboardController extends Controller
                 if($count == 1){
 
                 } else {
-                    $user->notifications()->create(['status'=>'new notif']);
+                    $user->notifications()->create(['status'=> $countNotif > 0 ? 'new notif' : 'no notif']);
                 }
 
             } else if($user->user_position->position == 'CEO'){
@@ -1017,7 +1019,7 @@ class DashboardController extends Controller
                 if($count == 1){
 
                 } else {
-                    $user->notifications()->create(['status'=>'new notif']);
+                    $user->notifications()->create(['status'=> $countNotif > 0 ? 'new notif' : 'no notif']);
                 }
 
             } else {
@@ -1033,14 +1035,19 @@ class DashboardController extends Controller
 
     public function getBadge(){
         $user = User::findOrFail(Auth::id());
-        $count = $user->notifications()->whereDate('created_at',Carbon::today())->get()->count();
+        $lastThirtyDaysRecord = ItemList::whereBetween('validity_date',[now(),now()->addDays(30)])->get()
+        ->map( function($query){
+            return[
+                'title' =>'The '.(($query->item_code == '' || $query->item_code == null) ? $query->part_name : $query->item_code). ' is about to expired on '.$query->validity_date
+            ];
+        });
 
         if($user->notifications()->whereDate('created_at',Carbon::today())->first()->status == 'new notif'){
             $response = 'new notif';
         } else {
             $response = 'seen';
         }
-        return response()->json($response);
+        return response()->json([$response,$lastThirtyDaysRecord]);
     }
 
     public function seeNotif(){
