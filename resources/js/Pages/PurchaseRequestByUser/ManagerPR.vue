@@ -116,6 +116,7 @@
                             <span>Delete PR</span>
                             </v-tooltip>
 
+
                         </template>
 
                     </v-data-table>
@@ -782,6 +783,7 @@
                          </v-card-actions>
                 </v-card>
               </v-dialog>
+
         </v-row>
     </div>
 </template>
@@ -963,7 +965,9 @@
                 missingInfoSupp: false,
                 isPrTableLoading: true,
 
-                selectedForPRChanges: []
+                selectedForPRChanges: [],
+
+                dialogRepeatPR: false
     }),
 
     created: function(){
@@ -1503,7 +1507,8 @@
         if(item.SUPPLIER_THREE == 1){
             return 'blue--text'
         }
-    }
+    },
+
 
         },
     }

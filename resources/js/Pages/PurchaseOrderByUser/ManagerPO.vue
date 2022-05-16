@@ -113,7 +113,23 @@
                                 </template>
                                 <span>Decline PR</span>
                                 </v-tooltip>
+
                             </div>
+
+                                <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-icon
+                                        small
+                                        class="mr-2"
+                                        @click="repeatPR(item)"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        mdi-repeat
+                                    </v-icon>
+                                </template>
+                                <span>Repeat Order</span>
+                                </v-tooltip>
 
                         </div>
                         </template>
@@ -232,6 +248,17 @@
                                 </v-card-actions>
                             </v-card>
               </v-dialog>
+              <v-dialog v-model="dialogRepeatPR" max-width="500px">
+                            <v-card>
+                                <v-card-title class="justify-center approve-text"><h5>Are you sure you want to <span style="color : purple !important;">REPEAT</span> this PR?</h5></v-card-title>
+                                <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" text @click="closeRepeatPR">Cancel</v-btn>
+                                <v-btn color="blue darken-1" text @click="repeatPRConfirm">OK</v-btn>
+                                <v-spacer></v-spacer>
+                                </v-card-actions>
+                            </v-card>
+              </v-dialog>
         </v-row>
     </div>
 </template>
@@ -332,7 +359,9 @@
 
                 approveManagerDialog:false,
                 declineManagerDialog:false,
-                selectedForPOChanges:[]
+                selectedForPOChanges:[],
+
+                dialogRepeatPR: false
     }),
 
     created: function(){
@@ -727,6 +756,30 @@
                 .finally(() => {
 
                 });
+        },
+
+        repeatPR(item){
+            this.dialogRepeatPR = true
+            this.selectedIndex = item.id
+        },
+
+        closeRepeatPR(){
+            this.dialogRepeatPR = false
+        },
+
+        repeatPRConfirm(){
+              axios.post('/repeatPRConfirm', { params : this.selectedIndex })
+              .then(response =>{
+                    console.log(response.data)
+                    this.closeRepeatPR()
+                    this.getMyPOlist()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+            });
         }
 
 

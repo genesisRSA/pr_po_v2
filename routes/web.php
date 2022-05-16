@@ -34,7 +34,7 @@ use App\Models\ItemList;
 //     $get = Carbon::now();
 //     return $get->toFormattedDateString();
 // });
-Route::get('/time', function(){
+Route::get('/arr', function(){
 
     // $start_date = Carbon::parse('2022-04-13')->toDateString();
     // $items = ItemList::pluck('validity_date');
@@ -51,10 +51,23 @@ Route::get('/time', function(){
     //     return 'true';
     // }
 
-    $lastThirtyDaysRecord = ItemList::whereBetween('validity_date',[now(),now()->addDays(30)])->get();
+    $arr = ['can','lor'];
+
+    $lastThirtyDaysRecord = CertificationType::all()->chunk(3);
+
+    $array = array();
+
+    foreach($lastThirtyDaysRecord as $key => $c){
+            foreach($c as $kk => $lee){
+                    CertificationType::where('id',$lee->id)->update(['cert_types'=>$arr[$key]]);
+            }   
+    }
 
 
-    return $lastThirtyDaysRecord;
+
+
+
+    return $array;
 
 });
 
@@ -300,6 +313,8 @@ Route::middleware(['auth:sanctum'])->group( function(){
 
     Route::post('/ApprovePOCeo', [PurchaseOrderController::class, 'ApprovePOCeo'])->name('ApprovePOCeo');
     Route::post('/DeclinePOCeo',[PurchaseOrderController::class,'DeclinePOCeo'])->name('DeclinePOCeo');
+
+    Route::post('/repeatPRConfirm',[PurchaseOrderController::class,'repeatPRConfirm'])->name('repeatPRConfirm');
 });
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {

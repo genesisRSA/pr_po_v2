@@ -638,4 +638,59 @@ class PurchaseRequestController extends Controller
         PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR DECLINED BY CEO']);
     }
 
+    public function repeatPR(Request $request){
+        $list = PurchaseRequestList::findOrFail($request->params);
+
+        $itemNext = PurchaseRequestList::whereDate('created_at',Carbon::today())->withTrashed()->get()->count() + 1;
+        $prNo = 'PR-'.Carbon::parse(Carbon::today())->format('Ymd').'-'.$itemNext;
+
+
+        $pr_id = PurchaseRequestList::insertGetId([
+            'user_id' => Auth::id(),
+            'pr_no' =>  $prNo,
+            'so_no' => $list->so_no,
+            'department' => $list->department,
+            'item_category' => $list->item_category,
+            'status' => 'FOR SUPPLIER APPROVAL',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        $pr_item_id = '';
+
+        foreach($list->pr_items as $key => $b){
+            $pr_item_id = PurchaseRequestItem::insertGetId([
+                'purchase_request_list_id' => $pr_id,
+                'part_name' => $b['part_name'] == 'N/A' ? '' : $b['part_name'],
+                'material' => $b['material'] == 'N/A' ? '' : $b['material'],
+                'dimension' => $b['dimension'] == 'N/A' ? '' : $b['dimension'],
+                'quantity' => $b['quantity'],
+                'remarks' => $b['remarks'] == null ? '' : $b['remarks'],
+                'supplier_one' => $b['supplier_one'],
+                'supplier_two' => $b['supplier_two'],
+                'supplier_three' => $b['supplier_three'],
+                'target_cost' => $b['target_cost']
+            ]);
+
+        }
+
+        foreach($list->suppliers as $key => $b){
+            SupplierDetails::create([
+                'purchase_request_item_id' => $pr_item_id,
+                'supplier_no' => $b['supplier_no'],
+                'is_preferred' => $b['is_preferred'],
+                'supplier_cost' => $b['supplier_cost'],
+                'payment_method' => $b['payment_method'],
+                'eta' => $b['eta'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+        }
+
+
+        
+
+        return response()->json();
+    }
+
 }
