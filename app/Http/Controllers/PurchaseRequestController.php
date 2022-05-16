@@ -246,6 +246,11 @@ class PurchaseRequestController extends Controller
 
     public function savePr(Request $request){
 
+        $itemNext = PurchaseRequestList::whereDate('created_at',Carbon::today())->withTrashed()->get()->count() + 1;
+
+        $prNo = 'PR-'.Carbon::parse(Carbon::today())->format('Ymd').'-'.$itemNext;
+
+
         $detection = 0;
 
         foreach(PurchaseRequestList::all() as $list){
@@ -253,8 +258,6 @@ class PurchaseRequestController extends Controller
                 $detection += 1;
             }
         }
-
-        if($detection==0){
 
             $dept = Department::where('id',$request->params['pr_details']['department'])->first();
 
@@ -266,7 +269,7 @@ class PurchaseRequestController extends Controller
 
             $pr_id = PurchaseRequestList::insertGetId([
                 'user_id' => Auth::id(),
-                'pr_no' => $request->params['pr_details']['pr_no'],
+                'pr_no' =>  $detection == 0 ? $request->params['pr_details']['pr_no'] : $prNo,
                 'so_no' => $request->params['pr_details']['so_no'],
                 'department' => $dept->dept_code,
                 'item_category' => $grand_total,
@@ -319,9 +322,7 @@ class PurchaseRequestController extends Controller
 
 
             return response()->json();
-        } else {
-            return response()->json('dupli');
-        }
+
     }
 
     public function deletePr(Request $request){
