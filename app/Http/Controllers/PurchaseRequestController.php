@@ -241,7 +241,7 @@ class PurchaseRequestController extends Controller
                 ->where('dimension',$request->dimension == 'N/A' ? '' : $request->dimension)
                 ->first();
 
-        return response()->json(str_replace('₱ ','',$price->unit_price));
+        return response()->json(str_replace(['₱ ',','],'',$price->unit_price));
     }
 
     public function savePr(Request $request){
@@ -249,6 +249,7 @@ class PurchaseRequestController extends Controller
         $itemNext = PurchaseRequestList::whereDate('created_at',Carbon::today())->withTrashed()->get()->count() + 1;
 
         $prNo = 'PR-'.Carbon::parse(Carbon::today())->format('Ymd').'-'.$itemNext;
+
 
 
         $detection = 0;
@@ -289,7 +290,12 @@ class PurchaseRequestController extends Controller
                     'supplier_one' => $b['supplier_one'],
                     'supplier_two' => $b['supplier_two'],
                     'supplier_three' => $b['supplier_three'],
-                    'target_cost' => $b['target_cost']
+                    'target_cost' => $b['target_cost'],
+                    'item_due_id' => ItemList::where('part_name',$b['part_name'] == 'N/A' ? '' : $b['part_name'])
+                                             ->where('material',$b['material'] == 'N/A' ? '' : $b['material'])
+                                             ->where('dimension',$b['dimension'] == 'N/A' ? '' : $b['dimension'])
+                                             ->first()
+                                             ->id
                 ]);
 
                 SupplierDetails::create([

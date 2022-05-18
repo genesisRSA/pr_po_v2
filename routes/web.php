@@ -51,23 +51,29 @@ Route::get('/arr', function(){
     //     return 'true';
     // }
 
-    $arr = ['can','lor'];
+    // $arr = ['can','lor'];
 
-    $lastThirtyDaysRecord = CertificationType::all()->chunk(3);
+    // $lastThirtyDaysRecord = CertificationType::all()->chunk(3);
 
-    $array = array();
+    // $array = array();
 
-    foreach($lastThirtyDaysRecord as $key => $c){
-            foreach($c as $kk => $lee){
-                    CertificationType::where('id',$lee->id)->update(['cert_types'=>$arr[$key]]);
-            }   
+    // foreach($lastThirtyDaysRecord as $key => $c){
+    //         foreach($c as $kk => $lee){
+    //                 CertificationType::where('id',$lee->id)->update(['cert_types'=>$arr[$key]]);
+    //         }   
+    // }
+    
+
+
+    if(ItemList::findOrFail(21)->validity_date > Carbon::today()->toDateString()){
+        $verdict = 'item not expired';
+    } else {
+        $verdict = 'item expired';
     }
+   return  $verdict;
 
 
 
-
-
-    return $array;
 
 });
 
@@ -304,6 +310,7 @@ Route::middleware(['auth:sanctum'])->group( function(){
 
     Route::get('/getMyPOlist',[PurchaseOrderController::class, 'getMyPOlist'])->name('getMyPOlist');
     Route::get('/viewPORequestor',[PurchaseOrderController::class, 'viewPO'])->name('viewPO');
+    Route::get('/checkIfCanRepeatPR',[PurchaseOrderController::class, 'checkIfCanRepeatPR'])->name('checkIfCanRepeatPR');
 
     Route::post('/ApprovePOManager',[PurchaseOrderController::class,'ApprovePOManager'])->name('ApprovePOManager');
     Route::post('/DeclinePOManager',[PurchaseOrderController::class,'DeclinePOManager'])->name('DeclinePOManager');

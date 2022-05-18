@@ -1,6 +1,19 @@
 <template>
     <div>
 
+        <v-snackbar
+                v-model="dueDateSnackbar"
+                :timeout="3000"
+                :value="true"
+                bottom
+                color="warning"
+                success
+                top
+                right
+                >
+                <v-icon>mdi-flag-triangle</v-icon>
+                Whoops, some of the item's price validity where met.
+        </v-snackbar>
         <v-row>
           <v-col
             v-for="card in cards"
@@ -254,7 +267,7 @@
                                 <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" text @click="closeRepeatPR">Cancel</v-btn>
-                                <v-btn color="blue darken-1" text @click="repeatPRConfirm">OK</v-btn>
+                                <v-btn color="blue darken-1" text @click="checkIfCanRepeatPR">OK</v-btn>
                                 <v-spacer></v-spacer>
                                 </v-card-actions>
                             </v-card>
@@ -361,7 +374,8 @@
                 declineManagerDialog:false,
                 selectedForPOChanges:[],
 
-                dialogRepeatPR: false
+                dialogRepeatPR: false,
+                dueDateSnackbar: false
     }),
 
     created: function(){
@@ -770,9 +784,28 @@
         repeatPRConfirm(){
               axios.post('/repeatPRConfirm', { params : this.selectedIndex })
               .then(response =>{
-                    console.log(response.data)
+                    //console.log(response.data)
                     this.closeRepeatPR()
                     this.getMyPOlist()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+            });
+        },
+
+
+        checkIfCanRepeatPR(){
+             axios.get('/checkIfCanRepeatPR', { params : this.selectedIndex })
+              .then(response =>{
+                        if(response.data > 0){
+                            this.dialogRepeatPR = false
+                            this.dueDateSnackbar = true
+                        } else {
+                            this.repeatPRConfirm()
+                        }
               })
               .catch(error =>{
                     console.log(error.response);

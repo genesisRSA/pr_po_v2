@@ -283,7 +283,12 @@ class PurchaseOrderController extends Controller
                 'supplier_one' => $b['supplier_one'],
                 'supplier_two' => $b['supplier_two'],
                 'supplier_three' => $b['supplier_three'],
-                'target_cost' => $b['target_cost']
+                'target_cost' => $b['target_cost'],
+                'item_due_id' => ItemList::where('part_name',$b['part_name'])
+                ->where('material',$b['material'])
+                ->where('dimension',$b['dimension'])
+                ->first()
+                ->id
             ]);
 
             $arrain[] = $pr_item_id;
@@ -316,5 +321,21 @@ class PurchaseOrderController extends Controller
 
 
         return response()->json($arrain);
+    }
+
+    public function checkIfCanRepeatPR(Request $request){
+        $PO = PurchaseOrderList::findOrFail($request[0]);
+
+        $detection = 0;
+        $arr = array();
+        foreach($PO->request_items as $items){
+            if($items->item_due_id != null){
+                if(ItemList::findOrFail($items->item_due_id)->validity_date >= Carbon::today()->toDateString()){
+                    $detection +=1 ;
+                }
+                
+            }
+        }
+        return response()->json($detection);
     }
 }
