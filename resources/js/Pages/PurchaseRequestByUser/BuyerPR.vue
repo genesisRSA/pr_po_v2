@@ -78,6 +78,14 @@
                             </v-chip>
                         </template>
 
+                        <template v-slot:item.remarks="{ item }">
+                                    <span
+                                    :class="getColorForRemarks(item.remarks)"
+                                    >
+                                    {{ item.remarks }}
+                                    </span>
+                        </template>
+
                         <template v-slot:item.item_category="{ item }">
                             <strong>
                                 {{ item.item_category }}
@@ -226,6 +234,22 @@
                                         :item-value="departmentOptions.value"
                                         v-model='pr_details.department'
                                         ></v-select>
+                                    </v-col>
+                                </v-row>
+
+                                <v-row>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="6"
+                                    >
+                                        <v-textarea
+                                            outlined
+                                            name="input-7-4"
+                                            label="Remarks"
+                                            v-model="pr_details.remarks"
+                                            placeholder="Drop a feedback here"
+                                        ></v-textarea>
                                     </v-col>
                                 </v-row>
 
@@ -802,6 +826,7 @@
                     },
                     { text: 'Department', value: 'department', class: "yellow"},
                     { text: 'Requestor', value: 'user_id', class: "yellow"},
+                    { text: 'Remarks', value: 'remarks', class: "yellow"},
                     { text: 'Target Cost', value: 'item_category', class: "yellow" },
                     { text: 'Date Created', value: 'created_at', class: "yellow" },
                     { text: 'Status', value: 'status', class: "yellow" },
@@ -856,6 +881,7 @@
                     pr_no : '',
                     so_no : '',
                     department : '',
+                    remarks: '',
                     date : '',
                     requestor : ''
                 },
@@ -1246,6 +1272,7 @@
             this.addPRdialog = false
             this.pr_details.so_no = null
             this.pr_details.department = null
+            this.pr_details.remarks = null
 
             this.pr_items.category = null
             this.pr_items.subcategory = null
@@ -1446,6 +1473,12 @@
     getColorPreferredThree(item){
         if(item.SUPPLIER_THREE == 1){
             return 'blue--text'
+        }
+    },
+
+    getColorForRemarks(item){
+        if(item == 'N/A'){
+            return 'red--text'
         }
     }
 

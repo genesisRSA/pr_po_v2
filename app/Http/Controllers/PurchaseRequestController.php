@@ -64,6 +64,7 @@ class PurchaseRequestController extends Controller
                     'department' => strtoupper($query->department),
                     'item_category' => $query->item_category,
                     'status' => strtoupper($query->status),
+                    'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
                     'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                 ];
             });
@@ -80,6 +81,7 @@ class PurchaseRequestController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
+                        'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
                         'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                     ];
                 });
@@ -95,6 +97,7 @@ class PurchaseRequestController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
+                        'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
                         'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                     ];
                 });
@@ -110,6 +113,7 @@ class PurchaseRequestController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
+                        'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
                         'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                     ];
                 });
@@ -125,6 +129,7 @@ class PurchaseRequestController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
+                        'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
                         'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                     ];
                 });
@@ -140,6 +145,7 @@ class PurchaseRequestController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
+                        'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
                         'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                     ];
                 });
@@ -272,6 +278,7 @@ class PurchaseRequestController extends Controller
                 'user_id' => Auth::id(),
                 'pr_no' =>  $detection == 0 ? $request->params['pr_details']['pr_no'] : $prNo,
                 'so_no' => $request->params['pr_details']['so_no'],
+                'remarks' => $request->params['pr_details']['remarks'] == null ? '' : $request->params['pr_details']['remarks'],
                 'department' => $dept->dept_code,
                 'item_category' => $grand_total,
                 'status' => 'FOR CANVASSING',
