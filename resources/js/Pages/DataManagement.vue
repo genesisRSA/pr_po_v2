@@ -303,6 +303,13 @@
                                         {{ item.type }}
                                         </span>
                                     </template>
+                                    <template v-slot:item.vendor="{ item }">
+                                        <span
+                                        :class="getColor(item.vendor)"
+                                        >
+                                        {{ item.vendor }}
+                                        </span>
+                                    </template>
                                         <template v-slot:item.actions="{ item }">
                                             <v-icon
                                                 small
@@ -846,7 +853,20 @@
                                 sm="6"
                                 md="4"
                             >
-
+                            <v-text-field
+                            label='Vendor'
+                            v-model="modelForPlatingProcesses.vendor"
+                            @input="(val) => (modelForPlatingProcesses.vendor ? modelForPlatingProcesses.vendor = modelForPlatingProcesses.vendor.toUpperCase() : null)"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                             <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
                             <div>
                                 <vuetify-money
                                 v-model="modelForPlatingProcesses.price_per_square_inch"
@@ -1372,6 +1392,20 @@
                                 sm="6"
                                 md="4"
                             >
+                            <v-text-field
+                            label='Vendor'
+                            v-model="modelForPlatingProcesses.vendor == 'N/A'? modelForPlatingProcesses.vendor = null : modelForPlatingProcesses.vendor"
+                            @input="(val) => (modelForPlatingProcesses.vendor ? modelForPlatingProcesses.vendor = modelForPlatingProcesses.vendor.toUpperCase() : null)"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
 
                             <div>
                                 <vuetify-money
@@ -1398,6 +1432,7 @@
                                     modelForPlatingProcesses.raw_price == '' ||
                                     modelForPlatingProcesses.raw_price == '0.00') ||
                                     (modelForPlatingProcesses.raw_price == selectedPlatingProcesses.raw_price &&
+                                    modelForPlatingProcesses.vendor == selectedPlatingProcesses.vendor &&
                                     modelForPlatingProcesses.plating_process == selectedPlatingProcesses.plating_process &&
                                     modelForPlatingProcesses.type == selectedPlatingProcesses.type)"
                         @click="updatePlatingProcess()"
@@ -1689,6 +1724,7 @@
                 },
                 { text: 'Type', value: 'type', class: "yellow"},
                 { text: 'Price per Sq. Inch', value: 'price_per_square_inch', class: "yellow"},
+                { text: 'Vendor', value: 'vendor', class: "yellow"},
                 { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
             ],
 
@@ -1698,6 +1734,7 @@
                 plating_process : null,
                 type : null,
                 price_per_square_inch : null,
+                vendor: null,
                 raw_price : null
             },
 
@@ -2030,8 +2067,9 @@
                 this.category_name_selected=''
                 this.subcategory_val=''
 
-                this.modelForPlatingProcesses.plating_process = null,
-                this.modelForPlatingProcesses.type = null,
+                this.modelForPlatingProcesses.plating_process = null
+                this.modelForPlatingProcesses.type = null
+                this.modelForPlatingProcesses.vendor = null
                 this.modelForPlatingProcesses.price_per_square_inch = null
                 this.raw_price = null
 
@@ -2182,8 +2220,9 @@
 
         closeDialogEditProcessPlating(){
             this.dialogEditProcessPlating = false
-                            this.modelForPlatingProcesses.plating_process = null,
-                this.modelForPlatingProcesses.type = null,
+                            this.modelForPlatingProcesses.plating_process = null
+                this.modelForPlatingProcesses.type = null
+                this.modelForPlatingProcesses.vendor = null
                 this.modelForPlatingProcesses.price_per_square_inch = null
                 this.modelForPlatingProcesses.raw_price = null
                 this.price_tracker_plating_process = null

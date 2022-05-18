@@ -632,7 +632,8 @@ class DashboardController extends Controller
                 'plating_process' => $query->plating_process,
                 'type' => $query->type == '' ? 'N/A' : $query->type,
                 'price_per_square_inch' => $query->price_per_square_inch,
-                'raw_price' => str_replace(',','',mb_substr($query->price_per_square_inch,2))
+                'raw_price' => str_replace(',','',mb_substr($query->price_per_square_inch,2)),
+                'vendor' => $query->vendor == null ? 'N/A' : $query->vendor
             ];
         });
         return response()->json($all);
@@ -644,13 +645,14 @@ class DashboardController extends Controller
         $detection = 0;
 
         foreach (PlatingProcess::all() as $item) {
-            if (in_array(strtoupper($request->params['plating_process']), [strtoupper($item->plating_process)]) &&
-                in_array($price, [$item->price_per_square_inch]) &&
-                in_array(strtoupper($request->params['type']), [strtoupper($item->type)])) {
-                $detection += 1;
-            }
+            // if (in_array(strtoupper($request->params['plating_process']), [strtoupper($item->plating_process)]) &&
+            //     in_array($price, [$item->price_per_square_inch]) &&
+            //     in_array(strtoupper($request->params['type']), [strtoupper($item->type)])) {
+            //     $detection += 1;
+            // }
                 if (in_array(strtoupper($request->params['plating_process']), [strtoupper($item->plating_process)]) &&
-                in_array(strtoupper($request->params['type']), [strtoupper($item->type)])) {
+                in_array(strtoupper($request->params['type']), [strtoupper($item->type)]) &&
+                in_array(strtoupper($request->params['vendor']), [strtoupper($item->vendor)])) {
                 $detection += 1;
             }
         }
@@ -660,7 +662,8 @@ class DashboardController extends Controller
            $id = PlatingProcess::insertGetId([
                 'plating_process' => strtoupper($request->params['plating_process']),
                 'type'            => $request->params['type'] == null ? '' : strtoupper($request->params['type']),
-                'price_per_square_inch' => $price
+                'price_per_square_inch' => $price,
+                'vendor' => $request->params['vendor'] == null ? '' : strtoupper($request->params['vendor'])
             ]);
 
            PlatingCostUpdate::create([
@@ -682,12 +685,14 @@ class DashboardController extends Controller
 
         foreach (PlatingProcess::all() as $item) {
             if (in_array(strtoupper($request->params['plating_process']), [strtoupper($item->plating_process)]) &&
+                in_array(strtoupper($request->params['vendor']), [strtoupper($item->vendor)]) &&
                 in_array($price, [$item->price_per_square_inch]) &&
                 in_array(strtoupper($request->params['type']), [strtoupper($item->type)])) {
                 $detection += 1;
             }
             if (in_array(strtoupper($request->params['plating_process']), [strtoupper($item->plating_process)]) &&
-            in_array(strtoupper($request->params['type']), [strtoupper($item->type)])  && $request->params['id'] != $item->id) {
+                in_array(strtoupper($request->params['vendor']), [strtoupper($item->vendor)]) &&
+                in_array(strtoupper($request->params['type']), [strtoupper($item->type)])  && $request->params['id'] != $item->id) {
             $detection += 1;
         }
 
@@ -705,6 +710,7 @@ class DashboardController extends Controller
             PlatingProcess::findOrFail($request->params['id'])->update([
                 'plating_process' => strtoupper($request->params['plating_process']),
                 'type' => $request->params['type'] == null ? '' : strtoupper($request->params['type']),
+                'vendor' => $request->params['vendor'] == null ? '' : strtoupper($request->params['vendor']),
                 'price_per_square_inch' => $price
             ]);
 
