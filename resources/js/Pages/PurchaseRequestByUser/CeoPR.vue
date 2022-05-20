@@ -286,6 +286,24 @@
                                 </v-row>
 
                                 <v-row>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="4"
+                                    >
+                                        <v-autocomplete
+                                        clearable
+                                        label='Select By Item Code (Optional)'
+                                        :items='itemsByItemCode'
+                                        :item-text="itemsByItemCode.text"
+                                        :item-value="itemsByItemCode.value"
+                                        v-model="selectedItemByItemCode"
+                                        @input="getItemsBySelectedItemCode($event)"
+                                        ></v-autocomplete>
+                                    </v-col>
+                                </v-row>
+
+                                <v-row>
 
                                     <v-col
                                         cols="12"
@@ -756,7 +774,10 @@
                 approvePresidentDialog: false,
                 declinePresidentDialog: false,
 
-                selectedForPRChanges : []
+                selectedForPRChanges : [],
+
+                itemsByItemCode: [],
+                selectedItemByItemCode : null
     }),
 
     created: function(){
@@ -825,6 +846,7 @@
         addPR(){
             this.addPRdialog = true
             this.getPRNumber()
+            this.getItemForSelectByAutocomplete()
         },
 
         getSubCatValRequestor(params){
@@ -1000,6 +1022,24 @@
 
         addToItemList(){
 
+         Object.entries(this.addedItems).forEach(([key,val]) => {
+                if(val.part_name == this.pr_items.part_name && val.material == this.pr_items.material && val.dimension == this.pr_items.dimension){
+                   val.quantity = parseInt(this.addedItems[key].quantity) + parseInt(this.pr_items.quantity)
+                   val.target_cost = (parseFloat(this.addedItems[key].target_cost.replace(/[^\d.-]/g, '')) + parseFloat(this.pr_items.raw_unit_price_for_list_item)).toLocaleString('en-US',{style:'currency',currency:'PHP'})
+
+                    this.pr_items.category = null
+                    this.pr_items.subcategory = null
+                    this.pr_items.part_name = null
+                    this.pr_items.material = null
+                    this.pr_items.dimension = null
+                    this.pr_items.quantity = null
+                    this.pr_items.remarks = null
+                    this.pr_items.raw_unit_price_for_list_item = null
+                    this.selectedItemByItemCode = null
+                    return
+                } 
+            });
+
          this.addedItems.push({item : this.addedItems.length + 1,
                               part_name : this.pr_items.part_name,
                               material : this.pr_items.material,
@@ -1011,6 +1051,7 @@
                               supplier_three : 'PENDING',
                               target_cost : this.pr_items.raw_unit_price_for_list_item.toLocaleString('en-US',{style:'currency',currency:'PHP'})
               })
+            this.selectedItemByItemCode = null
             this.pr_items.category = null
             this.pr_items.subcategory = null
             this.pr_items.part_name = null
@@ -1038,6 +1079,7 @@
             this.pr_details.department = null
             this.pr_details.remarks = null
 
+            this.selectedItemByItemCode = null
             this.pr_items.category = null
             this.pr_items.subcategory = null
             this.pr_items.part_name = null
@@ -1153,6 +1195,46 @@
             if(item == 'N/A'){
                 return 'red--text'
             }
+        },
+
+        getItemForSelectByAutocomplete(){
+                axios.get('/getItemForSelectByAutocomplete')
+                .then(response =>{
+                        this.itemsByItemCode = response.data
+                })
+                .catch(error =>{
+                        console.log(error.response);
+                })
+                .finally(() => {
+
+                });
+        },
+
+        getItemsBySelectedItemCode(params){
+            this.pr_items.quantity = null
+                axios.get('/getItemsBySelectedItemCode', {params:params})
+                .then(response =>{
+                    this.pr_items.category = response.data[0][0]['value']
+                    this.categoryOptions = response.data[1]
+
+                    this.pr_items.subcategory = response.data[2][0]['value']
+                    this.subcategoryOptions = response.data[3]
+
+                    this.pr_items.part_name = response.data[4][0]['value']
+                    this.partnameOptions =response.data[5]
+
+                    this.pr_items.material = response.data[6][0]['value']
+                    this.materialOptions = response.data[7]
+
+                    this.pr_items.dimension = response.data[8][0]['value']
+                    this.dimensionOptions = response.data[9]
+                })
+                .catch(error =>{
+                        console.log(error.response);
+                })
+                .finally(() => {
+
+                });
         }
 
 

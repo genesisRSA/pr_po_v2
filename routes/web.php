@@ -65,13 +65,12 @@ Route::get('/arr', function(){
     
 
 
-    if(ItemList::findOrFail(21)->validity_date > Carbon::today()->toDateString()){
-        $verdict = 'item not expired';
-    } else {
-        $verdict = 'item expired';
-    }
-   return  $verdict;
-
+//     if(ItemList::findOrFail(21)->validity_date > Carbon::today()->toDateString()){
+//         $verdict = 'item not expired';
+//     } else {
+//         $verdict = 'item expired';
+//     }
+//    return  $verdict;
 
 
 
@@ -283,6 +282,9 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::get('/getDimensionValRequestor',[PurchaseRequestController::class, 'getDimensionVal'])->name('getDimensionVal');
     Route::get('/getComputedPRprice',[PurchaseRequestController::class, 'getComputedPRprice'])->name('getComputedPRprice');
     Route::get('/viewPRRequestor',[PurchaseRequestController::class, 'viewPR'])->name('viewPR');
+    Route::get('/getItemForSelectByAutocomplete',[PurchaseRequestController::class, 'getItemForSelectByAutocomplete'])->name('getItemForSelectByAutocomplete');
+    Route::get('/getItemsBySelectedItemCode', [PurchaseRequestController::class, 'getItemsBySelectedItemCode'])->name('getItemsBySelectedItemCode');
+    Route::get('/getPRReport',[PurchaseRequestController::class, 'getPRReport'])->name('getPRReport');
 
     Route::post('/savePrRequestor',[PurchaseRequestController::class, 'savePr'])->name('savePr');
     Route::post('/deletePrRequestor',[PurchaseRequestController::class, 'deletePr'])->name('deletePr');

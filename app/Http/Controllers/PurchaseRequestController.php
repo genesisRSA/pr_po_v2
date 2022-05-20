@@ -706,4 +706,120 @@ class PurchaseRequestController extends Controller
         return response()->json();
     }
 
+    public function getItemForSelectByAutocomplete(){
+        $item = ItemList::where('item_code','!=',null)->where('item_code','!=','')->get()
+        ->map( function($query){
+            return [
+                'text' => $query->item_code,
+                'value' => $query->id
+            ];
+        });
+        return response()->json($item);
+    }
+
+    public function getItemsBySelectedItemCode(Request $request){
+        $item = ItemList::findOrFail($request[0]);
+
+        $selectedCat = CategoryItem::where('id',$item->category_item_id)->get()->map( function($query){
+            return [
+                'text' => $query->category_name,
+                'value' => $query->id
+            ];
+        });
+
+        $catOption = CategoryItem::all()->map( function($query){
+            return [
+                'text' => $query->category_name,
+                'value' => $query->id
+            ];
+        });
+
+        $selectedSubcat = SubCategoryItem::where('id',$item->sub_category_item_id)->get()
+        ->map( function($query){
+            return [
+                'text' => $query->subcategory_name,
+                'value' => $query->id
+            ];
+        });
+
+        $subcatOption = SubCategoryItem::all()->map( function($query){
+            return [
+                'text' => $query->subcategory_name,
+                'value' => $query->id
+            ];
+        });
+
+        $selectedPartName = ItemList::where('id',$item->id)->get()->map( function($query){
+            return [
+                'text' => $query->part_name == '' ? 'N/A' : $query->part_name,
+                'value' => $query->part_name == '' ? 'N/A' : $query->part_name
+            ];
+        });
+
+        $partnameOption = ItemList::where('category_item_id',$item->category_item_id)->where('sub_category_item_id',$item->sub_category_item_id)->get()
+        ->map( function($query){
+            return [
+                'text' => $query->part_name == '' ? 'N/A' : $query->part_name,
+                'value' => $query->part_name == '' ? 'N/A' : $query->part_name
+            ];
+        });
+
+        $selectedMaterial = ItemList::where('id',$item->id)->get()->map( function($query){
+            return [
+                'text' => $query->material == '' ? 'N/A' : $query->material,
+                'value' => $query->material == '' ? 'N/A' : $query->material
+            ];
+        });
+
+        $materialOption = ItemList::where('category_item_id',$item->category_item_id)
+                                    ->where('sub_category_item_id',$item->sub_category_item_id)
+                                    ->where('part_name',$item->part_name)->get()
+        ->map( function($query){
+            return [
+                'text' => $query->material == '' ? 'N/A' : $query->material,
+                'value' => $query->material == '' ? 'N/A' : $query->material
+            ];
+        });
+
+        $selectedDimension = ItemList::where('id',$item->id)->get()->map( function($query){
+            return [
+                'text' => $query->dimension == '' ? 'N/A' : $query->dimension,
+                'value' => $query->dimension == '' ? 'N/A' : $query->dimension
+            ];
+        });
+
+        $dimensionOption = ItemList::where('category_item_id',$item->category_item_id)
+                                    ->where('sub_category_item_id',$item->sub_category_item_id)
+                                    ->where('part_name',$item->part_name)
+                                    ->where('material',$item->material)
+                                    ->get()
+        ->map( function($query){
+            return [
+                'text' => $query->dimension == '' ? 'N/A' : $query->dimension,
+                'value' => $query->dimension == '' ? 'N/A' : $query->dimension
+            ];
+        });
+
+
+        return response()->json([$selectedCat,$catOption,
+                                $selectedSubcat,$subcatOption,
+                                $selectedPartName,$partnameOption,
+                                $selectedMaterial,$materialOption,
+                                $selectedDimension,$dimensionOption]);
+    }
+
+    public function getPRReport(Request $request){
+
+        $pr_no = PurchaseRequestList::findOrFail($request->id);
+        $all = PurchaseRequestItem::where('purchase_request_list_id',$request->id)->get();
+        $data = [
+            'pr_items' => $all,
+            'pr_no' => $pr_no->pr_no
+        ];
+
+        $pdf = PDF::loadView('test',$data)->setPaper('a4','portrait');
+
+        return $pdf->download('itsolutionstuff.pdf');
+    }
+
 }

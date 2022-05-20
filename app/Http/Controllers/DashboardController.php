@@ -633,7 +633,7 @@ class DashboardController extends Controller
                 'type' => $query->type == '' ? 'N/A' : $query->type,
                 'price_per_square_inch' => $query->price_per_square_inch,
                 'raw_price' => str_replace(',','',mb_substr($query->price_per_square_inch,2)),
-                'vendor' => $query->vendor == null ? 'N/A' : $query->vendor
+                'vendor' => $query->vendor == '' ? 'N/A' : $query->vendor
             ];
         });
         return response()->json($all);
