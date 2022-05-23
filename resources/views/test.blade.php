@@ -55,11 +55,11 @@
     </div>
     <div class="row" style="position: relative; bottom:13px;">
          <label for="fname" class='title' style="position:relative; left: 20px;">DEPT.</label>
-         <input type="text" id="fname" name="fname" style="height: 25px; position:relative; left: 27px; bottom: 28px;" ><br><br>
+         <input type="text" id="fname" name="fname" style="height: 25px; position:relative; left: 27px; bottom: 28px;" value="{{ $department }}"><br><br>
     </div>
     <div class="row" style="position: relative; bottom:24px;">
          <label for="fname" class='title' style="position:relative; left: 20px;">DATE</label>
-         <input type="text" id="fname" name="fname" style="height: 25px; position:relative; left: 30px; bottom: 28px;" ><br><br>
+         <input type="text" id="fname" name="fname" style="height: 25px; position:relative; left: 30px; bottom: 28px;" value="{{ $created_at->toDateString() }}"><br><br>
     </div>
     <div class="row" style="position: relative; bottom:18px;">
          <label for="fname" class='title' style="position:relative; left: 20px;">STOCKS AVAILABILITY:</label><br>
@@ -73,7 +73,7 @@
   <div class="column">
         <div class="row">
             <label for="fname" class='title' style="position:relative; right: 31px;">REQUESTOR</label>
-            <input type="text" id="fname" name="fname" style="height: 25px; position:relative; right: 31px; bottom: 28px;"><br><br>
+            <input type="text" id="fname" name="fname" style="height: 25px; position:relative; right: 31px; bottom: 28px;" value="{{ $requestor }}"><br><br>
         </div>
         <div class="row" style="position: relative; bottom:262px; left:140px;">
             <label for="fname" class='title'>ITEM CATEGORY:</label>
@@ -115,16 +115,16 @@
     @foreach($pr_items as $item)
       <tr class="font">
           <td align="center">{{ $item->quantity }}</td>
-          <td align="center">{{ $item->quantity }}</td>
-          <td align="center">{{ $item->quantity }}</td>
-          <td align="center">{{ $item->quantity }}</td>
+          <td align="center">{{ $item->part_name.' '.($item->material != '' ? '('.$item->material.')' : '').($item->dimension != '' ? '('.$item->dimension.')' : '') }}</td>
+          <td align="center" style="font-family: DejaVu Sans, sans-serif !important;">{{ '₱'.number_format((json_decode(str_replace(['₱',','],'',$item->target_cost)) / $item->quantity),2,'.',',') }}</td>
+          <td align="center" style="font-family: DejaVu Sans, sans-serif !important;">{{ $item->target_cost }}</td>
         </tr>
     @endforeach
 
     </tbody>
 </table>
 
-
+{{-- ///'₱'.number_format(array_sum($arr),2, '.', ',') --}}
     <div class="row">
         <label for="fname"><span>Please check if:</span><span style="position:relative; left:10px;">    LOCAL __________ FOREIGN __________</span></label>
     </div>
@@ -134,14 +134,14 @@
                     <label for="fname">SUPPLIER NAME:___________________________________________________</label>
         </div>
         <span style="position:relative; bottom:20px; left:140px;">SAMPLE SUPPLIER</span>
-    
+
                     <div class="row">
                         <label for="fname">ADDRESS:_________________________________________________________</label>
                     </div>
-               
+
                         <span style="position:relative; bottom:20px; left:90px;">SAMPLE ADRESS</span>
-    
-       
+
+
         <div class="row">
                     <label for="fname">TERMS OF PAYMENTS:______________________________________________</label>
         </div>

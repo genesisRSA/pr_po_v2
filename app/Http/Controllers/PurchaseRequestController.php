@@ -701,7 +701,7 @@ class PurchaseRequestController extends Controller
         }
 
 
-        
+
 
         return response()->json();
     }
@@ -811,10 +811,14 @@ class PurchaseRequestController extends Controller
     public function getPRReport(Request $request){
 
         $pr_no = PurchaseRequestList::findOrFail($request->id);
+        $requestor = User::findOrFail($pr_no->user_id)->name;
         $all = PurchaseRequestItem::where('purchase_request_list_id',$request->id)->get();
         $data = [
             'pr_items' => $all,
-            'pr_no' => $pr_no->pr_no
+            'pr_no' => $pr_no->pr_no,
+            'requestor' => $requestor,
+            'department' => $pr_no->department,
+            'created_at' => $pr_no->created_at
         ];
 
         $pdf = PDF::loadView('test',$data)->setPaper('a4','portrait');

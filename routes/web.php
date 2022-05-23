@@ -20,6 +20,8 @@ use App\Models\PurchaseRequestList;
 use App\Models\PurchaseOrderList;
 use App\Models\SubCategoryItem;
 use App\Models\ItemList;
+use App\Models\PurchaseRequestItem;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -60,9 +62,9 @@ Route::get('/arr', function(){
     // foreach($lastThirtyDaysRecord as $key => $c){
     //         foreach($c as $kk => $lee){
     //                 CertificationType::where('id',$lee->id)->update(['cert_types'=>$arr[$key]]);
-    //         }   
+    //         }
     // }
-    
+
 
 
 //     if(ItemList::findOrFail(21)->validity_date > Carbon::today()->toDateString()){

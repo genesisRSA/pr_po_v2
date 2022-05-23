@@ -58,8 +58,8 @@
                   RTI Systems Automation INC.
                   Email: it.support@rsa.com.ph <br>
                   Mob: +6399000000 <br>
-                  Blk 4 Lot 6 Onda Compound, People's 
-                  Technology Complex, Special Economic 
+                  Blk 4 Lot 6 Onda Compound, People's
+                  Technology Complex, Special Economic
                   Zone Brgy, Maduya, Carmona, 4116 Cavite
                 </pre>
             </td>
@@ -76,7 +76,7 @@
               <strong>Email:</strong> <br>
               <strong>Phone:</strong>  <br>
               <strong>Address:</strong> <br>
-              <strong>Post Code:</strong> 
+              <strong>Post Code:</strong>
             </p>
             </td>
             <td>
@@ -109,7 +109,7 @@
           </td>
           <td align="center"> {{ $item->item_code }}</td>
           <td align="center">{{ $item->description }}</td>
-          <td align="center">{{ $item->quantity }}</td>
+          <td align="center">₱{{ $item->quantity }}</td>
           <td align="center">{{ $item->unit_of_measure }}</td>
           <td align="center">{{ $item->delivery_date }}</td>
         </tr>

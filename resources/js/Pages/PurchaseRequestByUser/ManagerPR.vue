@@ -1339,7 +1339,7 @@
                     this.pr_items.raw_unit_price_for_list_item = null
                     this.selectedItemByItemCode = null
                     return
-                } 
+                }
             });
 
 
