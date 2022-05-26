@@ -718,6 +718,7 @@
                                                 </div>
                                                 <div v-else>
                                                 <v-icon
+                                                    :disabled="canEdit == 'NO' ? true : false"
                                                     small
                                                     @click="editSupplier(item)"
                                                 >
@@ -851,6 +852,7 @@
                           <v-card-actions class="justify-end">
                                     <v-btn
                                     color="primary"
+                                    :disabled="canEdit == 'NO' ? true : false"
                                     @click="saveSuppInfo()"
                                     >Save</v-btn>
                                     <v-btn
@@ -1049,7 +1051,9 @@
                 dialogRepeatPR: false,
                 itemsByItemCode: [],
                 selectedItemByItemCode : null,
-                missingPR: false
+                missingPR: false,
+
+                canEdit: null
     }),
 
     created: function(){
@@ -1150,6 +1154,8 @@
                     } else {
                         this.canChoose = this.defHeaderForViewItem
                     }
+
+                    this.canEdit = ( response.data[3] == 'PR APPROVED' ? 'NO' : 'YES')
               })
               .catch(error =>{
                     console.log(error.response);

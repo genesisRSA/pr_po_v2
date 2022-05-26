@@ -395,7 +395,13 @@ class PurchaseRequestController extends Controller
                     $finalResult = $list->pr_items;
            }
 
-        return response()->json([$finalResult,$vendors,$canChoose]);
+           //////////If the Status is approved the PR can't be edited/////////////
+
+           $canEdit = $list->status;
+
+           ///////////////////////////////////////////////////////////////////////
+
+        return response()->json([$finalResult,$vendors,$canChoose,$canEdit]);
     }
 
     public function saveEditedSupp(Request $request){
