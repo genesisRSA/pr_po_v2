@@ -158,10 +158,10 @@
                                   style="height: 100%;"
                                 >
                                       <ul style="list-style-type:none; position: relative; right:50px;">
-                                        <li>Pending : 5</li>
-                                        <li>Approved : 8</li>
-                                        <li>Received : 15</li>
-                                        <li>Declined : 2</li>
+                                        <li>Pending : </li>
+                                        <li>Approved : </li>
+                                        <li>Received : </li>
+                                        <li>Declined : </li>
                                       </ul>
                                 </div>
                               </v-expand-transition>
@@ -219,10 +219,10 @@
                                   style="height: 100%;"
                                 >
                                       <ul style="list-style-type:none; position: relative; right:50px;">
-                                        <li>Pending : 3</li>
-                                        <li>Approved : 2</li>
-                                        <li>Received : 10</li>
-                                        <li>Declined : 4</li>
+                                        <li>Pending : </li>
+                                        <li>Approved : </li>
+                                        <li>Received : </li>
+                                        <li>Declined : </li>
                                       </ul>
                                 </div>
                               </v-expand-transition>

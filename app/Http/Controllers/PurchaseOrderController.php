@@ -113,12 +113,12 @@ class PurchaseOrderController extends Controller
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
                         'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ?
-                                        (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ?
-                                        str_replace('before','ago',Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date)) :
-                                        Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' ):
-                                        (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ?
-                                        Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date). ' (ONGOING)':
-                                        Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago (ONGOING)' ),
+                                        (Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date) == 0 ?
+                                        str_replace('before','',Carbon::parse($query->created_at)->diffForHumans($query->pr_approved_date)) :
+                                        Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date). ' day(s)' ):
+                                        (Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date) == 0 ?     
+                                        Carbon::parse($query->created_at)->diffForHumans($query->pr_approved_date). ' (ONGOING)':
+                                        Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date). ' day(s) (ONGOING)' ),
                         'created_at' => $query->created_at->toDayDateTimeString()
                     ];
                 });
@@ -136,12 +136,12 @@ class PurchaseOrderController extends Controller
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
                         'lead_time' => (strtoupper($query->status) == 'PO APPROVED' ||  str_contains(strtoupper($query->status),'DECLINED')) ?
-                                        (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ?
-                                        str_replace('before','ago',Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date)) :
-                                        Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago' ):
-                                        (Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date) == 0 ?
-                                        Carbon::parse($query->purchase_request->created_at)->diffForHumans($query->pr_approved_date). ' (ONGOING)':
-                                        Carbon::parse($query->purchase_request->created_at)->diffInDays($query->pr_approved_date). ' day(s) ago (ONGOING)' ),
+                                        (Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date) == 0 ?
+                                        str_replace('before','',Carbon::parse($query->created_at)->diffForHumans($query->pr_approved_date)) :
+                                        Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date). ' day(s)' ):
+                                        (Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date) == 0 ?
+                                        Carbon::parse($query->created_at)->diffForHumans($query->pr_approved_date). ' (ONGOING)':
+                                        Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date). ' day(s) (ONGOING)' ),
                         'created_at' => $query->created_at->toDayDateTimeString()
                     ];
                 });

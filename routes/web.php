@@ -21,7 +21,7 @@ use App\Models\PurchaseOrderList;
 use App\Models\SubCategoryItem;
 use App\Models\ItemList;
 use App\Models\PurchaseRequestItem;
-
+use App\Models\UserPosition;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -73,9 +73,6 @@ Route::get('/arr', function(){
 //         $verdict = 'item expired';
 //     }
 //    return  $verdict;
-
-
-
 });
 
 

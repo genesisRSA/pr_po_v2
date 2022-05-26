@@ -26,6 +26,19 @@
                 <v-icon>mdi-flag-triangle</v-icon>
                 Whoops,.. Some of supplier's info were missing. Please fill them up.
         </v-snackbar>
+        <v-snackbar
+                v-model="missingPR"
+                :timeout="3000"
+                :value="true"
+                bottom
+                color="red accent-2"
+                success
+                top
+                right
+                >
+                <v-icon>mdi-flag-triangle</v-icon>
+                Error 404: Seems the PR you trying to access has been deleted. Please refresh the page.
+        </v-snackbar>
         <v-row>
           <v-col
             v-for="card in cards"
@@ -976,7 +989,8 @@
                 isPrTableLoading : true,
 
                 itemsByItemCode: [],
-                selectedItemByItemCode : null
+                selectedItemByItemCode : null,
+                missingPR: false
     }),
 
     created: function(){
@@ -1079,6 +1093,9 @@
               })
               .catch(error =>{
                     console.log(error.response);
+                    if(error.response.status == 404){
+                        this.missingPR = true
+                    }
               })
               .finally(() => {
 
@@ -1371,6 +1388,10 @@
               })
               .catch(error =>{
                     console.log(error.response);
+                    if(error.response.status == 404){
+                        this.missingPR = true
+                        this.closeDeletePR()
+                    }
               })
               .finally(() => {
 
@@ -1386,6 +1407,9 @@
               })
               .catch(error =>{
                     console.log(error.response);
+                    if(error.response.status == 404){
+                        this.missingPR = true
+                    }
               })
               .finally(() => {
 

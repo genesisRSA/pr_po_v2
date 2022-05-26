@@ -26,6 +26,19 @@
                 <v-icon>mdi-flag-triangle</v-icon>
                 Whoops,.. Some of supplier's info were missing. Please fill them up.
         </v-snackbar>
+        <v-snackbar
+                v-model="missingPR"
+                :timeout="3000"
+                :value="true"
+                bottom
+                color="red accent-2"
+                success
+                top
+                right
+                >
+                <v-icon>mdi-flag-triangle</v-icon>
+                Error 404: Seems the PR you trying to access has been deleted. Please refresh the page.
+        </v-snackbar>
         <v-row>
           <v-col
             v-for="card in cards"
@@ -1035,7 +1048,8 @@
 
                 dialogRepeatPR: false,
                 itemsByItemCode: [],
-                selectedItemByItemCode : null
+                selectedItemByItemCode : null,
+                missingPR: false
     }),
 
     created: function(){
@@ -1139,6 +1153,9 @@
               })
               .catch(error =>{
                     console.log(error.response);
+                    if(error.response.status == 404){
+                        this.missingPR = true
+                    }
               })
               .finally(() => {
 
@@ -1430,7 +1447,11 @@
                     this.getMyPRlist()
               })
               .catch(error =>{
-                    console.log(error.response);
+                    console.log(error.response.status);
+                    if(error.response.status == 404){
+                        this.missingPR = true
+                        this.closeDeletePR()
+                    }
               })
               .finally(() => {
 
@@ -1446,6 +1467,9 @@
               })
               .catch(error =>{
                     console.log(error.response);
+                    if(error.response.status == 404){
+                        this.missingPR = true
+                    }
               })
               .finally(() => {
 
@@ -1542,6 +1566,9 @@
                 })
                 .catch(error =>{
                         console.log(error.response);
+                        if(error.response.status == 404){
+                            this.missingPR = true
+                        }
                 })
                 .finally(() => {
 
@@ -1655,11 +1682,14 @@
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', 'yolo.pdf');
+                link.setAttribute('download', params.pr_no+'.pdf');
                 document.body.appendChild(link);
                 link.click();
             }).catch(error =>{
                     console.log(error.response);
+                    if(error.response.status == 404){
+                        this.missingPR = true
+                    }
             }).finally(() => {
 
             });

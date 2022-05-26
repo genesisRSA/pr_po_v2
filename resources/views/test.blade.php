@@ -152,15 +152,17 @@
         <label for="fname" style="position:relative; top:55px; margin-right: 10px; font-size: 75%">PURPOSE:_________________________</label>
         <label for="fname" style="position:relative; top:55px; left:43px; font-size: 75%">REQUESTING DEPT.:______________________</label>
     </div>
-        <span style="position:relative; top:35px; left:80px; font-size: 75%">SAMPLE PURPOSE</span>
-        <span style="position:relative; top:35px; left:300px; font-size: 75%">SAMPLE DEPARTMENT</span>
+        <span style="position:relative; top:35px; left:80px; font-size: 75%">              </span>
+        <span style="position:relative; top:35px; left:300px; font-size: 75%">             </span>
     <div class='row'>
         <label for="fname" style="position:relative; top:50px; margin-right: 53px; font-size: 75%">DATE NEEDED:_____________________</label>
         <label for="fname" style="position:relative; top:50px; font-size: 75%">DEPT MNGR.:_____________________________</label>
     </div>
-        <span style="position:relative; top:30px; left:110px; font-size: 75%">SAMPLE PURPOSE</span>
-        <span style="position:relative; top:30px; left:288px; font-size: 75%">SAMPLE MANAGER</span>
-        <span style="position:relative; top:45px; left:175px; font-size: 50%">SIGNATURE OVER PRINTED</span>
+        <span style="position:relative; top:30px; left:110px; font-size: 75%">              </span>
+        <span style="position:relative; top:30px; left:288px; font-size: 75%">              </span>
+    <div>
+        <span style="position:relative; top:45px; left:410px; font-size: 50%">SIGNATURE OVER PRINTED</span>
+    </div>
     <div class='row'>
         <label for="fname" style="position:relative; top:55px; margin-right: 145px; font-size: 75%">AUTHORIZED BY:</label>
         <label for="fname" style="position:relative; top:55px; left:36px; font-size: 75%">APPROVED BY:</label>
@@ -171,13 +173,13 @@
     </div>
         <span style="position:relative; top:70px; left:18px; font-size: 75%">DEPT. MANAGER</span>
         <span style="position:relative; top:70px; left:240px; font-size: 75%">PRESIDENT</span>
-        <span style="position:relative; top:50px; right:159px; font-size: 75%">DEPT. MANAGER</span>
-        <span style="position:relative; top:50px; left:24px; font-size: 75%">SAMPLE PRESIDENT</span>
+        <span style="position:relative; top:50px; right:150px; font-size: 75%">{{ $purch_mngr }}</span>
+        <span style="position:relative; top:50px; left:68px; font-size: 75%">{{ $president }}</span>
     <div class='row'>
         <label for="fname" style="position:relative; top:85px; margin-right: 35px; font-size: 75%">DATE:_________________________</label>
         <label for="fname" style="position:relative; top:85px; left:43px; font-size: 75%">DATE:______________________</label>
     </div>
-        <span style="position:relative; top:65px; left:50px; font-size: 75%">SAMPLE DATE</span>
-        <span style="position:relative; top:65px; left:245px; font-size: 75%">SAMPLE DATE</span>
+        <span style="position:relative; top:65px; left:50px; font-size: 75%"></span>
+        <span style="position:relative; top:65px; left:245px; font-size: 75%"></span>
 </body>
 </html>

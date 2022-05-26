@@ -445,6 +445,8 @@ class PurchaseRequestController extends Controller
     }
 
     public function saveEditedVendor(Request $request){
+       $pr_no = PurchaseRequestList::where('id',$request->params['one']['purchase_request_list_id'])->first();
+
        $owl =PurchaseRequestItem::where('id',$request->params['one']['id'])->first();
 
        $owl->update([
@@ -452,7 +454,7 @@ class PurchaseRequestController extends Controller
            'supplier_two' => $request->params['two']['supplier_two']  == null ? 'PENDING' : $request->params['two']['supplier_two'],
            'supplier_three' => $request->params['two']['supplier_three'] == null ? 'PENDING' : $request->params['two']['supplier_three']
        ]);
-        return response()->json('success');
+        return response()->json($request);
     }
 
     public function saveSuppInfo(Request $request){
@@ -813,11 +815,15 @@ class PurchaseRequestController extends Controller
         $pr_no = PurchaseRequestList::findOrFail($request->id);
         $requestor = User::findOrFail($pr_no->user_id)->name;
         $all = PurchaseRequestItem::where('purchase_request_list_id',$request->id)->get();
+        $president = UserPosition::where('position','PRESIDENT')->first()->user->name;
+        $purch_mngr = UserPosition::where('position','PURCHASE MNGR.')->first()->user->name;
         $data = [
             'pr_items' => $all,
             'pr_no' => $pr_no->pr_no,
             'requestor' => $requestor,
             'department' => $pr_no->department,
+            'purch_mngr' => $purch_mngr,
+            'president' => $president,
             'created_at' => $pr_no->created_at
         ];
 
