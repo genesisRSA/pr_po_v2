@@ -563,7 +563,7 @@
                             </v-card>
               </v-dialog>
 
-              <v-dialog v-model="viewDialogPR" max-width="1200px">
+              <v-dialog v-model="viewDialogPR" max-width="1400px">
                             <v-card>
 <v-card-title class="text-h5"><span style='color:red;'>PR No : </span><span style='position:relative; left:5px;'>{{ prIdViewDialog }}</span><v-spacer></v-spacer><span style='color:red; position: relative; right:5px;'>Date Created : </span>{{ dateCreated }}</v-card-title>
                                 <v-card-text>
@@ -602,12 +602,14 @@
                                                     </div>
                                                     <div v-else>
                                                         <div class='d-flex'>
-                                                        <span :class="getColorPreferredOne(item)">
+                                                        <span :class="getColorPreferredOne(item)"
+                                                        >
                                                         {{ item.supplier_one }}
                                                         </span>
                                                            <v-icon
                                                                 large
                                                                 class="mr-2"
+                                                                color="blue"
                                                                 @click="getSuppInfo([item,'SUPPLIER ONE'])"
                                                             >
                                                                 mdi-information
@@ -652,6 +654,7 @@
                                                            <v-icon
                                                                 large
                                                                 class="mr-2"
+                                                                color="blue"
                                                                 @click="getSuppInfo([item,'SUPPLIER TWO'])"
                                                             >
                                                                 mdi-information
@@ -694,6 +697,7 @@
                                                             <v-icon
                                                                 large
                                                                 class="mr-2"
+                                                                color="blue"
                                                                 @click="getSuppInfo([item,'SUPPLIER THREE'])"
                                                             >
                                                                 mdi-information

@@ -36,6 +36,10 @@ use App\Models\UserPosition;
 //     $get = Carbon::now();
 //     return $get->toFormattedDateString();
 // });
+Route::get('/testing', function(){
+    return isset(User::where('id',1)->first()->name) ? User::where('id',1)->first()->name : 'Not Available';
+});
+
 Route::get('/arr', function(){
 
     // $start_date = Carbon::parse('2022-04-13')->toDateString();
@@ -72,7 +76,30 @@ Route::get('/arr', function(){
 //     } else {
 //         $verdict = 'item expired';
 //     }
-//    return  $verdict;
+
+
+      return PurchaseRequestItem::all()
+      ->map(function($query){
+          return [
+              'po_no' => isset($query->pr_list->id) ? PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->pr_no : 'Not Available',
+              'po_date' => isset($query->pr_list->id) ? PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->created_at->toDateTimeString() : 'Not Available',
+              'pr_no' => isset($query->pr_list->id) ? PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->pr_no : 'Not Available',
+              'vendor' => isset($query->chosen_supplier) ? ($query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three ) )  : 'Not Available',
+              'item_code' => isset($query->item_due_id) ? (ItemList::where('id',$query->item_due_id)->first()->item_code == null ? 'Not Available' : ItemList::where('id',$query->item_due_id)->first()->item_code) : 'Not Available',
+              'item_subcat' => isset($query->item_due_id) ? SubCategoryItem::where('id',ItemList::where('id',$query->item_due_id)->first()->sub_category_item_id)->first()->subcategory_name : 
+                                'Not Available',
+              'item_desc' => $query->part_name.' '.($query->material != '' ? '('.$query->material.')' : '').($query->dimension != '' ? '('.$query->dimension.')' : ''),
+              'req_quantity' => $query->quantity,
+              'unit_cost' => '₱'.number_format((json_decode(str_replace(['₱',','],'',$query->target_cost)) / $query->quantity),2,'.',','),
+              'total_amount' => $query->target_cost,
+              'Currency' => 'PHP',
+              'PR_remarks' => isset($query->pr_list->id) ? 
+                        (PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->remarks==''? 'Not Available' : PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->remarks. ' PREPARED BY: '. 
+                            isset(User::where('id',PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->user_id)->first()->name)) : 'Not Available'
+          ];
+      });
+
+      
 });
 
 

@@ -641,6 +641,24 @@
                                                         {{ item.supplier_three}}
                                                     </div>
                                                 </template>
+
+                                                <template v-slot:item.chosen_supplier="{ item }">
+                                                    <div v-if='item.chosen_supplier != null'>
+                                                        {{ 'SUPPLIER '+item.chosen_supplier }}
+                                                    </div>
+                                                    <div v-else>
+                                                        {{ 'N/A' }}
+                                                    </div>
+                                                </template>
+
+                                                <template v-slot:item.chosen_supp_cost="{ item }">
+                                                    <div v-if='item.chosen_supp_cost != null'>
+                                                        {{ item.chosen_supp_cost }}
+                                                    </div>
+                                                    <div v-else>
+                                                        {{ 'N/A' }}
+                                                    </div>
+                                                </template>
                                         </v-data-table>
                                 </v-card-text>
                             </v-card>
@@ -733,7 +751,9 @@
                     { text: 'Supplier 1', value: 'supplier_one', class: "yellow" },
                     { text: 'Supplier 2', value: 'supplier_two', class: "yellow" },
                     { text: 'Supplier 3', value: 'supplier_three', class: "yellow" },
+                    { text: 'Chosen Supplier', value: 'chosen_supplier', class: "yellow" },
                     { text: 'Target Cost', value: 'target_cost', class: "yellow" },
+                    { text: 'Chosen Supplier Cost', value: 'chosen_supp_cost', class: "yellow" },
                 ],
                 addPRdialog : false,
                 dialogDeletePR : false,

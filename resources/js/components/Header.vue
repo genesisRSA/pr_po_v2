@@ -103,10 +103,17 @@
 
         </div>
 
+        <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn icon color="primary" large v-bind="attrs"
+                  @click="openCosting()"
+                    v-on="on">
+                  <v-icon>mdi-clipboard-list</v-icon>
+                </v-btn>
+                </template>
+              <span>Costing</span>
+      </v-tooltip>
 
-      <v-btn icon color="primary" large>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
   </v-app-bar>
   </template>
 
@@ -173,6 +180,10 @@
               .finally(() => {
 
               });
+      },
+
+      openCosting(){
+        window.open("http://192.168.1.215:8090/costing");
       }
 
 

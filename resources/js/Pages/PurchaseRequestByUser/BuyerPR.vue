@@ -592,6 +592,7 @@
                                                             <v-icon
                                                                     large
                                                                     class="mr-2"
+                                                                    color="blue"
                                                                     @click="getSuppInfo([item,'SUPPLIER ONE'])"
                                                                 >
                                                                     mdi-information
@@ -633,6 +634,7 @@
                                                             <v-icon
                                                                     large
                                                                     class="mr-2"
+                                                                    color="blue"
                                                                     @click="getSuppInfo([item,'SUPPLIER TWO'])"
                                                                 >
                                                                     mdi-information
@@ -674,6 +676,7 @@
                                                                 <v-icon
                                                                     large
                                                                     class="mr-2"
+                                                                    color="blue"
                                                                     @click="getSuppInfo([item,'SUPPLIER THREE'])"
                                                                 >
                                                                     mdi-information
