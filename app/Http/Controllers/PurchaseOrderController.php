@@ -42,7 +42,7 @@ class PurchaseOrderController extends Controller
                 return[
                     'id' => $query->id,
                     'pr_id' => $query->pr_id,
-                    'user_id' => User::findOrFail($query->user_id)->name,
+                    'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
                     'pr_no' => strtoupper($query->pr_no),
                     'so_no' => strtoupper($query->so_no),
                     'department' => strtoupper($query->department),
@@ -74,7 +74,7 @@ class PurchaseOrderController extends Controller
                     return[
                         'id' => $query->id,
                         'pr_id' => $query->pr_id,
-                        'user_id' => User::findOrFail($query->user_id)->name,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
                         'pr_no' => strtoupper($query->pr_no),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
@@ -90,7 +90,7 @@ class PurchaseOrderController extends Controller
                     return[
                         'id' => $query->id,
                         'pr_id' => $query->pr_id,
-                        'user_id' => User::findOrFail($query->user_id)->name,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
                         'pr_no' => strtoupper($query->pr_no),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
@@ -106,7 +106,7 @@ class PurchaseOrderController extends Controller
                     return[
                         'id' => $query->id,
                         'pr_id' => $query->pr_id,
-                        'user_id' => User::findOrFail($query->user_id)  ->name,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
                         'pr_no' => strtoupper($query->pr_no),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
@@ -116,7 +116,7 @@ class PurchaseOrderController extends Controller
                                         (Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date) == 0 ?
                                         str_replace('before','',Carbon::parse($query->created_at)->diffForHumans($query->pr_approved_date)) :
                                         Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date). ' day(s)' ):
-                                        (Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date) == 0 ?     
+                                        (Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date) == 0 ?
                                         Carbon::parse($query->created_at)->diffForHumans($query->pr_approved_date). ' (ONGOING)':
                                         Carbon::parse($query->created_at)->diffInDays($query->pr_approved_date). ' day(s) (ONGOING)' ),
                         'created_at' => $query->created_at->toDayDateTimeString()
@@ -129,7 +129,7 @@ class PurchaseOrderController extends Controller
                     return[
                         'id' => $query->id,
                         'pr_id' => $query->pr_id,
-                        'user_id' => User::findOrFail($query->user_id)->name,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
                         'pr_no' => strtoupper($query->pr_no),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
@@ -310,11 +310,11 @@ class PurchaseOrderController extends Controller
 
 
         $lastThirtyDaysRecord = SupplierDetails::where('purchase_request_item_id',999999999)->get()->chunk(3);
-    
+
         foreach($lastThirtyDaysRecord as $key => $c){
                 foreach($c as $kk => $lee){
                     SupplierDetails::where('id',$lee->id)->update(['purchase_request_item_id'=>$arrain[$key]]);
-                }   
+                }
         }
 
 
@@ -333,7 +333,7 @@ class PurchaseOrderController extends Controller
                 if(ItemList::findOrFail($items->item_due_id)->validity_date >= Carbon::today()->toDateString()){
                     $detection +=1 ;
                 }
-                
+
             }
         }
         return response()->json($detection);

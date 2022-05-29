@@ -58,7 +58,7 @@ class PurchaseRequestController extends Controller
             $myPR = PurchaseRequestList::all()->map( function($query){
                 return[
                     'id' => $query->id,
-                    'user_id' => User::findOrFail($query->user_id)->name,
+                    'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
                     'pr_no' => strtoupper($query->pr_no),
                     'so_no' => strtoupper($query->so_no),
                     'department' => strtoupper($query->department),
@@ -75,7 +75,7 @@ class PurchaseRequestController extends Controller
                 $myPR = $user->purchase_requests->map( function($query){
                     return[
                         'id' => $query->id,
-                        'user_id' => $query->user_id,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
                         'pr_no' => strtoupper($query->pr_no),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
@@ -91,7 +91,7 @@ class PurchaseRequestController extends Controller
                 $myPR = PurchaseRequestList::all()->map( function($query){
                     return[
                         'id' => $query->id,
-                        'user_id' => User::findOrFail($query->user_id)->name,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
                         'pr_no' => strtoupper($query->pr_no),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
@@ -107,7 +107,7 @@ class PurchaseRequestController extends Controller
                 $myPR = PurchaseRequestList::all()->map( function($query){
                     return[
                         'id' => $query->id,
-                        'user_id' => User::findOrFail($query->user_id)->name,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
                         'pr_no' => strtoupper($query->pr_no),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
@@ -123,7 +123,7 @@ class PurchaseRequestController extends Controller
                 $myPR = PurchaseRequestList::all()->map( function($query){
                     return[
                         'id' => $query->id,
-                        'user_id' => User::findOrFail($query->user_id)  ->name,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
                         'pr_no' => strtoupper($query->pr_no),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
@@ -139,7 +139,7 @@ class PurchaseRequestController extends Controller
                 $myPR = PurchaseRequestList::all()->map( function($query){
                     return[
                         'id' => $query->id,
-                        'user_id' => User::findOrFail($query->user_id)->name,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
                         'pr_no' => strtoupper($query->pr_no),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
