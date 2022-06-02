@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
-use App\Models\User;
+use PDF;
+use Auth;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Rfq_record;
+use App\Models\PurchaseRequestList;
 use App\Models\SitePermission;
 use App\Models\CategoryItem;
 use App\Models\SubCategoryItem;
@@ -17,12 +20,14 @@ use App\Models\Vendor;
 use App\Models\PaymentTerm;
 use App\Models\PlatingCostUpdate;
 use App\Models\ItemListCostUpdate;
+use App\Models\PurchaseRequestItem;
+use App\Models\PurchaseOrderList;
+use App\Models\SupplierDetails;
 use App\Models\Department;
 use App\Models\UserPosition;
-use PDF;
-use Auth;
 use Akaunting\Money\Currency;
 use Akaunting\Money\Money;
+use PDO;
 
 class DashboardController extends Controller
 {
@@ -1060,6 +1065,42 @@ class DashboardController extends Controller
         $user = User::findOrFail(Auth::id());
         $val = $user->notifications()->whereDate('created_at',Carbon::today())->first()->update(['status'=>'seen']);
         return response()->json($val);
+    }
+
+    public function costing(){
+        if(Auth::user()->role_as){
+            return back();
+        } else {
+            if(Auth::user()->user_position->position == "CEO" || Auth::user()->user_position->position == "PRESIDENT" || Auth::user()->user_position->position == "REQUESTOR"){
+                return back();
+            }
+        };
+        return Inertia::render('Costing');
+    }
+
+    public function getMyCostinglist(){
+
+       $costing = PurchaseRequestItem::all()
+      ->map(function($query){
+          return [
+              'po_no' => isset($query->pr_list->id) ? (isset(PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->pr_no) ? PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->pr_no : 'N/A') : 'N/A',
+              'po_date' => isset($query->pr_list->id) ? (isset(PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->created_at)? PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->created_at->toDateTimeString() : 'N/A'): 'N/A',
+              'pr_no' => isset($query->pr_list->id) ? (isset(PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->pr_no) ? PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->pr_no : 'N/A') : 'N/A',
+              'vendor' => isset($query->chosen_supplier) ? ($query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three ) )  : 'N/A',
+              'item_code' => isset($query->item_due_id) ? ( (isset(ItemList::where('id',$query->item_due_id)->first()->item_code) ? ItemList::where('id',$query->item_due_id)->first()->item_code : null) == null ? 'N/A' : ItemList::where('id',$query->item_due_id)->first()->item_code) : 'N/A',
+              'item_subcat' => isset($query->item_due_id) ? SubCategoryItem::where('id',ItemList::where('id',$query->item_due_id)->first()->sub_category_item_id)->first()->subcategory_name :'N/A',
+              'item_desc' => $query->part_name.' '.($query->material != '' ? '('.$query->material.')' : '').($query->dimension != '' ? '('.$query->dimension.')' : ''),
+              'req_quantity' => $query->quantity,
+              'unit_cost' => number_format((json_decode(str_replace(['₱',','],'',$query->target_cost)) / $query->quantity),2,'.',','),
+              'total_amount' => str_replace('₱','',$query->target_cost),
+              'currency' => 'PHP',
+              'PR_remarks' => isset($query->pr_list->id) ?
+                        (PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->remarks==''? 'N/A' : PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->remarks. ' PREPARED BY: '.
+                            (isset(User::where('id',PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->user_id)->first()->name) ? User::where('id',PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->user_id)->first()->name : 'N/A')) : 'N/A'
+          ];
+      });
+
+        return response()->json($costing);
     }
     /**
      * Show the form for creating a new resource.

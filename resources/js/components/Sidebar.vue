@@ -52,9 +52,9 @@
             <v-list-item>
                 <form class="d-inline-flex align-center">
                     <v-hover v-slot="{ hover }">
-                        <v-btn text type="submit" class="sideBarButton_2" :href="route('dashboard')" color="gray" x-large :style="{ 'background-color': hover ? 'gold' : '' }">
-                            <v-icon :color="hover ?'blue':'gray'" left small>mdi-view-dashboard</v-icon>
-                            Dashboard
+                        <v-btn text type="submit" class="sideBarButton_2" :href="route('dashboard')" color="gray" x-large :style="{ 'background-color': (hover || active_class == 'dashboard') ? '#1976d2' : '' }">
+                            <v-icon :color="(hover || active_class == 'dashboard') ?'yellow':'gray'" left small>mdi-view-dashboard</v-icon>
+                            <span :class="(hover || active_class == 'dashboard') ? 'yellow--text':'gray'">Dashboard</span>
                         </v-btn>
                     </v-hover>
                 </form>
@@ -65,9 +65,9 @@
             <v-list-item>
                 <form class="d-inline-flex align-center">
                     <v-hover v-slot="{ hover }">
-                        <v-btn text type="submit" class="sideBarButton_3" :href="is_Admin==true ? route('req_for_quotation') : route('req_for_quotation_reg_user')" color="gray" x-large :style="{ 'background-color': hover ? 'gold' : '' }">
-                            <v-icon :color="hover ?'blue':'gray'" left small>mdi-comment-quote</v-icon>
-                            RFQs
+                        <v-btn text type="submit" class="sideBarButton_3" :href="is_Admin==true ? route('req_for_quotation') : route('req_for_quotation_reg_user')" color="gray" x-large :style="{ 'background-color': (hover || active_class == 'rfqs') ? '#1976d2' : '' }">
+                            <v-icon :color="(hover || active_class == 'rfqs') ?'yellow':'gray'" left small>mdi-comment-quote</v-icon>
+                            <span :class="(hover || active_class == 'rfqs') ? 'yellow--text':'gray'">RFQs</span>
                         </v-btn>
                     </v-hover>
                 </form>
@@ -79,9 +79,9 @@
             <v-list-item>
                 <form class="d-inline-flex align-center">
                     <v-hover v-slot="{ hover }">
-                        <v-btn text type="submit" class="purchase_req" :href="is_Admin==true ? route('purch_req') : route('purch_req_reg_user')" color="gray" x-large :style="{ 'background-color': hover ? 'gold' : '' }">
-                            <v-icon :color="hover ?'blue':'gray'" left small>mdi-account-arrow-right</v-icon>
-                            Purchase Request
+                        <v-btn text type="submit" class="purchase_req" :href="is_Admin==true ? route('purch_req') : route('purch_req_reg_user')" color="gray" x-large :style="{ 'background-color': (hover || active_class == 'purchase_request') ? '#1976d2' : '' }">
+                            <v-icon :color="(hover || active_class == 'purchase_request') ?'yellow':'gray'" left small>mdi-account-arrow-right</v-icon>
+                            <span :class="(hover || active_class == 'purchase_request') ? 'yellow--text':'gray'">Purchase Request</span>
                         </v-btn>
                     </v-hover>
                 </form>
@@ -93,9 +93,9 @@
             <v-list-item>
                 <form class="d-inline-flex align-center">
                     <v-hover v-slot="{ hover }">
-                        <v-btn text type="submit" class="purchase_order" :href="is_Admin==true ? route('purch_order') : route('purch_order_reg_user')" color="gray" x-large :style="{ 'background-color': hover ? 'gold' : '' }">
-                            <v-icon :color="hover ?'blue':'gray'" left small>mdi-order-bool-ascending</v-icon>
-                            Purchase Order
+                        <v-btn text type="submit" class="purchase_order" :href="is_Admin==true ? route('purch_order') : route('purch_order_reg_user')" color="gray" x-large :style="{ 'background-color': (hover || active_class == 'purchase_order') ? '#1976d2' : '' }">
+                            <v-icon :color="(hover || active_class == 'purchase_order') ?'yellow':'gray'" left small>mdi-order-bool-ascending</v-icon>
+                            <span :class="(hover || active_class == 'purchase_order') ? 'yellow--text':'gray'">Purchase Order</span>
                         </v-btn>
                     </v-hover>
                 </form>
@@ -107,9 +107,9 @@
             <v-list-item>
                 <form class="d-inline-flex align-center">
                     <v-hover v-slot="{ hover }">
-                        <v-btn text type="submit" class="data_mngt" :href="is_Admin==true ? route('data_management') : route('data_management_reg_user')" color="gray" x-large :style="{ 'background-color': hover ? 'gold' : '' }">
-                            <v-icon :color="hover ?'blue':'gray'" left small>mdi-file-document</v-icon>
-                            Data Management
+                        <v-btn text type="submit" class="data_mngt" :href="is_Admin==true ? route('data_management') : route('data_management_reg_user')" color="gray" x-large :style="{ 'background-color': (hover || active_class == 'data_management') ? '#1976d2' : '' }">
+                            <v-icon :color="(hover || active_class == 'data_management') ?'yellow':'gray'" left small>mdi-file-document</v-icon>
+                            <span :class="(hover || active_class == 'data_management') ? 'yellow--text':'gray'">Data Management</span>
                         </v-btn>
                     </v-hover>
                 </form>
@@ -121,9 +121,9 @@
                     <v-list-item>
                         <form class="d-inline-flex align-center">
                             <v-hover v-slot="{ hover }">
-                                <v-btn text type="submit" class="admin_autho" :href="route('admin_authorization')" color="gray" x-large :style="{ 'background-color': hover ? 'gold' : '' }">
-                                    <v-icon :color="hover ?'blue':'gray'" left small>mdi-cog</v-icon>
-                                     User Management
+                                <v-btn text type="submit" class="admin_autho" :href="route('admin_authorization')" color="gray" x-large :style="{ 'background-color': (hover || active_class == 'authorization') ? '#1976d2' : '' }">
+                                    <v-icon :color="(hover || active_class == 'authorization') ?'yellow':'gray'" left small>mdi-cog</v-icon>
+                                     <span :class="(hover || active_class == 'authorization') ? 'yellow--text':'gray'">User Management</span>
                                 </v-btn>
                             </v-hover>
                         </form>
@@ -169,7 +169,8 @@
       canViewPR : '',
       canViewPO : '',
       canViewDM : '',
-      AuthUser: ''
+      AuthUser: '',
+      active_class: null
     }),
 
     created: function(){
@@ -209,6 +210,11 @@
                axios.get('/authUserForSideBar')
               .then(response =>{
                     this.AuthUser = 'Hello, '+response.data+' !'
+
+                    let string = window.location.href.split('/')
+                    let targetString = string[string.length - 1]
+
+                    this.active_class = targetString
               })
               .catch(error =>{
                     console.log(error.response);

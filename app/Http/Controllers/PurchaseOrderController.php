@@ -338,4 +338,10 @@ class PurchaseOrderController extends Controller
         }
         return response()->json($detection);
     }
+
+    public function POReport(){
+        $pdf = PDF::loadView('po_rep')->setPaper('a4','portrait');
+
+        return $pdf->download('itsolutionstuff.pdf');
+    }
 }

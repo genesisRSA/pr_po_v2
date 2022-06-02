@@ -92,7 +92,7 @@ return PurchaseRequestItem::all()
               'req_quantity' => $query->quantity,
               'unit_cost' => '₱'.number_format((json_decode(str_replace(['₱',','],'',$query->target_cost)) / $query->quantity),2,'.',','),
               'total_amount' => $query->target_cost,
-              'Currency' => 'PHP',
+              'currency' => 'PHP',
               'PR_remarks' => isset($query->pr_list->id) ?
                         (PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->remarks==''? 'Not Available' : PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->remarks. ' PREPARED BY: '.
                             (isset(User::where('id',PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->user_id)->first()->name) ? User::where('id',PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->user_id)->first()->name : 'Not Available')) : 'Not Available'
@@ -253,6 +253,8 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::get('/getUserForNotif', [DashboardController::class, 'getUserForNotif'])->name('getUserForNotif');
     Route::get('/getBadge',[DashboardController::class, 'getBadge'])->name('getBadge');
     Route::get('/seeNotif',[DashboardController::class, 'seeNotif'])->name('seeNotif');
+    Route::get('/costing',[DashboardController::class, 'costing'])->name('costing');
+    Route::get('/getMyCostinglist', [DashboardController::class, 'getMyCostinglist'])->name('getMyCostinglist');
 
     Route::get('/getRandomRFQCode', [DashboardController::class, 'getRandomRFQCode'])->name('getRandomRFQCode');
     Route::get('/submitRFQ', [DashboardController::class, 'submitRFQ'])->name('submitRFQ');
@@ -339,6 +341,7 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::get('/getMyPOlist',[PurchaseOrderController::class, 'getMyPOlist'])->name('getMyPOlist');
     Route::get('/viewPORequestor',[PurchaseOrderController::class, 'viewPO'])->name('viewPO');
     Route::get('/checkIfCanRepeatPR',[PurchaseOrderController::class, 'checkIfCanRepeatPR'])->name('checkIfCanRepeatPR');
+    Route::get('/po_report',[PurchaseOrderController::class, 'POReport'])->name('POReport');
 
     Route::post('/ApprovePOManager',[PurchaseOrderController::class,'ApprovePOManager'])->name('ApprovePOManager');
     Route::post('/DeclinePOManager',[PurchaseOrderController::class,'DeclinePOManager'])->name('DeclinePOManager');

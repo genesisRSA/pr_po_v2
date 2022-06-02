@@ -103,16 +103,18 @@
 
         </div>
 
-        <v-tooltip bottom>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn icon color="primary" large v-bind="attrs"
-                  @click="openCosting()"
-                    v-on="on">
-                  <v-icon>mdi-clipboard-list</v-icon>
-                </v-btn>
-                </template>
-              <span>Costing</span>
-      </v-tooltip>
+      <div v-if="canViewNotif=='ALLOWED'">
+          <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn icon color="primary" large v-bind="attrs"
+                      :href="route('costing')"
+                      v-on="on">
+                    <v-icon>mdi-clipboard-list</v-icon>
+                  </v-btn>
+                  </template>
+                <span>Costing</span>
+          </v-tooltip>
+      </div>
 
   </v-app-bar>
   </template>
@@ -182,9 +184,6 @@
               });
       },
 
-      openCosting(){
-        window.open("http://192.168.1.215:8090/costing");
-      }
 
 
     }
