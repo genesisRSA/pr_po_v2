@@ -75,30 +75,39 @@
   <div class="column">
         <div class="row">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Date of Order'>
-            <input type="text" class='title' style="position:relative; left: 61px; bottom: 58px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'a' }}"><br><br>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : '31-Jan-22' }}"><br><br>
         </div>
-        <div class="row" style="position: relative; bottom:262px; left:140px;">
-            <label for="fname" class='title'>ITEM CATEGORY:</label>
+        <div class="row" style="position: relative; bottom:293px;">
+            <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Requisition No.'>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'LOG-0027' }}"><br><br>
         </div>
-        <div class="row" style="position: relative; bottom:255px;">
-            <label for="fname" class='title' style="position:relative; right: 32px;">CAPITAL</label>
-            <input type="text" id="fname" name="fname" style="height: 25px; position:relative; left: 1px; bottom: 28px;"><br><br>
+        <div class="row" style="position: relative; bottom:318px;">
+            <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Date Wanted'>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : '--/--' }}"><br><br>
         </div>
-        <div class="row" style="position: relative; bottom:268px;">
-            <label for="fname" class='title' style="position:relative; right: 32px;">STOCKS/SPARE PARTS</label>
-            <input type="text" id="fname" size="5"name="fname" style="height: 25px; position:relative; left: 5px; bottom: 28px;"><br><br>
+        <div class="row" style="position: relative; bottom:343px;">
+            <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Request by:'>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'LOGISTICS' }}"><br><br>
         </div>
-        <div class="row" style="position: relative; bottom:281px;">
-            <label for="fname" class='title' style="position:relative; right: 35px;">CONSUMABLE</label>
-            <input type="text" id="fname" name="fname" style="height: 25px; position:relative; left: -4px; bottom: 28px;" size="12"><br><br>
+        <div class="row" style="position: relative; bottom:368px;">
+            <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Ship Via'>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'AIR' }}"><br><br>
         </div>
-        <div class="row" style="position: relative; bottom:294px;">
-            <label for="fname" class='title' style="position:relative; right: 35px;">RAW MATL'S</label>
-            <input type="text" id="fname" name="fname" style="height: 25px; position:relative; left: 8px; bottom: 28px;" size='12'><br><br>
+        <div class="row" style="position: relative; bottom:393px;">
+            <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Payment Terms'>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'ADVANCE T/T' }}"><br><br>
         </div>
-        <div class="row" style="position: relative; bottom:306px;">
-            <label for="fname" class='title' style="position:relative; right: 35px;">SUBCON</label>
-            <input type="text" id="fname" name="fname" style="height: 25px; position:relative; left: 35px; bottom: 28px;" size='12'><br><br>
+        <div class="row" style="position: relative; bottom:418px;">
+            <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Currency'>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'USD' }}"><br><br>
+        </div>
+        <div class="row" style="position: relative; bottom:443px;">
+            <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='SO#'>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'STOCKABLE ITEMS' }}"><br><br>
+        </div>
+        <div class="row" style="position: relative; bottom:468px;">
+            <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='PURCHASE ORDER NO.'>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'RSA01312022-008CJ' }}"><br><br>
         </div>
   </div>
 </div>

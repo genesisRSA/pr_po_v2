@@ -158,10 +158,8 @@
                                   style="height: 100%;"
                                 >
                                       <ul style="list-style-type:none; position: relative; right:50px;">
-                                        <li>Pending : </li>
-                                        <li>Approved : </li>
-                                        <li>Received : </li>
-                                        <li>Declined : </li>
+                                        <li>Pending : {{ pr_pending_count }}</li>
+                                        <li>Approved : {{ pr_approved_count }}</li>
                                       </ul>
                                 </div>
                               </v-expand-transition>
@@ -219,10 +217,9 @@
                                   style="height: 100%;"
                                 >
                                       <ul style="list-style-type:none; position: relative; right:50px;">
-                                        <li>Pending : </li>
-                                        <li>Approved : </li>
-                                        <li>Received : </li>
-                                        <li>Declined : </li>
+                                        <li>Pending : {{po_pending_count}}</li>
+                                        <li>Approved : {{po_approved_count}}</li>
+                                        <li>Declined : {{po_decline_count}}</li>
                                       </ul>
                                 </div>
                               </v-expand-transition>
@@ -281,12 +278,20 @@
            hasNoSitePermission : null,
            noPermMSG: '',
 
+           pr_pending_count : null,
+           pr_approved_count : null,
+
+           po_pending_count : null,
+           po_approved_count : null,
+           po_decline_count : null,
+
       cards: ['My Dashboard'],
 
     }),
 
     created: function(){
         this.ifNoSitePermission()
+        this.getStatuses()
     },
 
     computed: {
@@ -317,6 +322,25 @@
 
               });
           },
+
+          getStatuses(){
+              axios.get('/getStatuses')
+              .then(response =>{
+                    console.log(response.data)
+                    this.pr_pending_count = response.data[0][0]
+                    this.pr_approved_count = response.data[0][1]
+
+                    this.po_pending_count = response.data[1][0]
+                    this.po_approved_count = response.data[1][1]
+                    this.po_decline_count = response.data[1][2]
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+          }
 
         },
     }

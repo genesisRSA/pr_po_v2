@@ -1068,7 +1068,7 @@ class DashboardController extends Controller
     }
 
     public function costing(){
-        if(Auth::user()->role_as){
+        if(Auth::user()->role_as == 1){
             return back();
         } else {
             if(Auth::user()->user_position->position == "CEO" || Auth::user()->user_position->position == "PRESIDENT" || Auth::user()->user_position->position == "REQUESTOR"){
@@ -1101,6 +1101,71 @@ class DashboardController extends Controller
       });
 
         return response()->json($costing);
+    }
+
+
+    public function getStatuses(){
+        $user = User::findOrFail(Auth::id());
+
+        $count_approved_pr = 0;
+        $count_pending_pr = 0;
+
+        $count_approved_po = 0;
+        $count_pending_po = 0;
+        $count_declined_po = 0;
+
+        if($user->role_as == 1){
+
+            foreach(PurchaseRequestList::all() as $pr){
+                if(str_contains($pr->status,'PR APPROVED')){
+                    $count_approved_pr += 1;
+                } else {
+                    $count_pending_pr += 1;
+                }
+            }
+    
+            foreach(PurchaseOrderList::all() as $po){
+                if(str_contains($po->status,'APPROVED')){
+                    $count_approved_po += 1;
+                } else if (str_contains($po->status,'DECLINED')){
+                    $count_declined_po += 1;
+                } else {
+                    $count_pending_po += 1;
+                }
+            }
+
+        } else {
+
+
+            if($user->user_position->position == 'PURCHASE MNGR.' || $user->user_position->position == 'BUYER' || $user->user_position->position == 'PRESIDENT' || $user->user_position->position == 'CEO'){
+
+                foreach(PurchaseRequestList::all() as $pr){
+                    if(str_contains($pr->status,'PR APPROVED')){
+                        $count_approved_pr += 1;
+                    } else {
+                        $count_pending_pr += 1;
+                    }
+                }
+        
+                foreach(PurchaseOrderList::all() as $po){
+                    if(str_contains($po->status,'APPROVED')){
+                        $count_approved_po += 1;
+                    } else if (str_contains($po->status,'DECLINED')){
+                        $count_declined_po += 1;
+                    } else {
+                        $count_pending_po += 1;
+                    }
+                }
+
+            } else {
+
+
+            }
+
+        }
+
+        return response()->json([[$count_pending_pr,$count_approved_pr],[$count_pending_po,$count_approved_po,$count_declined_po]]);
+
     }
     /**
      * Show the form for creating a new resource.

@@ -255,6 +255,7 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::get('/seeNotif',[DashboardController::class, 'seeNotif'])->name('seeNotif');
     Route::get('/costing',[DashboardController::class, 'costing'])->name('costing');
     Route::get('/getMyCostinglist', [DashboardController::class, 'getMyCostinglist'])->name('getMyCostinglist');
+    Route::get('/getStatuses',[DashboardController::class,'getStatuses'])->name('getStatuses');
 
     Route::get('/getRandomRFQCode', [DashboardController::class, 'getRandomRFQCode'])->name('getRandomRFQCode');
     Route::get('/submitRFQ', [DashboardController::class, 'submitRFQ'])->name('submitRFQ');

@@ -175,7 +175,8 @@
                     { header : 'PR Remarks', dataKey: 'PR_remarks' },
                 ]
             }))
-            doc.save('table.pdf')
+            let ms = Date.now();
+            doc.save('costing_'+ms+'.pdf')
         }
 
     },
