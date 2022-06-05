@@ -236,7 +236,7 @@ class DashboardController extends Controller
                 return response()->json();
             }
         }
-        if($request['params']['selected'] == 'PURCHASE MNGR.'){
+        if($request['params']['selected'] == 'ADMIN MNGR.'){
             if(UserPosition::where('position','PURCHASE MNGR.')->count() > 0){
                 return response()->json();
             }
@@ -245,7 +245,7 @@ class DashboardController extends Controller
             UserPosition::updateOrCreate([
                 'user_id' => $user->id
             ],[
-                'position' => $request['params']['selected']
+                'position' => $request['params']['selected'] == 'ADMIN MNGR.' ? 'PURCHASE MNGR.' : $request['params']['selected']
             ]);
 
 
@@ -1123,7 +1123,7 @@ class DashboardController extends Controller
                     $count_pending_pr += 1;
                 }
             }
-    
+
             foreach(PurchaseOrderList::all() as $po){
                 if(str_contains($po->status,'APPROVED')){
                     $count_approved_po += 1;
@@ -1146,7 +1146,7 @@ class DashboardController extends Controller
                         $count_pending_pr += 1;
                     }
                 }
-        
+
                 foreach(PurchaseOrderList::all() as $po){
                     if(str_contains($po->status,'APPROVED')){
                         $count_approved_po += 1;

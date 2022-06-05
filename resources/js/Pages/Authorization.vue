@@ -76,7 +76,7 @@
                                         sm="6"
                                         md="6">
                                       <v-select placeholder='Select User Config'
-                                      :items='itemsForUserConfig' @input='getUserConfig($event)' v-model='selectedUserConfig'>
+                                      :items='itemsForUserConfig' @input='getUserConfig($event)' v-model="selectedUserConfig">
                                       </v-select>
                                     </v-col>
                                 </v-card-title>
@@ -744,7 +744,7 @@
 
                 selectedDept:{},
 
-                itemsForUserConfig: ['REQUESTOR','BUYER','PURCHASE MNGR.','PRESIDENT','CEO'],
+                itemsForUserConfig: ['REQUESTOR','BUYER','ADMIN MNGR.','PRESIDENT','CEO'],
                 selectedUserConfig: '',
     }),
 
@@ -898,7 +898,7 @@
                 } else {
                   this.checkbox = response.data[0]
                 }
-                this.selectedUserConfig = response.data[1]
+                this.selectedUserConfig = (response.data[1] == 'PURCHASE MNGR.' ? 'ADMIN MNGR.' : response.data[1])
                 //console.log(response.data)
               })
               .catch(error =>{
@@ -1130,7 +1130,7 @@
           this.checkbox[3].delete_dm = false;
         }
 
-        if(params=='PURCHASE MNGR.'){
+        if(params=='ADMIN MNGR.'){
           this.checkbox[0].view_rfq = false;
           this.checkbox[0].add_rfq= false;
           this.checkbox[0].update_rfq = false;
