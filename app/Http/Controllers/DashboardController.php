@@ -1083,7 +1083,7 @@ class DashboardController extends Controller
        $costing = PurchaseRequestItem::all()
       ->map(function($query){
           return [
-              'po_no' => isset($query->pr_list->id) ? (isset(PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->pr_no) ? PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->pr_no : 'N/A') : 'N/A',
+              'po_no' => isset($query->pr_list->id) ? (isset(PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->pr_no) ? str_replace('PR','PO',PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->pr_no) : 'N/A') : 'N/A',
               'po_date' => isset($query->pr_list->id) ? (isset(PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->created_at)? PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->created_at->toDateTimeString() : 'N/A'): 'N/A',
               'pr_no' => isset($query->pr_list->id) ? (isset(PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->pr_no) ? PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->pr_no : 'N/A') : 'N/A',
               'vendor' => isset($query->chosen_supplier) ? ($query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three ) )  : 'N/A',

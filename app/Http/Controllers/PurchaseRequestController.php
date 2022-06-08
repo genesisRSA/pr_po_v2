@@ -473,7 +473,7 @@ class PurchaseRequestController extends Controller
             'supplier_no' => $request->supp_no,
             'is_preferred' => $request->params['isPreferred'],
             'supplier_cost' => '₱'.number_format($request->params['supplier_cost'],2, '.', ','),
-            'payment_method' => $request->params['payment_method'][0]['value'],
+            'payment_method' => $request->params['selected_payment_method'],
             'eta' => $request->params['eta'],
             ]);
         } else {
@@ -482,7 +482,7 @@ class PurchaseRequestController extends Controller
                 'supplier_no' => $request->supp_no,
                 'is_preferred' => $request->params['isPreferred'],
                 'supplier_cost' => '₱'.number_format($request->params['supplier_cost'],2, '.', ','),
-                'payment_method' => $request->params['payment_method'][0]['value'],
+                'payment_method' => $request->params['selected_payment_method'],
                 'eta' => $request->params['eta']
             ]);
 
@@ -521,6 +521,7 @@ class PurchaseRequestController extends Controller
         $list = PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id);
 
         $arr = array();
+
         foreach($items as $item){
             $arr[] = $item->chosen_supplier;
         }

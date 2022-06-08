@@ -707,8 +707,8 @@
                                                  </div>
                                                 </template>
                                                 <template v-slot:item.chosen_supplier="{ item }">
-                                                    <div class="d-flex">
-                                                           <v-select :items='chosenSupp' :item-text="chosenSupp.text" :item-value="chosenSupp.value" v-model="item.chosen_supplier" @input='getSelectedFinalSupp(item)'></v-select>
+                                                    <div class="d-flex" v-if="item.id != editedItem.id">
+                                                           <v-select :items='chosenSupp' :item-text="chosenSupp.text" :item-value="chosenSupp.value" :disabled="(item.supplier_one==='PENDING' || item.supplier_one === null) || (item.supplier_two==='PENDING' || item.supplier_two === null) || (item.supplier_three==='PENDING' || item.supplier_three === null)" v-model="item.chosen_supplier" @input='getSelectedFinalSupp(item)'></v-select>
                                                     </div>
                                                 </template>
                                                 <template v-slot:item.actions="{ item }">
@@ -716,7 +716,7 @@
                                                         <v-icon color="red" class="mr-3" @click="close">
                                                             mdi-window-close
                                                             </v-icon>
-                                                            <v-icon color="green"  @click="saveSupplier">
+                                                            <v-icon color="green"  @click="saveSupplier" :disabled="(editedItem.supplier_one == null || editedItem.supplier_one == 'PENDING') || (editedItem.supplier_two == null || editedItem.supplier_two == 'PENDING' ) || (editedItem.supplier_three == null || editedItem.supplier_three == 'PENDING')">
                                                             mdi-content-save
                                                             </v-icon>
                                                 </div>

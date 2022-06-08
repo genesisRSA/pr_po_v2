@@ -37,10 +37,17 @@ use App\Models\UserPosition;
 //     return $get->toFormattedDateString();
 // });
 Route::get('/testing', function(){
-    return isset(User::where('id',1)->first()->name) ? User::where('id',1)->first()->name : 'Not Available';
+    $getSupp = PurchaseRequestItem::where('purchase_request_list_id',2)->get()->map( function($query){
+        return [
+            'chosen_supplier' => $query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $supplier_three),
+        ];
+    })->groupBy('chosen_supplier');
+
+
+    return $getSupp;
 });
 
-Route::get('/arr', function(){
+// Route::get('/arr', function(){
 
     // $start_date = Carbon::parse('2022-04-13')->toDateString();
     // $items = ItemList::pluck('validity_date');
@@ -78,84 +85,84 @@ Route::get('/arr', function(){
 //     }
 
 
-return PurchaseRequestItem::all()
-      ->map(function($query){
-          return [
-              'po_no' => isset($query->pr_list->id) ? (isset(PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->pr_no) ? PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->pr_no : 'Not Available') : 'Not Available',
-              'po_date' => isset($query->pr_list->id) ? (isset(PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->created_at)? PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->created_at->toDateTimeString() : 'Not Available'): 'Not Available',
-              'pr_no' => isset($query->pr_list->id) ? (isset(PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->pr_no) ? PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->pr_no : 'Not Available') : 'Not Available',
-              'vendor' => isset($query->chosen_supplier) ? ($query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three ) )  : 'Not Available',
-              'item_code' => isset($query->item_due_id) ? ( (isset(ItemList::where('id',$query->item_due_id)->first()->item_code) ? ItemList::where('id',$query->item_due_id)->first()->item_code : null) == null ? 'Not Available' : ItemList::where('id',$query->item_due_id)->first()->item_code) : 'Not Available',
-              'item_subcat' => isset($query->item_due_id) ? SubCategoryItem::where('id',ItemList::where('id',$query->item_due_id)->first()->sub_category_item_id)->first()->subcategory_name :
-                                'Not Available',
-              'item_desc' => $query->part_name.' '.($query->material != '' ? '('.$query->material.')' : '').($query->dimension != '' ? '('.$query->dimension.')' : ''),
-              'req_quantity' => $query->quantity,
-              'unit_cost' => '₱'.number_format((json_decode(str_replace(['₱',','],'',$query->target_cost)) / $query->quantity),2,'.',','),
-              'total_amount' => $query->target_cost,
-              'currency' => 'PHP',
-              'PR_remarks' => isset($query->pr_list->id) ?
-                        (PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->remarks==''? 'Not Available' : PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->remarks. ' PREPARED BY: '.
-                            (isset(User::where('id',PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->user_id)->first()->name) ? User::where('id',PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->user_id)->first()->name : 'Not Available')) : 'Not Available'
-          ];
-      });
+// return PurchaseRequestItem::all()
+//       ->map(function($query){
+//           return [
+//               'po_no' => isset($query->pr_list->id) ? (isset(PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->pr_no) ? PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->pr_no : 'Not Available') : 'Not Available',
+//               'po_date' => isset($query->pr_list->id) ? (isset(PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->created_at)? PurchaseOrderList::withTrashed()->where('pr_id',$query->pr_list->id)->first()->created_at->toDateTimeString() : 'Not Available'): 'Not Available',
+//               'pr_no' => isset($query->pr_list->id) ? (isset(PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->pr_no) ? PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->pr_no : 'Not Available') : 'Not Available',
+//               'vendor' => isset($query->chosen_supplier) ? ($query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three ) )  : 'Not Available',
+//               'item_code' => isset($query->item_due_id) ? ( (isset(ItemList::where('id',$query->item_due_id)->first()->item_code) ? ItemList::where('id',$query->item_due_id)->first()->item_code : null) == null ? 'Not Available' : ItemList::where('id',$query->item_due_id)->first()->item_code) : 'Not Available',
+//               'item_subcat' => isset($query->item_due_id) ? SubCategoryItem::where('id',ItemList::where('id',$query->item_due_id)->first()->sub_category_item_id)->first()->subcategory_name :
+//                                 'Not Available',
+//               'item_desc' => $query->part_name.' '.($query->material != '' ? '('.$query->material.')' : '').($query->dimension != '' ? '('.$query->dimension.')' : ''),
+//               'req_quantity' => $query->quantity,
+//               'unit_cost' => '₱'.number_format((json_decode(str_replace(['₱',','],'',$query->target_cost)) / $query->quantity),2,'.',','),
+//               'total_amount' => $query->target_cost,
+//               'currency' => 'PHP',
+//               'PR_remarks' => isset($query->pr_list->id) ?
+//                         (PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->remarks==''? 'Not Available' : PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->remarks. ' PREPARED BY: '.
+//                             (isset(User::where('id',PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->user_id)->first()->name) ? User::where('id',PurchaseRequestList::withTrashed()->where('id',$query->pr_list->id)->first()->user_id)->first()->name : 'Not Available')) : 'Not Available'
+//           ];
+//       });
 
 
-});
+// });
 
 
-Route::get('/stamp', function(){
+// Route::get('/stamp', function(){
 
-    // $list = PurchaseOrderList::find(6);
-    // $a = $list->suppliers()->orderBy('purchase_request_item_id','ASC')->get()->groupBy('purchase_request_item_id');
-    // $key = array();
-    // foreach($a as $k => $am){
-    //     foreach($am as $kk => $ap){
-    //        $key[$k][$kk] = json_decode(str_replace(',','',mb_substr($ap->supplier_cost,1)));
-    //     }
-    // }
-    // $lou = array();
+//     // $list = PurchaseOrderList::find(6);
+//     // $a = $list->suppliers()->orderBy('purchase_request_item_id','ASC')->get()->groupBy('purchase_request_item_id');
+//     // $key = array();
+//     // foreach($a as $k => $am){
+//     //     foreach($am as $kk => $ap){
+//     //        $key[$k][$kk] = json_decode(str_replace(',','',mb_substr($ap->supplier_cost,1)));
+//     //     }
+//     // }
+//     // $lou = array();
 
-    // foreach($key as $kk => $l){
-    //     $lou[$kk] = array_sum($l);
-    // }
+//     // foreach($key as $kk => $l){
+//     //     $lou[$kk] = array_sum($l);
+//     // }
 
-    $hasManyThrough =  PurchaseOrderList::all();
+//     $hasManyThrough =  PurchaseOrderList::all();
 
 
-    // $arr = array();
-    // $first = array();
+//     // $arr = array();
+//     // $first = array();
 
-    foreach($hasManyThrough as $k => $a){
-        foreach($a->request_items as $kk => $ap){
-           $key[$k][$kk] = json_decode(str_replace(',','',mb_substr($ap->chosen_supp_cost,1))) ;
-        }
-    }
+//     foreach($hasManyThrough as $k => $a){
+//         foreach($a->request_items as $kk => $ap){
+//            $key[$k][$kk] = json_decode(str_replace(',','',mb_substr($ap->chosen_supp_cost,1))) ;
+//         }
+//     }
 
-    $lou = array();
+//     $lou = array();
 
-    foreach($key as $kk => $l){
-        $lou[] = '₱'.number_format(array_sum($l),2, '.', ',');
-    }
+//     foreach($key as $kk => $l){
+//         $lou[] = '₱'.number_format(array_sum($l),2, '.', ',');
+//     }
 
-    $first = array();
-    foreach($lou as $kk => $l){
-        $first[] = 'actual_cost_supp';
-    }
+//     $first = array();
+//     foreach($lou as $kk => $l){
+//         $first[] = 'actual_cost_supp';
+//     }
 
-    $res = array();
+//     $res = array();
 
-    foreach($first as $keys => $firsts){
-        $res[] = array_combine([$first[$keys]], [$lou[$keys]]);
-    }
+//     foreach($first as $keys => $firsts){
+//         $res[] = array_combine([$first[$keys]], [$lou[$keys]]);
+//     }
 
-    $all_PO = PurchaseOrderList::all()->toArray();
+//     $all_PO = PurchaseOrderList::all()->toArray();
 
-    $finalResult = array();
+//     $finalResult = array();
 
-    foreach($all_PO as $kkk => $v){
-        $finalResult[$kkk] = array_merge($all_PO[$kkk],$res[$kkk]);
-    }
-    dd($finalResult);
+//     foreach($all_PO as $kkk => $v){
+//         $finalResult[$kkk] = array_merge($all_PO[$kkk],$res[$kkk]);
+//     }
+//     dd($finalResult);
 
     // $hasMany =  PurchaseOrderList::all();
 
@@ -166,9 +173,9 @@ Route::get('/stamp', function(){
     //     }
     // }
 
-});
+// });
 
-Route::get('/test', [DashboardController::class, 'testPDF'])->name('testPDF');
+// Route::get('/test', [DashboardController::class, 'testPDF'])->name('testPDF');
 
 // Route::get('/exp', function(){
 //     $list = PurchaseRequestList::findOrFail(48);

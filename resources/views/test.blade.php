@@ -133,19 +133,19 @@
         <div class="row">
                     <label for="fname">SUPPLIER NAME:___________________________________________________</label>
         </div>
-        <span style="position:relative; bottom:20px; left:140px;">SAMPLE SUPPLIER</span>
+        <span style="position:relative; bottom:20px; left:140px;"></span>
 
                     <div class="row">
                         <label for="fname">ADDRESS:_________________________________________________________</label>
                     </div>
 
-                        <span style="position:relative; bottom:20px; left:90px;">SAMPLE ADRESS</span>
+                        <span style="position:relative; bottom:20px; left:90px;"></span>
 
 
         <div class="row">
                     <label for="fname">TERMS OF PAYMENTS:______________________________________________</label>
         </div>
-                <span style="position:relative; bottom:20px; left:185px;">CASH</span>
+                <span style="position:relative; bottom:20px; left:185px;"></span>
     </div>
 
     <div class='row'>

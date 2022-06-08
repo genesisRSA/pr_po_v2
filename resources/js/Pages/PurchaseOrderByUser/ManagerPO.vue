@@ -144,6 +144,21 @@
                                 <span>Repeat Order</span>
                                 </v-tooltip>
 
+                                <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-icon
+                                        small
+                                        class="mr-2"
+                                        @click="getReport(item)"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        mdi-file-pdf-box
+                                    </v-icon>
+                                </template>
+                                <span>PO REPORT</span>
+                                </v-tooltip>
+
                         </div>
                         </template>
 
@@ -811,6 +826,26 @@
                     console.log(error.response);
               })
               .finally(() => {
+
+            });
+        },
+
+        getReport(item){
+             axios({
+                url: '/po_report',
+                method: 'GET',
+                params:  item,
+                responseType: 'blob', // important
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', item.pr_no+'.pdf');
+                document.body.appendChild(link);
+                link.click();
+            }).catch(error =>{
+                    console.log(error.response);
+            }).finally(() => {
 
             });
         }

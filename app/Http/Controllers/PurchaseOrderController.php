@@ -43,7 +43,7 @@ class PurchaseOrderController extends Controller
                     'id' => $query->id,
                     'pr_id' => $query->pr_id,
                     'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
-                    'pr_no' => strtoupper($query->pr_no),
+                    'pr_no' => str_replace('PR','PO',strtoupper($query->pr_no)),
                     'so_no' => strtoupper($query->so_no),
                     'department' => strtoupper($query->department),
                     'item_category' => $query->item_category,
@@ -59,7 +59,7 @@ class PurchaseOrderController extends Controller
                     return[
                         'id' => $query->id,
                         'pr_id' => $query->pr_id,
-                        'pr_no' => strtoupper($query->pr_no),
+                        'pr_no' => str_replace('PR','PO',strtoupper($query->pr_no)),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
@@ -75,7 +75,7 @@ class PurchaseOrderController extends Controller
                         'id' => $query->id,
                         'pr_id' => $query->pr_id,
                         'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
-                        'pr_no' => strtoupper($query->pr_no),
+                        'pr_no' => str_replace('PR','PO',strtoupper($query->pr_no)),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
@@ -91,7 +91,7 @@ class PurchaseOrderController extends Controller
                         'id' => $query->id,
                         'pr_id' => $query->pr_id,
                         'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
-                        'pr_no' => strtoupper($query->pr_no),
+                        'pr_no' => str_replace('PR','PO',strtoupper($query->pr_no)),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
@@ -107,7 +107,7 @@ class PurchaseOrderController extends Controller
                         'id' => $query->id,
                         'pr_id' => $query->pr_id,
                         'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
-                        'pr_no' => strtoupper($query->pr_no),
+                        'pr_no' => str_replace('PR','PO',strtoupper($query->pr_no)),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
@@ -130,7 +130,7 @@ class PurchaseOrderController extends Controller
                         'id' => $query->id,
                         'pr_id' => $query->pr_id,
                         'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
-                        'pr_no' => strtoupper($query->pr_no),
+                        'pr_no' => str_replace('PR','PO',strtoupper($query->pr_no)),
                         'so_no' => strtoupper($query->so_no),
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
@@ -339,9 +339,30 @@ class PurchaseOrderController extends Controller
         return response()->json($detection);
     }
 
-    public function POReport(){
-        $pdf = PDF::loadView('po_rep')->setPaper('a4','portrait');
+    public function POReport(Request $request){
 
-        return $pdf->download('itsolutionstuff.pdf');
+        // $requestor = User::findOrFail($pr_no->user_id)->name;
+        // $all = PurchaseRequestItem::where('purchase_request_list_id',$request->id)->get();
+        // $president = UserPosition::where('position','PRESIDENT')->first()->user->name;
+        // $purch_mngr = UserPosition::where('position','PURCHASE MNGR.')->first()->user->name;
+        // $data = [
+        //     'suppliers' => $all
+        // ];
+        $getSupp = PurchaseRequestItem::where('purchase_request_list_id',$request->id)->get()->map( function($query){
+            return [
+                'chosen_supplier' => $query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $supplier_three),
+                'part_name' => $query->part_name,
+                'chosen_supp_cost' => $query->chosen_supp_cost,
+                'quantity' => $query->quantity
+            ];
+        })->groupBy('chosen_supplier');
+
+        $data = [
+            'data' => $getSupp
+        ];
+
+        $pdf = PDF::loadView('po_rep',$data)->setPaper('a4','portrait');
+
+        return $pdf->stream('itsolutionstuff.pdf');
     }
 }
