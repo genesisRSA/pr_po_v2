@@ -54,6 +54,12 @@
         @if($loop->first)
             @php
                 $supp_name = $d['chosen_supplier'];
+                $address = $d['company_address'];
+                $contact = $d['contact'];
+                $contact_person = $d['contact_person'];
+                $date_of_order = $d['date_of_order'];
+                $pr_no = $d['pr_no'];
+                $user_requestor = $d['user_requestor'];
             @endphp
         @endif
     @endforeach
@@ -68,15 +74,15 @@
     </div>
     <div class="row" style="position: relative; bottom:13px;">
          <label for="fname" class='title' style="position:relative; left: 20px; font-size: 75%">Address: </label>
-         <label for="fname" class='title' style="height: 25px; position:relative; left: 20px; bottom: 35px; font-size: 75%">{{ isset($department) ? $department : '331 NORTH BRIDGE ROAD #05-01 ODEON TOWERS SINGAPORE 188720' }}</label><br><br>
+         <label for="fname" class='title' style="height: 25px; position:relative; left: 20px; bottom: 35px; font-size: 75%">{{ $address }}</label><br><br>
     </div>
     <div class="row" style="position: relative; bottom:24px;">
          <label for="fname" class='title' style="position:relative; left: 20px; font-size: 75%">Contact No.: </label>
-         <label for="fname" class='title' style="height: 25px; position:relative; left: 20px; bottom: 35px; font-size: 75%">{{ isset($created_at) ? $created_at->toDateString() : '+65-6733 7211' }}</label><br><br>
+         <label for="fname" class='title' style="height: 25px; position:relative; left: 20px; bottom: 35px; font-size: 75%">{{ $contact }}</label><br><br>
     </div>
     <div class="row" style="position: relative; bottom:18px;">
          <label for="fname" class='title' style="position:relative; left: 20px; font-size: 75%">Attn: </label>
-         <label for="fname" class='title' style="height: 25px; position:relative; left: 20px; bottom: 35px; font-size: 75%">{{ isset($created_at) ? $created_at->toDateString() : 'CS JOEY' }}</label><br><br>
+         <label for="fname" class='title' style="height: 25px; position:relative; left: 20px; bottom: 35px; font-size: 75%">{{ $contact_person }}</label><br><br>
     </div>
     <div class="row" style="position: relative; bottom:18px;">
          <label for="fname" class='title' style="position:relative; left: 20px; font-size: 75%">Please deliver the items to: </label>
@@ -91,11 +97,11 @@
   <div class="column">
         <div class="row">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Date of Order'>
-            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : '31-Jan-22' }}"><br><br>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ $date_of_order }}"><br><br>
         </div>
         <div class="row" style="position: relative; bottom:293px;">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Requisition No.'>
-            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'LOG-0027' }}"><br><br>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ $pr_no }}"><br><br>
         </div>
         <div class="row" style="position: relative; bottom:318px;">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Date Wanted'>
@@ -103,7 +109,7 @@
         </div>
         <div class="row" style="position: relative; bottom:343px;">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Request by:'>
-            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'LOGISTICS' }}"><br><br>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ $user_requestor }}"><br><br>
         </div>
         <div class="row" style="position: relative; bottom:368px;">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Ship Via'>

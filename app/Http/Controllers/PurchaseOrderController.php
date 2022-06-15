@@ -330,7 +330,7 @@ class PurchaseOrderController extends Controller
         $arr = array();
         foreach($PO->request_items as $items){
             if($items->item_due_id != null){
-                if(ItemList::findOrFail($items->item_due_id)->validity_date >= Carbon::today()->toDateString()){
+                if(ItemList::findOrFail($items->item_due_id)->validity_date <= Carbon::today()->toDateString()){
                     $detection +=1 ;
                 }
 
@@ -348,12 +348,28 @@ class PurchaseOrderController extends Controller
         // $data = [
         //     'suppliers' => $all
         // ];
-        $getSupp = PurchaseRequestItem::where('purchase_request_list_id',$request->id)->get()->map( function($query){
+        $getSupp = PurchaseRequestItem::where('purchase_request_list_id',$request->pr_id)->get()->map( function($query){
             return [
-                'chosen_supplier' => $query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $supplier_three),
-                'part_name' => $query->part_name,
-                'chosen_supp_cost' => $query->chosen_supp_cost,
-                'quantity' => $query->quantity
+                'chosen_supplier' => $query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three),
+                'part_name'       => isset($query->part_name) ? $query->part_name : '(No matching part name)',
+                'chosen_supp_cost'=> $query->chosen_supp_cost,
+                'quantity'        => $query->quantity,
+                'company_address' => isset(Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->address) ?
+                                     Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->address : 
+                                    '(No matching address)',
+                 'contact'        => isset(Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->contact_number) ?
+                                     Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->contact_number : 
+                                    '(No matching contact #)',
+                 'contact_person' => isset(Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->contact_person) ?
+                                     Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->contact_person : 
+                                    '(No matching contact person)',
+                 'date_of_order'  => isset(PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->status) ? 
+                                     (PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->status == 'PO APPROVED' ? 
+                                     PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->pr_approved_date : '(No Date found)' ) : '(No Date found)',
+                 'pr_no'          => isset(PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->pr_no) ? 
+                                     PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->pr_no : '(No PR # found)',
+                 'user_requestor' => isset(User::where('id',PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->user_id)->first()->name) ? 
+                                     User::where('id',PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->user_id)->first()->name : '(User not found)'
             ];
         })->groupBy('chosen_supplier');
 
