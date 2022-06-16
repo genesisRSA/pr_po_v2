@@ -293,14 +293,19 @@ class DashboardController extends Controller
     public function deleteUser(Request $request){
         $user = User::where('email',$request->email)->first();
 
-        if($user->permission->count() > 0){
-            $user->permission()->delete();
+        if(isset($user->permission))
+        {
+            if($user->permission->count() > 0){
+                $user->permission()->delete();
+            }
         }
 
-        if($user->user_position->count() > 0){
-            $user->user_position()->delete();
+        if(isset($user->user_position)){
+            if($user->user_position->count() > 0){
+                $user->user_position()->delete();
+            }    
         }
-
+        
         $user->delete();
 
         return response()->json('deleted successfully!');
@@ -1049,7 +1054,7 @@ class DashboardController extends Controller
         $lastThirtyDaysRecord = ItemList::whereBetween('validity_date',[now(),now()->addDays(30)])->get()
         ->map( function($query){
             return[
-                'title' =>'The '.(($query->item_code == '' || $query->item_code == null) ? $query->part_name : $query->item_code). ' is about to expired on '.$query->validity_date
+                'title' =>'The '.(($query->item_code == '' || $query->item_code == null) ? $query->part_name : $query->item_code). ' was about to expire on '.$query->validity_date
             ];
         });
 

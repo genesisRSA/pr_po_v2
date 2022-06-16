@@ -93,6 +93,9 @@
                                 <span>Approve PR</span>
                                 </v-tooltip>
 
+                            </div>
+
+                            <div v-if='item.status=="PENDING PRESIDENT APPROVAL" || item.status=="PO APPROVED"'>
                                 <v-tooltip bottom>
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-icon
