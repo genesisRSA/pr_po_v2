@@ -121,7 +121,7 @@
         </div>
         <div class="row" style="position: relative; bottom:418px;">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Currency'>
-            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'USD' }}"><br><br>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'PHP' }}"><br><br>
         </div>
         <div class="row" style="position: relative; bottom:443px;">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='SO#'>
