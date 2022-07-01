@@ -29,6 +29,10 @@ use Akaunting\Money\Currency;
 use Akaunting\Money\Money;
 use PDO;
 
+use App\Imports\ImportItemList;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\Controller;
+
 class DashboardController extends Controller
 {
     /**
@@ -1170,6 +1174,14 @@ class DashboardController extends Controller
         }
 
         return response()->json([[$count_pending_pr,$count_approved_pr],[$count_pending_po,$count_approved_po,$count_declined_po]]);
+
+    }
+
+    public function excelImport(Request $request){
+        $path = $request->file('select_item_file')->getRealPath();
+
+            Excel::import(new ImportItemList, $path);
+ 
 
     }
     /**

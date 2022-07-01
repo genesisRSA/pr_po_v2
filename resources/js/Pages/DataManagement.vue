@@ -535,6 +535,8 @@
                             label='Category Name'
                             clearable
                             :rules="[v => !!v || 'Category Name is required']"
+                            @input="(val) => (category_val ? category_val = category_val.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             v-model="category_val">
                             </v-text-field>
                             </v-col>
@@ -596,6 +598,8 @@
                             label='Sub-Category Name'
                             v-model="subcategory_val"
                             :rules="[v => !!v || 'Sub-Category Name is required']"
+                            @input="(val) => (subcategory_val ? subcategory_val = subcategory_val.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -651,10 +655,30 @@
                                 sm="6"
                                 md="4"
                             >
+                                <form id="mainFormItemList">
+                                    <v-file-input  
+                                        chips
+                                        show-size
+                                        small-chips
+                                        truncate-length="50"
+                                        @change="fileChange($event)"
+                                        ref="fileupload"
+                                    name="select_item_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></v-file-input>
+                                    <v-btn @click.prevent='saveExcel' color='primary' type="submit" :disabled="noImportFiles">Save Excel</v-btn>
+                                </form>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
                             <v-text-field
                             label='Item Code'
                             clearable
-                            v-model="item_code_for_list_item">
+                            v-model="item_code_for_list_item"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true">
                             </v-text-field>
                             </v-col>
                         </v-row>
@@ -697,7 +721,8 @@
                             <v-text-field
                             label='Part Name'
                             clearable
-                            v-model="part_name_for_list_item">
+                            v-model="part_name_for_list_item"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true">
                             </v-text-field>
                             </v-col>
                         </v-row>
@@ -710,7 +735,8 @@
                             <v-text-field
                             label='Material'
                             clearable
-                            v-model="material_for_list_item">
+                            v-model="material_for_list_item"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true">
                             </v-text-field>
                             </v-col>
                             <v-col
@@ -721,7 +747,8 @@
                             <v-text-field
                             label='Dimension'
                             clearable
-                            v-model="dimension_for_list_item">
+                            v-model="dimension_for_list_item"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true">
                             </v-text-field>
                             </v-col>
                             <v-col
@@ -833,6 +860,7 @@
                             label='Plating Process'
                             v-model="modelForPlatingProcesses.plating_process"
                             @input="(val) => (modelForPlatingProcesses.plating_process ? modelForPlatingProcesses.plating_process = modelForPlatingProcesses.plating_process.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -845,6 +873,7 @@
                             label='Type'
                             v-model="modelForPlatingProcesses.type"
                             @input="(val) => (modelForPlatingProcesses.type ? modelForPlatingProcesses.type = modelForPlatingProcesses.type.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -857,6 +886,7 @@
                             label='Vendor'
                             v-model="modelForPlatingProcesses.vendor"
                             @input="(val) => (modelForPlatingProcesses.vendor ? modelForPlatingProcesses.vendor = modelForPlatingProcesses.vendor.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -921,6 +951,7 @@
                             label='Company Name'
                             v-model="modelForVendor.company_name"
                             @input="(val) => (modelForVendor.company_name ? modelForVendor.company_name = modelForVendor.company_name.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -933,6 +964,7 @@
                             label='Company Address'
                             v-model="modelForVendor.address"
                             @input="(val) => (modelForVendor.address ? modelForVendor.address = modelForVendor.address.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -945,6 +977,7 @@
                             label='Contact Person'
                             v-model="modelForVendor.contact_person"
                             @input="(val) => (modelForVendor.contact_person ? modelForVendor.contact_person = modelForVendor.contact_person.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -959,6 +992,7 @@
                             label='Contact Number'
                             v-model="modelForVendor.contact_number"
                             @input="(val) => (modelForVendor.contact_number ? modelForVendor.contact_number = modelForVendor.contact_number.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1008,6 +1042,7 @@
                             label='Payment Term'
                             v-model="payment_term"
                             @input="(val) => (payment_term ? payment_term = payment_term.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1079,6 +1114,8 @@
                                 label='Category Name'
                                 clearable
                                 v-model="defaultCategoryItem.category_name"
+                                @input="(val) => (defaultCategoryItem.category_name ? defaultCategoryItem.category_name = defaultCategoryItem.category_name.toUpperCase() : null)"
+                                @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                                 >
                                 </v-text-field>
                                 </v-col>
@@ -1092,7 +1129,9 @@
                                 label='SubCategory Name'
                                 clearable
                                 v-model="defaultCategoryItem.subcategory_name"
+                                @input="(val) => (defaultCategoryItem.subcategory_name ? defaultCategoryItem.subcategory_name = defaultCategoryItem.subcategory_name.toUpperCase() : null)"
                                 :disabled="defaultCategoryItem.subcategory_name=='N/A'"
+                                @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                                  >
                                 </v-text-field>
                                 </v-col>
@@ -1158,6 +1197,7 @@
                                     label='Item Code'
                                     clearable
                                     v-model="selectedItemList.item_code == 'N/A' ? selectedItemList.item_code = null : selectedItemList.item_code"
+                                    @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                                     >
                                     </v-text-field>
                                 </v-col>
@@ -1205,6 +1245,7 @@
                                 label='Part Name'
                                 clearable
                                 v-model="selectedItemList.part_name == 'N/A' ? selectedItemList.part_name = null : selectedItemList.part_name"
+                                @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                                  >
                                 </v-text-field>
                                 </v-col>
@@ -1223,6 +1264,7 @@
                                 label='Material'
                                 clearable
                                 v-model="selectedItemList.material == 'N/A' ? selectedItemList.material = null : selectedItemList.material"
+                                @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                                 >
                                 </v-text-field>
                                 </v-col>
@@ -1236,6 +1278,7 @@
                                 label='Dimension'
                                 clearable
                                 v-model="selectedItemList.dimension == 'N/A' ? selectedItemList.dimension = null : selectedItemList.dimension"
+                                @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                                  >
                                 </v-text-field>
                                 </v-col>
@@ -1372,6 +1415,7 @@
                             label='Plating Process'
                             v-model="modelForPlatingProcesses.plating_process"
                             @input="(val) => (modelForPlatingProcesses.plating_process ? modelForPlatingProcesses.plating_process = modelForPlatingProcesses.plating_process.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1384,6 +1428,7 @@
                             label='Type'
                             v-model="modelForPlatingProcesses.type == 'N/A'? modelForPlatingProcesses.type = null : modelForPlatingProcesses.type"
                             @input="(val) => (modelForPlatingProcesses.type ? modelForPlatingProcesses.type = modelForPlatingProcesses.type.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1396,6 +1441,7 @@
                             label='Vendor'
                             v-model="modelForPlatingProcesses.vendor == 'N/A'? modelForPlatingProcesses.vendor = null : modelForPlatingProcesses.vendor"
                             @input="(val) => (modelForPlatingProcesses.vendor ? modelForPlatingProcesses.vendor = modelForPlatingProcesses.vendor.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1475,6 +1521,7 @@
                             label='Company Name'
                             v-model="modelForVendor.company_name"
                             @input="(val) => (modelForVendor.company_name ? modelForVendor.company_name = modelForVendor.company_name.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1487,6 +1534,7 @@
                             label='Company Address'
                             v-model="modelForVendor.address"
                             @input="(val) => (modelForVendor.address ? modelForVendor.address = modelForVendor.address.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1499,6 +1547,7 @@
                             label='Contact Person'
                             v-model="modelForVendor.contact_person"
                             @input="(val) => (modelForVendor.contact_person ? modelForVendor.contact_person = modelForVendor.contact_person.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1513,6 +1562,7 @@
                             label='Contact Number'
                             v-model="modelForVendor.contact_number"
                             @input="(val) => (modelForVendor.contact_number ? modelForVendor.contact_number = modelForVendor.contact_number.toUpperCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1571,6 +1621,7 @@
                             label='Payment Term'
                             v-model="payment_term"
                             @input="(val) => (payment_term = payment_term.toUpperCase())"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
                             clearable>
                             </v-text-field>
                             </v-col>
@@ -1705,6 +1756,7 @@
             menu: false,
             menu_edit: false,
             min_date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            noImportFiles: true,
 
 //-------------------- for plating process section------------------------------------
 
@@ -2478,6 +2530,33 @@
 
               });
         },
+
+        saveExcel(){
+            var $mainFormItemList = $('#mainFormItemList')
+            var data = new FormData(mainFormItemList)
+            axios.post('/excelImport', data)
+              .then(response =>{
+                  this.$refs.fileupload.value=null
+                  this.noImportFiles = true
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        fileChange(event){
+
+
+            if(event==null){
+                this.noImportFiles = true
+            } else {
+                this.noImportFiles = false
+            }
+            
+        }
 
         },
     }

@@ -18,6 +18,7 @@ use App\Models\PaymentTerm;
 use App\Models\PlatingProcess;
 use App\Models\PurchaseRequestList;
 use App\Models\PurchaseOrderList;
+use App\Models\CategoryItem;
 use App\Models\SubCategoryItem;
 use App\Models\ItemList;
 use App\Models\PurchaseRequestItem;
@@ -45,6 +46,28 @@ Route::get('/testing', function(){
 
 
     return $getSupp;
+});
+
+Route::get('/query', function(){
+//     $detection = 0;
+//     $item_lists = DB::table('item_lists')->get();
+
+//    foreach($item_lists as $a){
+//        if(in_array($a->category_item_id,[10]) && in_array($a->sub_category_item_id,[27])){
+//             $detection += 1;
+//        }
+//    }
+
+   try {
+
+    $catName = CategoryItem::where('category_name','STOCK/SPARE PART')->first()->id;
+  
+    } catch (Exception $e) {
+    
+        $catName = 'a';
+    }
+
+   return  $catName ;
 });
 
 // Route::get('/arr', function(){
@@ -292,6 +315,7 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::post('/deleteItemCategory',[DashboardController::class, 'deleteItemCategory'])->name('deleteItemCategory');
     Route::post('/updateSubCategory',[DashboardController::class, 'updateSubCategory'])->name('updateSubCategory');
     Route::post('/updateItemList', [DashboardController::class, 'updateItemList'])->name('updateItemList');
+    Route::post('/excelImport', [DashboardController::class, 'excelImport'])->name('excelImport');
     Route::post('/addItemList', [DashboardController::class, 'addItemList'])->name('addItemList');
     Route::post('/deleteItemList', [DashboardController::class, 'deleteItemList'])->name('deleteItemList');
     Route::post('/addPlatingProcess', [DashboardController::class, 'addPlatingProcess'])->name('addPlatingProcess');
