@@ -14,6 +14,7 @@ use App\Models\PurchaseRequestList;
 use App\Models\SitePermission;
 use App\Models\CategoryItem;
 use App\Models\SubCategoryItem;
+use App\Models\UnitOfMeasure;
 use App\Models\ItemList;
 use App\Models\PlatingProcess;
 use App\Models\Vendor;
@@ -1197,6 +1198,41 @@ class DashboardController extends Controller
             Excel::import(new ImportItemList, $path);
  
 
+    }
+
+    public function getAvailableUOM(){
+        $allItems = UnitOfMeasure::all();
+        return response()->json($allItems);
+    }
+
+    public function addUnitOfMeasure(Request $request){
+
+        $getUOM = UnitOfMeasure::all()->pluck('uom_name');
+
+        if($getUOM->contains( trim(ucfirst($request->uom))) ){
+            $dupli = 'dupli';
+        } else {
+            UnitOfMeasure::create(['uom_name'=>ucfirst(trim($request->uom))]);
+            $dupli = 'good';
+        }
+        return response()->json($dupli);
+    }
+
+    public function updateUnitOfMeasure(Request $request){
+
+        if(UnitOfMeasure::all()->pluck('uom_name')->contains(ucfirst(trim($request->unit_of_measure)))){
+            $dupli = 'dupli';
+        } else {
+            UnitOfMeasure::where('id',$request->id)->update(['uom_name'=>trim(ucfirst($request->unit_of_measure))]);
+            $dupli = 'good';
+        }
+
+        return response()->json($dupli);
+    }
+    
+    public function deleteUOM(Request $request){
+        UnitOfMeasure::findOrFail($request->id)->delete();
+        return response()->json($request);
     }
     /**
      * Show the form for creating a new resource.

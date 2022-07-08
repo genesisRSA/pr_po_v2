@@ -23,6 +23,7 @@ use App\Models\SubCategoryItem;
 use App\Models\ItemList;
 use App\Models\PurchaseRequestItem;
 use App\Models\UserPosition;
+use App\Models\UnitOfMeasure;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,15 +69,19 @@ Route::get('/query', function(){
     //     }
     // }
 
-   $date = '2022-13-04';
-    $d = \DateTime::createFromFormat('Y-m-d', $date);
+//    $date = '2022-13-04';
+//     $d = \DateTime::createFromFormat('Y-m-d', $date);
   
-    if(($d && $d->format('Y-m-d') === $date) == true){
-        $res = 'yey';
-    } else {
-        $res = 'no';
-    }
+//     if(($d && $d->format('Y-m-d') === $date) == true){
+//         $res = 'yey';
+//     } else {
+//         $res = 'no';
+//     }
+$res = 'No';
 
+    if(UnitOfMeasure::all()->pluck('uom_name')->contains(ucfirst(trim('box(es).')))){
+        $res = 'Yes';
+    }
     return $res;
 });
 
@@ -316,6 +321,7 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::get('/getAvailableDept', [DashboardController::class, 'getAvailableDept'])->name('getAvailableDept');
     Route::get('/getPermissionForDM',[DashboardController::class, 'getPermissionForDM'])->name('getPermissionForDM');
     Route::get('/authUserForSideBar',[DashboardController::class, 'authUserForSideBar'])->name('authUserForSideBar');
+    Route::get('/getAvailableUOM',[DashboardController::class, 'getAvailableUOM'])->name('getAvailableUOM');
 
     Route::post('/addOrEditUserPermission', [DashboardController::class, 'addOrEditUserPermission'])->name('addOrEditUserPermission');
     Route::post('/deleteUser', [DashboardController::class, 'deleteUser'])->name('deleteUser');
@@ -340,6 +346,9 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::post('/updateDept', [DashboardController::class, 'updateDept'])->name('updateDept');
     Route::post('/deleteDeptConfirm', [DashboardController::class, 'deleteDeptConfirm'])->name('deleteDeptConfirm');
     Route::post('/addConfirmDept', [DashboardController::class, 'addConfirmDept'])->name('addConfirmDept');
+    Route::post('/addUnitOfMeasure', [DashboardController::class, 'addUnitOfMeasure'])->name('addUnitOfMeasure');
+    Route::post('/updateUnitOfMeasure', [DashboardController::class, 'updateUnitOfMeasure'])->name('updateUnitOfMeasure');
+    Route::post('/deleteUOM', [DashboardController::class, 'deleteUOM'])->name('deleteUOM');
 
     Route::get('/getUserPositionPR', [PurchaseRequestController::class, 'getUserPositionPR'])->name('getUserPositionPR');
 

@@ -499,6 +499,68 @@
                             </v-card>
                         </v-tab-item>
 
+                        <v-tab-item
+                        >
+                            <v-card
+                            color="basil"
+                            flat
+                            >
+                            <v-card-text>
+                                <v-row justify="end">
+                                    <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="3"
+                                    >
+                                    <v-text-field
+                                        v-model="search"
+                                        append-icon="mdi-magnify"
+                                        label="Search"
+                                        single-line
+                                        hide-details
+                                    ></v-text-field>
+                                    </v-col>
+                                    </v-row>
+                                    <v-data-table
+                                    :headers="headersForUOM"
+                                    :search="search"
+                                    :items="itemsForUOM"
+                                    hide-default-footer
+                                    :page.sync="pageForUOM"
+                                    :items-per-page="itemsPerPageForUOM"
+                                    @page-count="pageCountForUOM = $event"
+                                    class="mt-5"
+                                    >
+                                        <template v-slot:item.actions="{ item }">
+                                            <v-icon
+                                                small
+                                                class="mr-2"
+                                                @click="editUnitOfMeasure(item)"
+                                                :disabled="permToEdit=='false'"
+                                            >
+                                                mdi-pencil
+                                            </v-icon>
+                                            <v-icon
+                                                small
+                                                @click="deleteItem(item)"
+                                                :disabled="permToDelete=='false'"
+                                            >
+                                                mdi-delete
+                                            </v-icon>
+                                        </template>
+                                    </v-data-table>
+                                    <div class="text-center pt-2">
+                                    <v-pagination
+                                        v-model="pageForUOM"
+                                        :length="pageCountForUOM"
+                                        circle
+                                        :total-visible="7"
+                                    ></v-pagination>
+                                    </div>
+                            </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+
 <!-- ///////////////////end_tab_item ///////////////////////////////////////-->
 
                         </v-tabs-items>
@@ -1089,6 +1151,52 @@
                 </v-card-actions>
                 </div>
 
+                <div v-if="tab == 5">
+                <v-toolbar
+                color="primary"
+                dark
+                >Add Unit of Measure
+                </v-toolbar>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" md="12">
+                                    <div style="background-color: #2196F3; padding:10px;">
+                                        <span style="color:white; font-weight:bold; letter-spacing: 2px;">Add a Unit of Measure</span>
+                                    </div>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Unit Of Measure'
+                            v-model="unit_of_measure"
+                            @input="(val) => (unit_of_measure ? unit_of_measure = unit_of_measure.toLowerCase() : null)"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions class="justify-end">
+                    <v-btn
+                         color="primary"
+                         @click="addUnitOfMeasure()"
+                        >Save
+                        </v-btn>
+                        <v-btn
+                            text
+                            @click=""
+                        >Close
+                    </v-btn>
+                </v-card-actions>
+                </div>
+
             </v-card>
             </template>
         </v-dialog>
@@ -1671,6 +1779,57 @@
         </v-dialog>
         <!-- ///////////////////end-dialog///////// -->
 
+        <!-- //////dialog_for_edit_UnitOfMeasure////// -->
+        <v-dialog v-model="dialogEditUOM" transition="dialog-top-transition"
+            max-width="800">
+            <v-card>
+                <v-toolbar
+                color="primary"
+                dark>
+                Edit Unit of Measure
+                </v-toolbar>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                        <div style="background-color: #2196F3; padding:10px;">
+                                            <span style="color:white; font-weight:bold; letter-spacing: 2px;">Edit Data</span>
+                                        </div>
+                                </v-col>
+                            </v-row>
+                        <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-text-field
+                            label='Unit of Measure'
+                            v-model="unit_of_measure"
+                            @input="(val) => (unit_of_measure = unit_of_measure.toLowerCase())"
+                            @keydown.space="(event) => (event.target.selectionStart === 0 ) ? event.preventDefault() : true"
+                            clearable>
+                            </v-text-field>
+                            </v-col>
+                        </v-row>
+
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions class="justify-end">
+                        <v-btn
+                         color="primary"
+                          :disabled="(unit_of_measure == '' || unit_of_measure == null) || (unit_of_measure == selecedUnitOfMeasure)"
+                         @click="updateUnitOfMeasure()"
+                        >Save Changes</v-btn>
+                        <v-btn
+                                text
+                            @click="closeDialogEditUOM()"
+                            >Close
+                        </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <!-- ///////////////////end-dialog///////// -->
 
    </app-layout>
 </template>
@@ -1697,7 +1856,7 @@
             dialogEditCategoryItem : false,
             dialogDelete: false,
             items: [
-            'Item Categories', 'Item List', 'Plating Process', 'Vendors','Payment Terms'
+            'Item Categories', 'Item List', 'Plating Process', 'Vendors','Payment Terms', 'UOM'
             ],
 
 
@@ -1886,6 +2045,27 @@
             itemsForPaymentTerm : [],
             payment_term : null,
             idOfPaymentTerm : null,
+//------------------- for UOM -----------------------------------------------
+
+            pageForUOM: 1,
+            pageCountForUOM: 0,
+            itemsPerPageForUOM: 10,
+
+            dialogEditUOM : false,
+            headersForUOM :[
+                {
+                text: 'UOM',
+                align: 'start',
+                value: 'uom_name',
+                class: "yellow"
+                },
+                { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
+            ],
+
+            itemsForUOM : [],
+            unit_of_measure : null,
+            selecedUnitOfMeasure : {},
+            idOfUOM : null,
 
 //////////////////// permissions =============================================
 
@@ -1900,6 +2080,7 @@
         this.getAvailablePlatingProcesses()
         this.getAvailableVendor()
         this.getAvailablePaymentTerm()
+        this.getAvailableUOM()
         this.getPermission()
     },
 
@@ -1926,6 +2107,10 @@
 
         dialogEditPaymentTerm(val){
             val || this.closeDialogEditPaymentTerm()
+        },
+
+        dialogEditUOM(val){
+            val || this.closeDialogEditUOM()
         }
     },
 
@@ -2104,6 +2289,20 @@
               });
          },
 
+        deleteUOM(params){
+            axios.post('/deleteUOM', {id : params})
+              .then(response =>{
+                    this.getAvailableUOM()
+                    //console.log(response.data)
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+         },
+
          addSubCat(){
               axios.post('/addSubCategory', {cat_name : this.category_name_selected , subcat_name : this.subcategory_val})
               .then(response =>{
@@ -2162,6 +2361,9 @@
 
                 this.payment_term = null
                 this.selecedPaymentTerm = null
+
+                this.unit_of_measure = null
+                this.selecedUnitOfMeasure = null
               })
           },
 
@@ -2323,6 +2525,11 @@
             this.payment_term = null
         },
 
+        closeDialogEditUOM(){
+            this.dialogEditUOM = false
+            this.unit_of_measure = null
+        },
+
         deleteItem(item){
             if(this.tab == 0){
                 this.defaultCategoryItem = Object.assign({},item)
@@ -2341,6 +2548,10 @@
                 this.dialogDelete = true
             }
             if(this.tab == 4){
+                this.deleteIndex = item.id
+                this.dialogDelete = true
+            }
+            if(this.tab == 5){
                 this.deleteIndex = item.id
                 this.dialogDelete = true
             }
@@ -2365,6 +2576,10 @@
             }
             if(this.tab == 4){
                 this.deletePaymentTerm(this.deleteIndex)
+                this.closeDelete()
+            }
+            if(this.tab == 5){
+                this.deleteUOM(this.deleteIndex)
                 this.closeDelete()
             }
 
@@ -2469,6 +2684,31 @@
                    } else {
                        this.updatedSnackbar = true
                    }
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        updateUnitOfMeasure(){
+            let params = {
+                unit_of_measure :  this.unit_of_measure,
+                id : this.idOfUOM
+            }
+            axios.post('/updateUnitOfMeasure', params)
+              .then(response =>{
+
+
+                this.getAvailableUOM()
+                this.closeDialogEditUOM()
+                if(response.data == 'dupli'){
+                       this.dupliRecordSnackbar = true
+                   } else {
+                       this.updatedSnackbar = true
+                }
               })
               .catch(error =>{
                     console.log(error.response);
@@ -2591,6 +2831,46 @@
                 this.noImportFiles = false
             }
             
+        },
+
+        getAvailableUOM(){
+              axios.get('/getAvailableUOM')
+              .then(response =>{
+                 this.itemsForUOM = response.data
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        addUnitOfMeasure(){
+              axios.post('/addUnitOfMeasure', {uom : this.unit_of_measure})
+              .then(response =>{
+                   this.getAvailableUOM()
+                   this.close();
+
+                    if (response.data === 'good') {
+                        this.successSnackbar = true
+                    } else {
+                        this.dupliRecordSnackbar = true
+                    }
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+              });
+        },
+
+        editUnitOfMeasure(item){
+            this.dialogEditUOM = true
+            this.unit_of_measure = (item.uom_name).toLowerCase()
+            this.selecedUnitOfMeasure = (item.uom_name).toLowerCase()
+            this.idOfUOM = item.id
         }
 
         },
