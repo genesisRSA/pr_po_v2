@@ -52,6 +52,19 @@
                 <v-icon>mdi-close-outline</v-icon>
                 {{ errorMsg }}
             </v-snackbar>
+            <v-snackbar
+                v-model="successImportSnackbar"
+                :timeout="3000"
+                :value="true"
+                bottom
+                color="success"
+                success
+                top
+                right
+                >
+                <v-icon>mdi-check</v-icon>
+                A batch has been successfully imported.
+            </v-snackbar>
         <v-row>
           <v-col
             v-for="card in cards"
@@ -677,7 +690,7 @@
                                         @change="fileChange($event)"
                                         ref="fileupload"
                                     name="select_item_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></v-file-input>
-                                    <v-btn @click.prevent='saveExcel' color='primary' type="submit" :disabled="noImportFiles">Save Excel</v-btn>
+                                    <v-btn @click.prevent='saveExcel' color='primary' type="submit" :disabled="noImportFiles">{{ saveExcelButtonName }}</v-btn>
                                 </form>
                             </v-col>
                         </v-row>
@@ -1673,6 +1686,7 @@
         data: () => ({
             deleteIndex : null,
             successSnackbar : false,
+            successImportSnackbar : false,
             dupliRecordSnackbar : false,
             updatedSnackbar : false,
             errorSnackbar : false,
@@ -1772,6 +1786,7 @@
             menu_edit: false,
             min_date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
             noImportFiles: true,
+            saveExcelButtonName: 'Save Excel',
 
 //-------------------- for plating process section------------------------------------
 
@@ -2550,10 +2565,12 @@
         saveExcel(){
             var $mainFormItemList = $('#mainFormItemList')
             var data = new FormData(mainFormItemList)
+            this.saveExcelButtonName = 'Please Wait...'
             axios.post('/excelImport', data)
               .then(response =>{
                   this.$refs.fileupload.value=null
                   this.noImportFiles = true
+                  this.successImportSnackbar = true
               })
               .catch(error =>{
                     console.log(error.response);
@@ -2561,7 +2578,7 @@
                     this.errorSnackbar = true
               })
               .finally(() => {
-
+                  this.saveExcelButtonName = 'Save Excel'
               });
         },
 

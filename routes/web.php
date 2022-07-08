@@ -49,33 +49,6 @@ Route::get('/testing', function(){
 });
 
 Route::get('/query', function(){
-//     $detection = 0;
-//     $item_lists = DB::table('item_lists')->get();
-
-//    foreach($item_lists as $a){
-//        if(in_array($a->category_item_id,[10]) && in_array($a->sub_category_item_id,[27])){
-//             $detection += 1;
-//        }
-//    }
-
-    // $kapos_palad = [];
-
-
-
-    // if(isset($checkIfRelated)){ 
-    //     if($checkIfRelated->contains('CASTER WHEEL')){
-    //         $kapos_palad = 'aight';
-    //     }
-    // }
-
-//    $checkIfRelated = CategoryItem::where('category_name','STOCKS/SPARE PARTS')->first();
-
-//    if(isset($checkIfRelated)){
-
-//         if($checkIfRelated->subcategory_items->pluck('subcategory_name')->contains('CASTER WHEEL')){
-//             $kapos_palad = 'has';
-//         }
-//    }
 
     // $result = 'No';
 
