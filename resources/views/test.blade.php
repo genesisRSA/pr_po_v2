@@ -53,6 +53,10 @@
          <label for="fname" class='title' style="position:relative; left: 20px;">PR NO.</label>
          <input type="text" id="fname" name="fname" style="height: 25px; position:relative; left: 20px; bottom: 28px;" value="{{ $pr_no }}"><br><br>
     </div>
+    <div class="row">
+         <label for="fname" class='title' style="position:relative; left: 20px;">REF. SO NO.</label>
+         <input type="text" id="fname" name="fname" style="height: 25px; position:relative; left: 20px; bottom: 28px; width:154px;" value="{{ $so_no }}"><br><br>
+    </div>
     <div class="row" style="position: relative; bottom:13px;">
          <label for="fname" class='title' style="position:relative; left: 20px;">DEPT.</label>
          <input type="text" id="fname" name="fname" style="height: 25px; position:relative; left: 27px; bottom: 28px;" value="{{ $department }}"><br><br>
@@ -104,18 +108,22 @@
 <table width="100%" style="position:relative; bottom:50px;">
     <thead style="background-color: blue; color:#FFFFFF;">
       <tr class="font">
+        <th>Item No.</th>
         <th>Quantity</th>
         <th>Description</th>
+        <th>Currency</th>
         <th>Unit Cost</th>
         <th>Amount</th>
       </tr>
     </thead>
     <tbody>
 
-    @foreach($pr_items as $item)
+    @foreach($pr_items as $key => $item)
       <tr class="font">
+          <td align="center">{{ $key + 1 }}</td>
           <td align="center">{{ $item->quantity }}</td>
           <td align="center">{{ $item->part_name.' '.($item->material != '' ? '('.$item->material.')' : '').($item->dimension != '' ? '('.$item->dimension.')' : '') }}</td>
+          <td align="center">PHP</td>
           <td align="center" style="font-family: DejaVu Sans, sans-serif !important;">{{ '₱'.number_format((json_decode(str_replace(['₱',','],'',$item->target_cost)) / $item->quantity),2,'.',',') }}</td>
           <td align="center" style="font-family: DejaVu Sans, sans-serif !important;">{{ $item->target_cost }}</td>
         </tr>

@@ -39,6 +39,19 @@
                 <v-icon>mdi-lightbulb</v-icon>
                 The record has been updated successfully.
             </v-snackbar>
+            <v-snackbar
+                v-model="errorSnackbar"
+                :timeout="3000"
+                :value="true"
+                bottom
+                color="red"
+                success
+                top
+                right
+                >
+                <v-icon>mdi-close-outline</v-icon>
+                {{ errorMsg }}
+            </v-snackbar>
         <v-row>
           <v-col
             v-for="card in cards"
@@ -1662,6 +1675,8 @@
             successSnackbar : false,
             dupliRecordSnackbar : false,
             updatedSnackbar : false,
+            errorSnackbar : false,
+            errorMsg : null,
             cards: ['Data Management'],
             tab: 0,
             dialog : false,
@@ -2368,6 +2383,7 @@
         updateItemList(){
               axios.post('/updateItemList', {params : this.selectedItemList})
               .then(response =>{
+                  console.log(this.selectedItemList)
                   this.getAvailableItemList()
                   this.dialogEditItemList = false
                   if(response.data > 0){
@@ -2541,6 +2557,8 @@
               })
               .catch(error =>{
                     console.log(error.response);
+                    this.errorMsg = error.response.data.message +'.\nPlease check all the data is on right format.'
+                    this.errorSnackbar = true
               })
               .finally(() => {
 

@@ -827,6 +827,7 @@ class PurchaseRequestController extends Controller
         $data = [
             'pr_items' => $all,
             'pr_no' => $pr_no->pr_no,
+            'so_no' => $pr_no->so_no,
             'requestor' => $requestor,
             'department' => $pr_no->department,
             'purch_mngr' => $purch_mngr,

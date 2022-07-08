@@ -58,16 +58,53 @@ Route::get('/query', function(){
 //        }
 //    }
 
-   try {
+    // $kapos_palad = [];
 
-    $catName = CategoryItem::where('category_name','STOCK/SPARE PART')->first()->id;
+
+
+    // if(isset($checkIfRelated)){ 
+    //     if($checkIfRelated->contains('CASTER WHEEL')){
+    //         $kapos_palad = 'aight';
+    //     }
+    // }
+
+//    $checkIfRelated = CategoryItem::where('category_name','STOCKS/SPARE PARTS')->first();
+
+//    if(isset($checkIfRelated)){
+
+//         if($checkIfRelated->subcategory_items->pluck('subcategory_name')->contains('CASTER WHEEL')){
+//             $kapos_palad = 'has';
+//         }
+//    }
+
+    // $result = 'No';
+
+    // if(ItemList::all()->pluck(strtolower('item_code'))->contains('CWS-50')){
+
+    // $result = 'Yes';
+
+    // }
+    // $plucked = strtolower(ItemList::all()->pluck('item_code'));
+    // if(ItemList::all()->pluck(strtolower('item_code'))->contains('CWS-50')){
+    //     $result = 'Yes';
+    // }
+    // $mes = 'no';
+    // foreach(ItemList::all() as $item){
+    //     if(in_array(strtolower('CWS-50'),[strtolower($item->item_code)])){
+    //         $mes = 'yes';
+    //     }
+    // }
+
+   $date = '2022-13-04';
+    $d = \DateTime::createFromFormat('Y-m-d', $date);
   
-    } catch (Exception $e) {
-    
-        $catName = 'a';
+    if(($d && $d->format('Y-m-d') === $date) == true){
+        $res = 'yey';
+    } else {
+        $res = 'no';
     }
 
-   return  $catName ;
+    return $res;
 });
 
 // Route::get('/arr', function(){

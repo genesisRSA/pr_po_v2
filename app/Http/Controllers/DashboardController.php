@@ -530,16 +530,25 @@ class DashboardController extends Controller
                in_array(strtolower($request->params['dimension']), [strtolower($item->dimension)]) &&
                in_array(strtolower($cat_val), [strtolower($item->category_item_id)]) &&
                in_array(strtolower($subcat_val), [strtolower($item->sub_category_item_id)]) &&
-               in_array(strtolower($request->params['item_code']), [strtolower($item->item_code)]) &&
-               in_array(strtolower($request->params['validity_date']), [strtolower($item->validity_date)])) {
+               in_array(strtolower($request->params['item_code']), [strtolower($item->item_code)])) {
                 $detection += 1;
-            }
 
-            // if($request->params['item_code'] != null){
-            //     if(in_array(strtolower($request->params['item_code']), [strtolower($item->item_code)] )){
-            //         $detection += 1;
-            //     }
-            // }
+                if($unit_price != ItemList::findOrFail($request->params['id'])->unit_price){
+                    $detection -= 1;
+                }
+            }
+        }
+
+        if($request->params['item_code'] != null){
+            if(ItemList::find($request->params['id'])->item_code == $request->params['item_code']){
+        
+            } else {
+                foreach(ItemList::all() as $item){
+                    if(in_array(strtolower($request->params['item_code']),[strtolower($item->item_code)])){
+                        $detection += 1;
+                    }
+                }
+            }
         }
 
         if($detection == 0){
@@ -552,12 +561,12 @@ class DashboardController extends Controller
             ItemList::where('id',$request->params['id'])->update([
                 'category_item_id' => $cat_val,
                 'sub_category_item_id' => $subcat_val,
-                'part_name' => $request->params['part_name'] == null ? '' : $request->params['part_name'],
-                'material' => $request->params['material'] == null ? '' : $request->params['material'],
-                'dimension' => $request->params['dimension'] == null ? '' : $request->params['dimension'],
+                'part_name' => $request->params['part_name'] == null ? '' : trim($request->params['part_name']),
+                'material' => $request->params['material'] == null ? '' : trim($request->params['material']),
+                'dimension' => $request->params['dimension'] == null ? '' : trim($request->params['dimension']),
                 'unit_price' => $unit_price == null? null : $unit_price,
-                'item_code' => $request->params['item_code'] == null ? '' : $request->params['item_code'],
-                'validity_date' => $request->params['validity_date'] == null ? '' : $request->params['validity_date']
+                'item_code' => $request->params['item_code'] == null ? '' : trim($request->params['item_code']),
+                'validity_date' => $request->params['validity_date'] == null ? '' : trim($request->params['validity_date'])
             ]);
         }
 
@@ -576,28 +585,33 @@ class DashboardController extends Controller
                in_array(strtolower($request->material_val), [strtolower($item->material)]) &&
                in_array(strtolower($request->dimension), [strtolower($item->dimension)]) &&
                in_array(strtolower($request->cat_val), [strtolower($item->category_item_id)]) &&
-               in_array(strtolower($request->subcat_val), [strtolower($item->sub_category_item_id)]) ) {
+               in_array(strtolower($request->subcat_val), [strtolower($item->sub_category_item_id)]) &&
+               in_array(strtolower($request->item_code), [strtolower($item->item_code)])) {
                 $detection += 1;
-            }
-
-            if($request->item_code != null){
-                if(in_array(strtolower($request->item_code), [strtolower($item->item_code)] )){
-                    $detection += 1;
-                }
             }
 
         }
 
+        if($request->item_code != null){
+
+                foreach(ItemList::all() as $item){
+                    if(in_array(strtolower($request->item_code),[strtolower($item->item_code)])){
+                        $detection += 1;
+                    }
+                }
+           
+        }
+
             if($detection == 0){
                   $id =  ItemList::insertGetId([
-                    'item_code' => $request->item_code,
-                    'category_item_id' => $request->cat_val,
-                    'sub_category_item_id' => $request->subcat_val,
-                    'part_name' => $request->partname_val == null || $request->partname_val == 'N/A' ? '' : $request->partname_val,
-                    'material' => $request->material_val == null || $request->material_val == 'N/A' ? '' : $request->material_val,
-                    'dimension' => $request->dimension == null || $request->material_val == 'N/A' ? '' : $request->dimension,
+                    'item_code' => trim($request->item_code),
+                    'category_item_id' => trim($request->cat_val),
+                    'sub_category_item_id' => trim($request->subcat_val),
+                    'part_name' => $request->partname_val == null || $request->partname_val == 'N/A' ? '' : trim($request->partname_val),
+                    'material' => $request->material_val == null || $request->material_val == 'N/A' ? '' : trim($request->material_val),
+                    'dimension' => $request->dimension == null || $request->material_val == 'N/A' ? '' : trim($request->dimension),
                     'unit_price' => $price,
-                    'validity_date' => $request->validity_date
+                    'validity_date' => trim($request->validity_date)
                 ]);
 
                 ItemListCostUpdate::create([
