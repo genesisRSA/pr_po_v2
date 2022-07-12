@@ -1141,6 +1141,7 @@
                     <v-btn
                          color="primary"
                          @click="addPaymentTerm()"
+                         :disabled="(payment_term == null || payment_term == '')"
                         >Save
                         </v-btn>
                         <v-btn
@@ -1187,11 +1188,12 @@
                     <v-btn
                          color="primary"
                          @click="addUnitOfMeasure()"
+                         :disabled="(unit_of_measure==null || unit_of_measure=='')"
                         >Save
                         </v-btn>
                         <v-btn
                             text
-                            @click=""
+                            @click="close()"
                         >Close
                     </v-btn>
                 </v-card-actions>
