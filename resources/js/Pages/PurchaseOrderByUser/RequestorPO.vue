@@ -55,7 +55,7 @@
 
                         <template v-slot:item.item_category="{ item }">
                             <strong>
-                                {{ item.item_category }}
+                                {{ item.item_category.replace(/[^a-zA-Z_]/g, '*') }}
                             </strong>
                         </template>
 
@@ -164,6 +164,10 @@
                                                     <div v-else>
                                                         {{ item.supplier_three}}
                                                     </div>
+                                                </template>
+
+                                                <template v-slot:item.target_cost="{ item }">
+                                                            {{ item.target_cost.replace(/[^a-zA-Z_]/g, '*') }}
                                                 </template>
                                         </v-data-table>
                                 </v-card-text>

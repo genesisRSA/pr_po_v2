@@ -620,6 +620,7 @@
                                                         {{ item.supplier_three}}
                                                     </div>
                                                 </template>
+                                                
                                         </v-data-table>
                                 </v-card-text>
                             </v-card>
@@ -702,7 +703,6 @@
                 length: 11,
                 precision: 2
                 },
-
                 pr_details : {
                     pr_no : '',
                     so_no : '',
@@ -1072,6 +1072,7 @@
         },
 
         savePR(){
+
             let params = {
                 pr_details : this.pr_details,
                 pr_items : this.addedItems
