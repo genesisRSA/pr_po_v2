@@ -1183,6 +1183,23 @@ class DashboardController extends Controller
 
             } else {
 
+                foreach(PurchaseRequestList::where('user_id',Auth::id())->get() as $pr){
+                    if(str_contains($pr->status,'PR APPROVED')){
+                        $count_approved_pr += 1;
+                    } else {
+                        $count_pending_pr += 1;
+                    }
+                }
+
+                foreach(PurchaseOrderList::where('user_id',Auth::id())->get() as $po){
+                    if(str_contains($po->status,'APPROVED')){
+                        $count_approved_po += 1;
+                    } else if (str_contains($po->status,'DECLINED')){
+                        $count_declined_po += 1;
+                    } else {
+                        $count_pending_po += 1;
+                    }
+                }
 
             }
 

@@ -267,6 +267,7 @@
                     { text: 'Material', value: 'material', class: "yellow"},
                     { text: 'Dimension', value: 'dimension', class: "yellow" },
                     { text: 'Quantity', value: 'quantity', class: "yellow" },
+                    { text: 'UOM', value: 'uom', class: "yellow" },
                     { text: 'Remarks', value: 'remarks', class: "yellow" },
                     { text: 'Supplier 1', value: 'supplier_one', class: "yellow" },
                     { text: 'Supplier 2', value: 'supplier_two', class: "yellow" },

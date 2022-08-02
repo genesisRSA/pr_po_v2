@@ -39,14 +39,14 @@ use App\Models\UnitOfMeasure;
 //     return $get->toFormattedDateString();
 // });
 Route::get('/testing', function(){
-    $getSupp = PurchaseRequestItem::where('purchase_request_list_id',2)->get()->map( function($query){
-        return [
-            'chosen_supplier' => $query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $supplier_three),
-        ];
-    })->groupBy('chosen_supplier');
+    // $getSupp = PurchaseRequestItem::where('purchase_request_list_id',2)->get()->map( function($query){
+    //     return [
+    //         'chosen_supplier' => $query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $supplier_three),
+    //     ];
+    // })->groupBy('chosen_supplier');
 
 
-    return $getSupp;
+    // return $getSupp;
 });
 
 Route::get('/query', function(){
@@ -77,12 +77,12 @@ Route::get('/query', function(){
 //     } else {
 //         $res = 'no';
 //     }
-$res = 'No';
+// $res = 0;
 
-    if(UnitOfMeasure::all()->pluck('uom_name')->contains(ucfirst(trim('box(es).')))){
-        $res = 'Yes';
-    }
-    return $res;
+//     if(ItemList::findOrFail(21)->validity_date <= Carbon::today()->toDateString()){
+//         $res += 1;
+//     }
+//     return $res;
 });
 
 // Route::get('/arr', function(){

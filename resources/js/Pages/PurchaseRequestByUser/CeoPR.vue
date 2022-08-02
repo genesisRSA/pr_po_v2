@@ -419,6 +419,21 @@
                                 </v-row>
 
                                 <v-row>
+                                    <v-col
+                                        cols="12"
+                                        sm="4"
+                                        md="4"
+                                    >
+                                    <v-select
+                                        :items='uomOptions'
+                                        v-model='pr_items.uom'
+                                        label="UOM"
+                                        clearable
+                                    ></v-select>
+                                    </v-col>
+                                </v-row>
+
+                                <v-row>
 
                                     <v-col
                                         cols="12"
@@ -731,6 +746,7 @@
                     { text: 'Material', value: 'material', class: "yellow"},
                     { text: 'Dimension', value: 'dimension', class: "yellow" },
                     { text: 'Quantity', value: 'quantity', class: "yellow" },
+                    { text: 'UOM', value: 'uom', class: "yellow" },
                     { text: 'Remarks', value: 'remarks', class: "yellow" },
                     { text: 'Supplier 1', value: 'supplier_one', class: "yellow" },
                     { text: 'Supplier 2', value: 'supplier_two', class: "yellow" },
@@ -748,6 +764,7 @@
                     { text: 'Material', value: 'material', class: "yellow"},
                     { text: 'Dimension', value: 'dimension', class: "yellow" },
                     { text: 'Quantity', value: 'quantity', class: "yellow" },
+                    { text: 'UOM', value: 'uom', class: "yellow" },
                     { text: 'Remarks', value: 'remarks', class: "yellow" },
                     { text: 'Supplier 1', value: 'supplier_one', class: "yellow" },
                     { text: 'Supplier 2', value: 'supplier_two', class: "yellow" },
@@ -782,6 +799,7 @@
                     dimension : '',
                     material : '',
                     quantity : '',
+                    uom : '',
                     remarks : '',
                     raw_unit_price_for_list_item : ''
                 },
@@ -793,6 +811,7 @@
                 partnameOptions: [],
                 dimensionOptions: [],
                 materialOptions: [],
+                uomOptions: [],
 
                 addedItems: [],
                 viewedItems: [],
@@ -852,6 +871,7 @@
                     this.departmentOptions = response.data[3]
 
                     this.categoryOptions = response.data[4]
+                    this.uomOptions = response.data[5]
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1052,7 +1072,8 @@
             (this.pr_items.dimension == null || this.pr_items.dimension == '')||
             (this.pr_items.material == null || this.pr_items.material == '')||
             (this.pr_items.quantity == null || this.pr_items.quantity == '')||
-            (this.pr_items.raw_unit_price_for_list_item == null || this.pr_items.raw_unit_price_for_list_item == '')){
+            (this.pr_items.raw_unit_price_for_list_item == null || this.pr_items.raw_unit_price_for_list_item == '') ||
+            (this.pr_items.uom == null || this.pr_items.uom == '')){
                 return true;
             }
         },
@@ -1070,6 +1091,7 @@
                     this.pr_items.material = null
                     this.pr_items.dimension = null
                     this.pr_items.quantity = null
+                    this.pr_items.uom = null
                     this.pr_items.remarks = null
                     this.pr_items.raw_unit_price_for_list_item = null
                     this.selectedItemByItemCode = null
@@ -1082,6 +1104,7 @@
                               material : this.pr_items.material,
                               dimension : this.pr_items.dimension,
                               quantity : this.pr_items.quantity,
+                              uom : this.pr_items.uom,
                               remarks : this.pr_items.remarks,
                               supplier_one : 'PENDING',
                               supplier_two : 'PENDING',
@@ -1095,6 +1118,7 @@
             this.pr_items.material = null
             this.pr_items.dimension = null
             this.pr_items.quantity = null
+            this.pr_items.uom = null
             this.pr_items.remarks = null
             this.pr_items.raw_unit_price_for_list_item = null
         },
@@ -1123,6 +1147,7 @@
             this.pr_items.material = null
             this.pr_items.dimension = null
             this.pr_items.quantity = null
+            this.pr_items.uom = null
             this.pr_items.remarks = null
             this.pr_items.raw_unit_price_for_list_item = null
             this.addedItems = []

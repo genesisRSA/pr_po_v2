@@ -60,6 +60,8 @@
                 $date_of_order = $d['date_of_order'];
                 $pr_no = $d['pr_no'];
                 $user_requestor = $d['user_requestor'];
+                $payment_method = $d['payment_method'];
+                $so_number = $d['so_number'];
             @endphp
         @endif
     @endforeach
@@ -117,7 +119,7 @@
         </div>
         <div class="row" style="position: relative; bottom:393px;">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Payment Terms'>
-            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'ADVANCE T/T' }}"><br><br>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ $payment_method }}"><br><br>
         </div>
         <div class="row" style="position: relative; bottom:418px;">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='Currency'>
@@ -125,11 +127,11 @@
         </div>
         <div class="row" style="position: relative; bottom:443px;">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='SO#'>
-            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'STOCKABLE ITEMS' }}"><br><br>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ $so_number }}"><br><br>
         </div>
         <div class="row" style="position: relative; bottom:468px;">
             <input type="text" class='title' style="position:relative; right: 11px; font-size: 75%" value='PURCHASE ORDER NO.'>
-            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ isset($requestor) ? $requestor : 'RSA01312022-008CJ' }}"><br><br>
+            <input type="text" class='title' style="position:relative; right: 20px; bottom: 35px; font-size: 75%" value="{{ str_replace('PR','PO',$pr_no) }}"><br><br>
         </div>
   </div>
 

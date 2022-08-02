@@ -279,6 +279,7 @@ class PurchaseOrderController extends Controller
                 'material' => $b['material'] == 'N/A' ? '' : $b['material'],
                 'dimension' => $b['dimension'] == 'N/A' ? '' : $b['dimension'],
                 'quantity' => $b['quantity'],
+                'uom' => $b['uom'] == null ? '' : $b['uom'],
                 'remarks' => $b['remarks'] == null ? '' : $b['remarks'],
                 'supplier_one' => $b['supplier_one'],
                 'supplier_two' => $b['supplier_two'],
@@ -327,13 +328,13 @@ class PurchaseOrderController extends Controller
         $PO = PurchaseOrderList::findOrFail($request[0]);
 
         $detection = 0;
-        $arr = array();
         foreach($PO->request_items as $items){
-            if($items->item_due_id != null){
-                if(ItemList::findOrFail($items->item_due_id)->validity_date <= Carbon::today()->toDateString()){
-                    $detection +=1 ;
+            if($items->item_due_id != null ){
+                if(ItemList::findOrFail($items->item_due_id)->validity_date != null || ItemList::findOrFail($items->item_due_id)->validity_date != ''){
+                    if(ItemList::findOrFail($items->item_due_id)->validity_date <= Carbon::today()->toDateString()){
+                        $detection +=1 ;
+                    }
                 }
-
             }
         }
         return response()->json($detection);
@@ -369,7 +370,9 @@ class PurchaseOrderController extends Controller
                  'pr_no'          => isset(PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->pr_no) ? 
                                      PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->pr_no : '(No PR # found)',
                  'user_requestor' => isset(User::where('id',PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->user_id)->first()->name) ? 
-                                     User::where('id',PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->user_id)->first()->name : '(User not found)'
+                                     User::where('id',PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->user_id)->first()->name : '(User not found)',
+                 'payment_method' => isset(PaymentTerm::where('id',$query->supplier_details->first()->payment_method)->first()->payment_term) ? PaymentTerm::where('id',$query->supplier_details->first()->payment_method)->first()->payment_term : '(No Payment Term found)',
+                 'so_number'      => isset($query->pr_list->so_no) ? $query->pr_list->so_no : 'No SO number'
             ];
         })->groupBy('chosen_supplier');
 

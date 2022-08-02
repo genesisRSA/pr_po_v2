@@ -27,6 +27,7 @@ use App\Models\Department;
 use App\Models\UserPosition;
 use Akaunting\Money\Currency;
 use Akaunting\Money\Money;
+use App\Models\UnitOfMeasure;
 use PDO;
 
 class PurchaseRequestController extends Controller
@@ -179,8 +180,10 @@ class PurchaseRequestController extends Controller
             ];
         });
 
+        $uom = UnitOfMeasure::all()->pluck('uom_name')->toArray();
 
-        return response()->json([$prNo,$authName,$today,$dept,$cat]);
+
+        return response()->json([$prNo,$authName,$today,$dept,$cat,$uom]);
     }
 
     public function getSubCatVal(Request $request){
@@ -293,6 +296,7 @@ class PurchaseRequestController extends Controller
                     'material' => $b['material'] == 'N/A' ? '' : $b['material'],
                     'dimension' => $b['dimension'] == 'N/A' ? '' : $b['dimension'],
                     'quantity' => $b['quantity'],
+                    'uom' => $b['uom'],
                     'remarks' => $b['remarks'] == null ? '' : $b['remarks'],
                     'supplier_one' => $b['supplier_one'],
                     'supplier_two' => $b['supplier_two'],
