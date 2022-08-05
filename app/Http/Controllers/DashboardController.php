@@ -534,7 +534,7 @@ class DashboardController extends Controller
                in_array(strtolower($request->params['item_code']), [strtolower($item->item_code)])) {
                 $detection += 1;
 
-                if($unit_price != ItemList::findOrFail($request->params['id'])->unit_price){
+                if($unit_price != ItemList::findOrFail($request->params['id'])->unit_price || $request->params['validity_date'] != ItemList::findOrFail($request->params['id'])->validity_date){
                     $detection -= 1;
                 }
             }
@@ -1250,6 +1250,25 @@ class DashboardController extends Controller
     public function deleteUOM(Request $request){
         UnitOfMeasure::findOrFail($request->id)->delete();
         return response()->json($request);
+    }
+
+    public function masterlist(){
+        return Inertia::render('Masterlist');
+    }
+
+    public function getMasterlist(){
+       $getMasterlist = ItemList::all()
+       ->map(function($query){
+            return [
+                'item_code' => $query->item_code == ( '' || null ) ? 'N/A' : $query->item_code,
+                'category' => isset($query->category_item->category_name) ? $query->category_item->category_name : 'N/A',
+                'subcategory' => isset($query->subcategory_item->subcategory_name) ? $query->subcategory_item->subcategory_name : 'N/A',
+                'part_name' => $query->part_name == ( '' || null ) ? 'N/A' : $query->part_name,
+                'material' => $query->material == ( '' || null ) ? 'N/A' : $query->material,
+                'dimension' => $query->dimension == ( '' || null ) ? 'N/A' : $query->dimension,
+            ];
+       });
+       return response()->json($getMasterlist);
     }
     /**
      * Show the form for creating a new resource.

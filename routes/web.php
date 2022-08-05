@@ -292,6 +292,7 @@ Route::middleware(['auth:sanctum','isAdmin'])->group(function() {
     Route::get('/admin/data_management', [DashboardController::class, 'data_management'])->name('data_management');
     Route::get('/admin/authorization', [DashboardController::class, 'admin_authorization'])->name('admin_authorization');
     Route::get('/getUserAuthorization',[DashboardController::class, 'getUserAuthorization'])->name('getUserAuthorization');
+    Route::get('/admin/masterlist', [DashboardController::class, 'masterlist'])->name('admin_masterlist');
 });
 
 Route::middleware(['auth:sanctum'])->group( function(){
@@ -404,6 +405,8 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::post('/DeclinePOCeo',[PurchaseOrderController::class,'DeclinePOCeo'])->name('DeclinePOCeo');
 
     Route::post('/repeatPRConfirm',[PurchaseOrderController::class,'repeatPRConfirm'])->name('repeatPRConfirm');
+
+    Route::get('/getMasterlist', [DashboardController::class, 'getMasterlist'])->name('getMasterlist');
 });
 
 Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {
@@ -412,5 +415,6 @@ Route::middleware(['auth:sanctum','isRegularUser'])->group(function() {
     Route::get('/purchase_request', [DashboardController::class, 'purchase_request'])->name('purch_req_reg_user');
     Route::get('/purchase_order', [DashboardController::class, 'purch_order'])->name('purch_order_reg_user');
     Route::get('/data_management', [DashboardController::class, 'data_management'])->name('data_management_reg_user');
+    Route::get('/masterlist', [DashboardController::class, 'masterlist'])->name('masterlist');
 });
 

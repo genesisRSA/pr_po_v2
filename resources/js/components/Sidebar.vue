@@ -130,6 +130,17 @@
                     </v-list-item>
                 <v-divider></v-divider>
             </div>
+                <v-list-item>
+                        <form class="d-inline-flex align-center">
+                            <v-hover v-slot="{ hover }">
+                                <v-btn text type="submit" class="masterlist" :href="is_Admin==true ? route('admin_masterlist') : route('masterlist')" color="gray" x-large :style="{ 'background-color': (hover || active_class == 'masterlist') ? '#1976d2' : '' }">
+                                    <v-icon :color="(hover || active_class == 'masterlist') ?'yellow':'gray'" left small>mdi-format-list-checkbox</v-icon>
+                                     <span :class="(hover || active_class == 'masterlist') ? 'yellow--text':'gray'">MASTERLIST</span>
+                                </v-btn>
+                            </v-hover>
+                        </form>
+                </v-list-item>
+            <v-divider></v-divider>
             <v-list-item class="d-flex flex-column-reverse">
                 <form class="d-inline-flex align-center" @click.prevent="logout_dialog=!logout_dialog">
                     <v-hover v-slot="{ hover }">
@@ -263,6 +274,11 @@
         width: 300%;
         background-color: white;
         right: 259px;
+    }
+    .masterlist{
+        width: 300%;
+        background-color: white;
+        right: 193px;
     }
     .logout{
     position: fixed;

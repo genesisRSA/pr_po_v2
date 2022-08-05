@@ -79,6 +79,14 @@
                             </v-chip>
                         </template>
 
+                        <template v-slot:item.so_no="{ item }">
+                                    <span
+                                    :class="getColorForRemarks(item.so_no)"
+                                    >
+                                    {{ item.so_no }}
+                                    </span>
+                        </template>
+
                         <template v-slot:item.item_category="{ item }">
                             <strong>
                                 {{ item.item_category }}
@@ -1064,7 +1072,7 @@
 
         add_item_disable(){
             if(
-            (this.pr_details.so_no == null || this.pr_details.so_no == '') ||
+            // (this.pr_details.so_no == null || this.pr_details.so_no == '') ||
             (this.pr_details.department == null || this.pr_details.department == '') ||
             (this.pr_items.category == null || this.pr_items.category == '')||
             (this.pr_items.subcategory == null || this.pr_items.subcategory == '')||
@@ -1081,7 +1089,7 @@
         addToItemList(){
 
          Object.entries(this.addedItems).forEach(([key,val]) => {
-                if(val.part_name == this.pr_items.part_name && val.material == this.pr_items.material && val.dimension == this.pr_items.dimension){
+                if(val.part_name == this.pr_items.part_name && val.material == this.pr_items.material && val.dimension == this.pr_items.dimension && val.uom == this.pr_items.uom){
                    val.quantity = parseInt(this.addedItems[key].quantity) + parseInt(this.pr_items.quantity)
                    val.target_cost = (parseFloat(this.addedItems[key].target_cost.replace(/[^\d.-]/g, '')) + parseFloat(this.pr_items.raw_unit_price_for_list_item)).toLocaleString('en-US',{style:'currency',currency:'PHP'})
 

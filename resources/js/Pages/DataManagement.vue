@@ -1510,7 +1510,8 @@
                                     selectedItemList.part_name == compareToSelectedItemList.part_name &&
                                     selectedItemList.dimension == compareToSelectedItemList.dimension &&
                                     selectedItemList.item_code == compareToSelectedItemList.item_code &&
-                                    selectedItemList.raw_unit_price == compareToSelectedItemList.raw_unit_price)
+                                    selectedItemList.raw_unit_price == compareToSelectedItemList.raw_unit_price &&
+                                    selectedItemList.validity_date == compareToSelectedItemList.validity_date)
                                     "
                         >Save Changes</v-btn>
                         <v-btn
