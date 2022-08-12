@@ -720,7 +720,10 @@ class PurchaseRequestController extends Controller
     }
 
     public function getItemForSelectByAutocomplete(){
-        $item = ItemList::where('item_code','!=',null)->where('item_code','!=','')->get()
+        $item = ItemList::where('item_code','!=',null)
+        ->where('item_code','!=','')
+        ->where('unit_price','!=','₱ 0.00')
+        ->get()
         ->map( function($query){
             return [
                 'text' => $query->item_code,

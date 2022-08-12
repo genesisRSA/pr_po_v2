@@ -976,6 +976,7 @@
                             if(this.pr_items.raw_unit_price_for_list_item == 0){
                                 this.pr_items.raw_unit_price_for_list_item = null
                             }
+                            console.log(this.pr_items.raw_unit_price_for_list_item)
                     })
                     .catch(error =>{
                             console.log(error.response);

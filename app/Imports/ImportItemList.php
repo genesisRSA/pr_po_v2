@@ -53,9 +53,9 @@ class ImportItemList implements ToModel, SkipsOnError, WithHeadingRow, SkipsEmpt
             $detection+=1;
        }
 
-       if($row['validity_date'] == null){
-            $detection+=1;
-       }
+    //    if($row['validity_date'] == null){
+    //         $detection+=1;
+    //    }
 
     //    $d = \DateTime::createFromFormat('Y-m-d', \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(trim($row['validity_date']))->format('Y-m-d'));
   
@@ -92,7 +92,7 @@ class ImportItemList implements ToModel, SkipsOnError, WithHeadingRow, SkipsEmpt
                 'material' => trim($row['material']),
                 'dimension' => trim($row['dimension']),
                 'unit_price' => trim('₱ '.number_format($row['unit_price'],2, '.', ',')),
-                'validity_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(trim($row['validity_date']))->format('Y-m-d'),
+                'validity_date' => $row['validity_date'] == null ? null : \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(trim($row['validity_date']))->format('Y-m-d'),
             ]);
         } else null;
     }
