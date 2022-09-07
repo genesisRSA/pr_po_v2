@@ -10,7 +10,7 @@
             <v-card min-height="800">
             <v-img lazy-src="https://picsum.photos/id/11/10/6"
                 min-height="800"
-                max-width="1650"
+                max-width="1900"
                 src="https://img.wallpapersafari.com/desktop/1600/900/81/18/WewaSt.jpg">
             <div class="mt-5"></div>
               <v-subheader><h1 class="mt-5">{{ card }}</h1></v-subheader>
@@ -423,7 +423,7 @@
             <v-card min-height="800">
             <v-img lazy-src="https://picsum.photos/id/11/10/6"
                 max-height="800"
-                max-width="1650"
+                max-width="1900"
                 src="https://img.wallpapersafari.com/desktop/1600/900/81/18/WewaSt.jpg">
             <div class="mt-5"></div>
               <v-subheader><h1 class="mt-5">{{ deptName }}</h1></v-subheader>
@@ -623,7 +623,7 @@
                     <v-card-actions class="justify-end">
                         <v-btn
                          color="primary"
-                         :disabled="(modelForDept.dept_code == '' || modelForDept.dept_name == '')"
+                         :disabled="( (modelForDept.dept_code == '' || modelForDept.dept_code == null) || ( modelForDept.dept_name == '' || modelForDept.dept_name == null) )"
                          @click="addConfirmDept()"
                         >Save</v-btn>
                         <v-btn
