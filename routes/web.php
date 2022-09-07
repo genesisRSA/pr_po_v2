@@ -388,6 +388,19 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::post('/ApprovePRCEO',[PurchaseRequestController::class, 'ApprovePRCEO'])->name('ApprovePRCEO');
     Route::post('/DeclinePRCEO',[PurchaseRequestController::class, 'DeclinePRCEO'])->name('DeclinePRCEO');
 
+
+
+
+
+    ////////get dept for edit PR////////
+    Route::get('/getDeptForEditPR',[PurchaseRequestController::class, 'getDeptForEditPR'])->name('getDeptForEditPR');
+
+    ///////update PR////////////////////
+    Route::post('/updatePrRequestor',[PurchaseRequestController::class, 'updatePrRequestor'])->name('updatePrRequestor');
+
+
+
+
 ////////////////////////////////////////////////////////////////Purchase Order////////////////////////////////////////////////////////////////////////////////////////////
 
     Route::get('/getMyPOlist',[PurchaseOrderController::class, 'getMyPOlist'])->name('getMyPOlist');

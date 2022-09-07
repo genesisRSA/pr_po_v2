@@ -101,6 +101,7 @@
                         </template>
 
                         <template v-slot:item.actions="{ item }">
+                        <v-row>
                             <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon
@@ -116,6 +117,23 @@
                             <span>View PR</span>
                             </v-tooltip>
 
+                            <div v-if='item.status=="FOR CANVASSING"'>
+                            <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon
+                                    small
+                                    class="mr-2"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    @click="editPR(item)"
+                                >
+                                    mdi-pencil
+                                </v-icon>
+                            </template>
+                            <span>Edit PR</span>
+                            </v-tooltip>
+                            </div>
+
                             <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon
@@ -130,7 +148,7 @@
                             </template>
                             <span>Delete PR</span>
                             </v-tooltip>
-
+                        </v-row>
                         </template>
 
                     </v-data-table>
@@ -166,7 +184,7 @@
                         <v-toolbar
                         color="primary"
                         dark
-                        >Add a Purchase Request</v-toolbar>
+                        >{{ pr_title_add_or_update }}</v-toolbar>
                         <v-card-text>
                             <v-container>
                                 <v-row>
@@ -536,7 +554,7 @@
                         <v-btn
                          color="primary"
                          :disabled="addedItems.length == 0 ? true : false"
-                         @click='savePR()'
+                         @click='pr_title_add_or_update!="Edit A Purchase Request" ? savePR() : updatePR()'
                         >Save</v-btn>
                         <v-btn
                             text
@@ -763,7 +781,9 @@
 
                 itemsByItemCode: [],
                 selectedItemByItemCode : null,
-                missingPR: false
+                missingPR: false,
+                pr_title_add_or_update : null,
+                id_pr : null
     }),
 
     created: function(){
@@ -834,6 +854,7 @@
         },
 
         addPR(){
+            this.pr_title_add_or_update = 'Add a Purchase Request'
             this.addPRdialog = true
             this.getPRNumber()
             this.getItemForSelectByAutocomplete()
@@ -1187,6 +1208,77 @@
                 .finally(() => {
 
                 });
+        },
+
+        editPR(item){
+            //console.log(item)
+            this.pr_title_add_or_update = 'Edit A Purchase Request'
+            this.addPRdialog = true
+
+            this.pr_details.pr_no = item.pr_no
+            this.pr_details.requestor = item.user_id
+            this.pr_details.date = item.created_at
+            this.pr_details.so_no = item.so_no == 'N/A' ? null : item.so_no
+            this.id_pr = item.id
+
+            this.getDeptForEditPR(item.id)
+            this.getItemForSelectByAutocomplete()
+        },
+
+        getDeptForEditPR(params){
+                axios.get('/getDeptForEditPR', {params:params})
+                .then(response =>{
+                    // console.log(response.data)
+                    this.departmentOptions = response.data[1]
+                    this.pr_details.department = response.data[0]
+                    this.categoryOptions = response.data[3]
+                    this.uomOptions = response.data[4]
+
+                    let list=[]
+
+                    $.each(response.data[2], function(key, value) {
+                        list.push({
+                              item : key + 1,
+                              part_name : value['part_name'],
+                              material : value['material'],
+                              dimension : value['dimension'],
+                              quantity : value['quantity'],
+                              uom : value['uom'],
+                              remarks : value['remarks'],
+                              supplier_one : 'PENDING',
+                              supplier_two : 'PENDING',
+                              supplier_three : 'PENDING',
+                              target_cost : value['target_cost'],
+                        })
+                    });
+                    this.addedItems = list
+
+                })
+                .catch(error =>{
+                    console.log(error.response);
+                })
+                .finally(() => {
+                    
+                });
+        },
+
+        updatePR(){
+            let params = {
+                pr_details : this.pr_details,
+                pr_items : this.addedItems,
+                pr_id : this.id_pr
+            }
+               axios.post('/updatePrRequestor', { params : params })
+              .then(response =>{
+                    this.closeAddPRdialog()
+                    this.getMyPRlist()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+            });
         }
 
         },

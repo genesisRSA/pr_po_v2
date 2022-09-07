@@ -847,4 +847,100 @@ class PurchaseRequestController extends Controller
         return $pdf->download('itsolutionstuff.pdf');
     }
 
+    public function getDeptForEditPR(Request $request){
+
+        $cat = CategoryItem::all()->map( function($query){
+            return [
+                'text' => $query->category_name,
+                'value' => $query->id
+            ];
+        });
+
+        $dept_id = Department::where('dept_code',PurchaseRequestList::findOrFail($request[0])->department)->first()->id;
+
+        $dept_option = Department::where('dept_code',PurchaseRequestList::findOrFail($request[0])->department)->get()
+                       ->take(1)
+                       ->map(function($query){
+                           return[
+                                'text' => $query->dept_code,
+                                'value' => $query->id
+                           ];
+                       });
+                       
+        $purchase_request_item = PurchaseRequestItem::where('purchase_request_list_id',$request[0])->get();
+        
+        $uom = UnitOfMeasure::all()->pluck('uom_name')->toArray();
+        
+        return response()->json([$dept_id,$dept_option,$purchase_request_item,$cat,$uom]);
+    }
+
+    public function updatePrRequestor(Request $request){
+        $arr = array();
+        foreach($request->params['pr_items'] as $key => $a){
+            $arr[] = json_decode(str_replace(',','',mb_substr($a['target_cost'],1)));
+        }
+        $grand_total = '₱'.number_format(array_sum($arr),2, '.', ',');
+
+        $pr = PurchaseRequestList::findOrFail($request->params['pr_id']);
+
+
+        $pr->item_category = $grand_total;
+        $pr->save();
+
+        $pr->suppliers()->delete();
+        $pr->pr_items()->delete();
+
+        foreach($request->params['pr_items'] as $key => $b){
+            $pr_item_id = PurchaseRequestItem::insertGetId([
+                'purchase_request_list_id' => $pr->id,
+                'part_name' => $b['part_name'] == 'N/A' ? '' : $b['part_name'],
+                'material' => $b['material'] == 'N/A' ? '' : $b['material'],
+                'dimension' => $b['dimension'] == 'N/A' ? '' : $b['dimension'],
+                'quantity' => $b['quantity'],
+                'uom' => $b['uom'],
+                'remarks' => $b['remarks'] == null ? '' : $b['remarks'],
+                'supplier_one' => $b['supplier_one'],
+                'supplier_two' => $b['supplier_two'],
+                'supplier_three' => $b['supplier_three'],
+                'target_cost' => $b['target_cost'],
+                'item_due_id' => ItemList::where('part_name',$b['part_name'] == 'N/A' ? '' : $b['part_name'])
+                                         ->where('material',$b['material'] == 'N/A' ? '' : $b['material'])
+                                         ->where('dimension',$b['dimension'] == 'N/A' ? '' : $b['dimension'])
+                                         ->first()
+                                         ->id
+            ]);
+
+            SupplierDetails::create([
+                'purchase_request_item_id' => $pr_item_id,
+                'supplier_no' => 'SUPPLIER ONE',
+                'is_preferred' => 0,
+                'supplier_cost' => '',
+                'payment_method' => '',
+                'eta' => ''
+            ]);
+
+            SupplierDetails::create([
+                'purchase_request_item_id' => $pr_item_id,
+                'supplier_no' => 'SUPPLIER TWO',
+                'is_preferred' => 0,
+                'supplier_cost' => '',
+                'payment_method' => '',
+                'eta' => ''
+            ]);
+
+            SupplierDetails::create([
+                'purchase_request_item_id' => $pr_item_id,
+                'supplier_no' => 'SUPPLIER THREE',
+                'is_preferred' => 0,
+                'supplier_cost' => '',
+                'payment_method' => '',
+                'eta' => ''
+            ]);
+        }
+
+
+
+        return response()->json();
+    }
+
 }
