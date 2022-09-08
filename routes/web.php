@@ -24,6 +24,7 @@ use App\Models\ItemList;
 use App\Models\PurchaseRequestItem;
 use App\Models\UserPosition;
 use App\Models\UnitOfMeasure;
+use App\Models\Department;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,7 +45,6 @@ Route::get('/testing', function(){
     //         'chosen_supplier' => $query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $supplier_three),
     //     ];
     // })->groupBy('chosen_supplier');
-
 
     // return $getSupp;
 });

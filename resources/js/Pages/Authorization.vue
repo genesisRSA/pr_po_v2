@@ -469,6 +469,14 @@
                         class="elevation-1"
                     >
 
+                        <template v-slot:item.dept_head_name="{ item }">
+                            <span
+                            :class="getColorDeptHead(item.dept_head_name)"
+                            >
+                            {{ item.dept_head_name }}
+                            </span>
+                        </template>
+
                         <template v-slot:item.actions="{ item }">
 
                         <v-tooltip bottom>
@@ -557,6 +565,20 @@
                             @input="(val) => (modelForDept.dept_name ? modelForDept.dept_name = modelForDept.dept_name.toUpperCase() : null)">
                             </v-text-field>
                             </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                            <v-select
+                                label="Department Head"
+                                clearable
+                                :items='deptHeadOptions'
+                                :item-text="deptHeadOptions.text"
+                                :item-value="deptHeadOptions.value"
+                                v-model='modelForDept.dept_head'>
+                            </v-select>
+                            </v-col>
                         </v-row>
 
                         </v-container>
@@ -564,7 +586,7 @@
                     <v-card-actions class="justify-end">
                         <v-btn
                          color="primary"
-                         :disabled="(modelForDept.dept_code == '' || modelForDept.dept_name == '') || ( modelForDept.dept_code == selectedDept.dept_code && modelForDept.dept_name == selectedDept.dept_name)"
+                         :disabled="(modelForDept.dept_code == '' || modelForDept.dept_name == '' || (modelForDept.dept_head == '' || modelForDept.dept_head == null) ) || ( modelForDept.dept_code == selectedDept.dept_code && modelForDept.dept_name == selectedDept.dept_name && modelForDept.dept_head == selectedDept.dept_head )"
                          @click="updateDept()"
                         >Save Changes</v-btn>
                         <v-btn
@@ -729,6 +751,7 @@
                     value: 'dept_name',
                     class: "yellow"
                     },
+                    { text: 'Dept. Head', value: 'dept_head_name', class: "yellow" },
                     { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
                 ],
 
@@ -739,13 +762,16 @@
 
                 modelForDept: {
                   dept_code: null,
-                  dept_name: null
+                  dept_name: null,
+                  dept_head: null,
                 },
 
                 selectedDept:{},
 
                 itemsForUserConfig: ['REQUESTOR','BUYER','ADMIN MNGR.','PRESIDENT','CEO'],
                 selectedUserConfig: '',
+
+                deptHeadOptions : []
     }),
 
     created: function(){
@@ -795,7 +821,8 @@
       getAvailableDept(){
               axios.get('/getAvailableDept')
               .then(response =>{
-                    this.dept = response.data
+                    this.dept = response.data[0]
+                    this.deptHeadOptions = response.data[1]
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1156,7 +1183,12 @@
 
             if (calories != null && (calories.position =='PRESIDENT' || calories.position =='CEO' || calories.position =='PURCHASE MNGR.')) return 'blue--text'
             else return
-        },
+     },
+
+     getColorDeptHead(params){
+        if (params == 'N/A') return 'red--text'
+            else return
+     }
 
     },
     }

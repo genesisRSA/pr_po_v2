@@ -902,8 +902,28 @@ class DashboardController extends Controller
     }
 
     public function getAvailableDept(Request $request){
-        $dept = Department::all();
-        return response()->json($dept);
+        $dept = Department::orderBy('dept_name','ASC')
+                ->get()
+                ->map( function($query){
+                    return[
+                        'id'           => $query->id,
+                        'dept_code'    => $query->dept_code,
+                        'dept_name'    => $query->dept_name,
+                        'dept_head'    => isset(User::where('id',$query->dept_head)->first()->id) ? User::where('id',$query->dept_head)->first()->id : 'N/A',
+                        'dept_head_name' => isset(User::where('id',$query->dept_head)->first()->name) ? User::where('id',$query->dept_head)->first()->name : 'N/A'
+                    ];
+                });
+
+        $deptHeadOption = User::orderBy('name','ASC')
+                          ->get()
+                          ->map( function($query) {
+                              return [
+                                'value' => $query->id,
+                                'text'  => $query->name
+                              ];
+                          });
+
+        return response()->json([$dept,$deptHeadOption]);
     }
 
     public function updateDept(Request $request){
@@ -918,6 +938,10 @@ class DashboardController extends Controller
                 in_array(strtoupper($request->params['updated']['dept_name']),
                         [strtoupper($item->dept_name)])) {
                 $detection += 1;
+
+                if($item->dept_head != $request->params['updated']['dept_head']){
+                    $detection -= 1;
+                }
             }
         }
 
@@ -925,7 +949,8 @@ class DashboardController extends Controller
             Department::where('id',$request->params['updated']['id'])
             ->update([
                 'dept_code' => strtoupper($request->params['updated']['dept_code']),
-                'dept_name' => strtoupper($request->params['updated']['dept_name'])
+                'dept_name' => strtoupper($request->params['updated']['dept_name']),
+                'dept_head' => $request->params['updated']['dept_head']
             ]);
         }
 
