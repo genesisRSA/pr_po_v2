@@ -551,7 +551,7 @@
                             <v-text-field
                             label='Department Code'
                             v-model="modelForDept.dept_code"
-                            @input="(val) => (modelForDept.dept_code ? modelForDept.dept_code = modelForDept.dept_code.toUpperCase() : null)">
+                            @input="(val) => (modelForDept.dept_code ? modelForDept.dept_code = modelForDept.dept_code.toUpperCase() : null)" readonly>
                             </v-text-field>
                             </v-col>
                             <v-col

@@ -968,11 +968,19 @@ class DashboardController extends Controller
         $detection = 0;
 
         foreach (Department::all() as $item) {
+            if(in_array(strtoupper($request->params['dept']['dept_code']),
+                [strtoupper($item->dept_code)])){
+                    $detection += 1;
+            }
+            if(in_array(strtoupper($request->params['dept']['dept_name']),
+                [strtoupper($item->dept_name)])){
+                    $detection += 1;
+            }
             if (in_array(strtoupper($request->params['dept']['dept_code']),
                         [strtoupper($item->dept_code)]) &&
                 in_array(strtoupper($request->params['dept']['dept_name']),
                         [strtoupper($item->dept_name)])) {
-                $detection += 1;
+                    $detection += 1;
             }
         }
 
