@@ -117,7 +117,7 @@
                             <span>View PR</span>
                             </v-tooltip>
 
-                            <div v-if='item.status=="FOR CANVASSING"'>
+                            <div v-if='item.status=="FOR DEPT. HEAD APPROVAL"'>
                             <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon
@@ -788,6 +788,7 @@
 
     created: function(){
         this.getMyPRlist()
+        this.is_dept_head()
     },
 
     computed: {
@@ -1272,6 +1273,19 @@
               .then(response =>{
                     this.closeAddPRdialog()
                     this.getMyPRlist()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+            });
+        },
+
+        is_dept_head(){
+              axios.get('/is_dept_head')
+              .then(response =>{
+                    console.log(response.data)
               })
               .catch(error =>{
                     console.log(error.response);

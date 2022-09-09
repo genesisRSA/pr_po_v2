@@ -398,7 +398,8 @@ Route::middleware(['auth:sanctum'])->group( function(){
     ///////update PR////////////////////
     Route::post('/updatePrRequestor',[PurchaseRequestController::class, 'updatePrRequestor'])->name('updatePrRequestor');
 
-
+    //////is_user_a_dept_head///////////
+    Route::get('/is_dept_head',[PurchaseRequestController::class, 'isDeptHead'])->name('isDeptHead');
 
 
 ////////////////////////////////////////////////////////////////Purchase Order////////////////////////////////////////////////////////////////////////////////////////////

@@ -6,6 +6,7 @@ use App\Models\UserPosition;
 use App\Models\Notification;
 use App\Models\SitePermission;
 use App\Models\PurchaseRequestList;
+use App\Models\Department;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -63,5 +64,9 @@ class User extends Authenticatable
 
     public function notifications(){
         return $this->hasMany(Notification::class);
+    }
+
+    public function departments(){
+        return $this->hasMany(Department::class,'dept_head','id');
     }
 }

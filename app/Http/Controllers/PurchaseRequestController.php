@@ -284,7 +284,7 @@ class PurchaseRequestController extends Controller
                 'remarks' => $request->params['pr_details']['remarks'] == null ? '' : $request->params['pr_details']['remarks'],
                 'department' => $dept->dept_code,
                 'item_category' => $grand_total,
-                'status' => 'FOR CANVASSING',
+                'status' => 'FOR DEPT. HEAD APPROVAL',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);
@@ -941,6 +941,19 @@ class PurchaseRequestController extends Controller
 
 
         return response()->json();
+    }
+
+
+    public function isDeptHead(){
+
+        $params = null;
+        if(count(User::where('id',Auth::id())->first()->departments) > 0){
+            $params = 'a dept head';
+        }else{
+            $params = 'not a dept head';
+        }
+
+        return response()->json($params);
     }
 
 }
