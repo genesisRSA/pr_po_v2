@@ -47,6 +47,7 @@ Route::get('/testing', function(){
     // })->groupBy('chosen_supplier');
 
     // return $getSupp;
+
 });
 
 Route::get('/query', function(){
@@ -71,7 +72,7 @@ Route::get('/query', function(){
 
 //    $date = '2022-13-04';
 //     $d = \DateTime::createFromFormat('Y-m-d', $date);
-  
+
 //     if(($d && $d->format('Y-m-d') === $date) == true){
 //         $res = 'yey';
 //     } else {
@@ -368,6 +369,7 @@ Route::middleware(['auth:sanctum'])->group( function(){
 
     Route::post('/savePrRequestor',[PurchaseRequestController::class, 'savePr'])->name('savePr');
     Route::post('/deletePrRequestor',[PurchaseRequestController::class, 'deletePr'])->name('deletePr');
+    Route::post('/approveDeptHeadPR',[PurchaseRequestController::class, 'approveDeptHeadPR'])->name('approveDeptHeadPR');
 
     ///////////Buyer-API//////////////
     Route::get('/getSuppInfo', [PurchaseRequestController::class, 'getSuppInfo'])->name('getSuppInfo');

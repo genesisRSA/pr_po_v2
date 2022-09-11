@@ -86,6 +86,23 @@ class PurchaseRequestController extends Controller
                         'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                     ];
                 });
+
+                if( count($user->departments) > 0 ){
+                $myPR = PurchaseRequestList::whereIn('department',$user->departments->pluck('dept_code'))->orWhereIn('user_id',[Auth::id()])->get()
+                    ->map( function($query){
+                        return[
+                            'id' => $query->id,
+                            'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
+                            'pr_no' => strtoupper($query->pr_no),
+                            'so_no' => $query->so_no == '' ? 'N/A' : strtoupper($query->so_no),
+                            'department' => strtoupper($query->department),
+                            'item_category' => $query->item_category,
+                            'status' => strtoupper($query->status),
+                            'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
+                            'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                        ];
+                    });
+                }
             }
 
             if($user->user_position->position == 'CEO'){
@@ -866,11 +883,11 @@ class PurchaseRequestController extends Controller
                                 'value' => $query->id
                            ];
                        });
-                       
+
         $purchase_request_item = PurchaseRequestItem::where('purchase_request_list_id',$request[0])->get();
-        
+
         $uom = UnitOfMeasure::all()->pluck('uom_name')->toArray();
-        
+
         return response()->json([$dept_id,$dept_option,$purchase_request_item,$cat,$uom]);
     }
 
@@ -954,6 +971,11 @@ class PurchaseRequestController extends Controller
         }
 
         return response()->json($params);
+    }
+
+    public function approveDeptHeadPR(Request $request){
+        PurchaseRequestList::where('id',$request->params['id'])->update(['status'=>'FOR CANVASSING']);
+        return response()->json();
     }
 
 }

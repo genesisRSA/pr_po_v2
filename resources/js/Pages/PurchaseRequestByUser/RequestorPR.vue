@@ -148,6 +148,24 @@
                             </template>
                             <span>Delete PR</span>
                             </v-tooltip>
+
+                            <div v-if='item.status=="FOR DEPT. HEAD APPROVAL"'>
+                            <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon
+                                    small
+                                    class="mr-2"
+                                    @click="approve_dept_head(item)"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    mdi-thumb-up
+                                </v-icon>
+                            </template>
+                            <span>Approve by Dept. Head</span>
+                            </v-tooltip>
+                            </div>
+
                         </v-row>
                         </template>
 
@@ -658,6 +676,17 @@
                                 </v-card-text>
                             </v-card>
               </v-dialog>
+                <v-dialog v-model="approveDeptHeadDialog" max-width="500px">
+                            <v-card>
+                                <v-card-title class="justify-center approve-text"><h5>Have you already browse the PR details? <br>Will you <span style="color : green !important;">APPROVE</span> this PR?</h5></v-card-title>
+                                <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" text @click="closeApproveDeptHeadDialog()">Cancel</v-btn>
+                                <v-btn color="blue darken-1" text @click="approveDeptHeadPR()">OK</v-btn>
+                                <v-spacer></v-spacer>
+                                </v-card-actions>
+                            </v-card>
+              </v-dialog>
         </v-row>
     </div>
 </template>
@@ -783,7 +812,10 @@
                 selectedItemByItemCode : null,
                 missingPR: false,
                 pr_title_add_or_update : null,
-                id_pr : null
+                id_pr : null,
+
+                approveDeptHeadDialog: false,
+                selectedForDepHeadApprove : []
     }),
 
     created: function(){
@@ -998,7 +1030,7 @@
                             if(this.pr_items.raw_unit_price_for_list_item == 0){
                                 this.pr_items.raw_unit_price_for_list_item = null
                             }
-                            console.log(this.pr_items.raw_unit_price_for_list_item)
+                            //console.log(this.pr_items.raw_unit_price_for_list_item)
                     })
                     .catch(error =>{
                             console.log(error.response);
@@ -1052,7 +1084,7 @@
                     this.pr_items.raw_unit_price_for_list_item = null
                     this.selectedItemByItemCode = null
                     return
-                } 
+                }
             });
 
          this.addedItems.push({item : this.addedItems.length + 1,
@@ -1259,7 +1291,7 @@
                     console.log(error.response);
                 })
                 .finally(() => {
-                    
+
                 });
         },
 
@@ -1293,7 +1325,32 @@
               .finally(() => {
 
             });
+        },
+
+        approve_dept_head(params){
+              this.approveDeptHeadDialog = true
+              this.selectedForDepHeadApprove = params
+        },
+
+        closeApproveDeptHeadDialog(){
+            this.approveDeptHeadDialog = false
+        },
+
+        approveDeptHeadPR(){
+              axios.post('/approveDeptHeadPR', { params : this.selectedForDepHeadApprove })
+              .then(response =>{
+                    //console.log(response.data)
+                    this.closeApproveDeptHeadDialog()
+                    this.getMyPRlist()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+
+            });
         }
+
 
         },
     }
