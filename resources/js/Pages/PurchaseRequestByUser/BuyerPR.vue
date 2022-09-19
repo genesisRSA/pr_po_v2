@@ -144,6 +144,23 @@
                             <span>Delete PR</span>
                             </v-tooltip>
 
+                            <div v-if='item.dept_head=="yes" && item.status=="FOR DEPT. HEAD APPROVAL"'>
+                            <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon
+                                    small
+                                    class="mr-2"
+                                    @click="approve_dept_head(item)"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    mdi-thumb-up
+                                </v-icon>
+                            </template>
+                            <span>Approve by Dept. Head</span>
+                            </v-tooltip>
+                            </div>
+
                         </template>
 
                     </v-data-table>
@@ -863,6 +880,17 @@
                          </v-card-actions>
                 </v-card>
               </v-dialog>
+              <v-dialog v-model="approveDeptHeadDialog" max-width="500px">
+                            <v-card>
+                                <v-card-title class="justify-center approve-text"><h5>Have you already browse the PR details? <br>Will you <span style="color : green !important;">APPROVE</span> this PR?</h5></v-card-title>
+                                <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" text @click="closeApproveDeptHeadDialog()">Cancel</v-btn>
+                                <v-btn color="blue darken-1" text @click="approveDeptHeadPR()">OK</v-btn>
+                                <v-spacer></v-spacer>
+                                </v-card-actions>
+                            </v-card>
+              </v-dialog>
         </v-row>
     </div>
 </template>
@@ -1023,7 +1051,11 @@
                 selectedItemByItemCode : null,
                 missingPR: false,
 
-                canEdit: null
+                canEdit: null,
+                id_pr : null,
+
+                approveDeptHeadDialog: false,
+                selectedForDepHeadApprove : []
     }),
 
     created: function(){
@@ -1084,6 +1116,7 @@
                axios.get('/getMyPRlistRequestor')
               .then(response =>{
                     this.prList = response.data
+                    console.log(this.prList)
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1633,7 +1666,28 @@
               .finally(() => {
 
             });
-    }
+    },
+
+        approve_dept_head(params){
+              this.approveDeptHeadDialog = true
+              this.selectedForDepHeadApprove = params
+        },
+        closeApproveDeptHeadDialog(){
+            this.approveDeptHeadDialog = false
+        },
+        approveDeptHeadPR(){
+              axios.post('/approveDeptHeadPR', { params : this.selectedForDepHeadApprove })
+              .then(response =>{
+                    //console.log(response.data)
+                    this.closeApproveDeptHeadDialog()
+                    this.getMyPRlist()
+              })
+              .catch(error =>{
+                    console.log(error.response);
+              })
+              .finally(() => {
+            });
+        }
 
         },
     }

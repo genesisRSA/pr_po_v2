@@ -70,6 +70,23 @@ class PurchaseRequestController extends Controller
                 ];
             });
 
+            if( count($user->departments) > 0 ){
+                $myPR = PurchaseRequestList::whereIn('department',$user->departments->pluck('dept_code'))->orWhereIn('user_id',[Auth::id()])->get()
+                    ->map( function($query){
+                        return[
+                            'id' => $query->id,
+                            'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
+                            'pr_no' => strtoupper($query->pr_no),
+                            'so_no' => $query->so_no == '' ? 'N/A' : strtoupper($query->so_no),
+                            'department' => strtoupper($query->department),
+                            'item_category' => $query->item_category,
+                            'status' => strtoupper($query->status),
+                            'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
+                            'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                        ];
+                    });
+            }
+
         } else {
 
             if($user->user_position->position == 'REQUESTOR'){
@@ -154,6 +171,7 @@ class PurchaseRequestController extends Controller
             }
 
             if($user->user_position->position == 'BUYER'){
+
                 $myPR = PurchaseRequestList::all()->map( function($query){
                     return[
                         'id' => $query->id,
@@ -164,7 +182,8 @@ class PurchaseRequestController extends Controller
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
                         'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
-                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
+                        'dept_head'=> in_array(strtoupper($query->department),Department::where('dept_head',Auth::id())->pluck('dept_code')->toArray()) ? 'yes' : 'no'
                     ];
                 });
             }
