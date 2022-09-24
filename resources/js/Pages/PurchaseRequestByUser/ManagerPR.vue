@@ -115,6 +115,7 @@
 
                         <template v-slot:item.actions="{ item }">
 
+                        <v-row>
                             <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon
@@ -129,6 +130,23 @@
                             </template>
                             <span>View PR</span>
                             </v-tooltip>
+
+                            <div v-if='item.dept_head=="yes" && item.status=="FOR DEPT. HEAD APPROVAL"'>
+                            <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon
+                                    small
+                                    class="mr-2"
+                                    @click="approve_dept_head(item)"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    mdi-thumb-up
+                                </v-icon>
+                            </template>
+                            <span>Approve by Dept. Head</span>
+                            </v-tooltip>
+                            </div>
 
                             <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
@@ -159,7 +177,7 @@
                             </template>
                             <span>PR REPORT</span>
                             </v-tooltip>
-
+                        </v-row>
 
                         </template>
 
@@ -634,6 +652,7 @@
                                                                 class="mr-2"
                                                                 color="blue"
                                                                 @click="getSuppInfo([item,'SUPPLIER ONE'])"
+                                                                :disabled="canEdit == 'NO' ? true : false"
                                                             >
                                                                 mdi-information
                                                             </v-icon>
@@ -679,6 +698,7 @@
                                                                 class="mr-2"
                                                                 color="blue"
                                                                 @click="getSuppInfo([item,'SUPPLIER TWO'])"
+                                                                :disabled="canEdit == 'NO' ? true : false"
                                                             >
                                                                 mdi-information
                                                             </v-icon>
@@ -722,6 +742,7 @@
                                                                 class="mr-2"
                                                                 color="blue"
                                                                 @click="getSuppInfo([item,'SUPPLIER THREE'])"
+                                                                :disabled="canEdit == 'NO' ? true : false"
                                                             >
                                                                 mdi-information
                                                             </v-icon>
@@ -890,6 +911,18 @@
                 </v-card>
               </v-dialog>
 
+              <v-dialog v-model="approveDeptHeadDialog" max-width="500px">
+                            <v-card>
+                                <v-card-title class="justify-center approve-text"><h5>Have you already browse the PR details? <br>Will you <span style="color : green !important;">APPROVE</span> this PR?</h5></v-card-title>
+                                <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" text @click="closeApproveDeptHeadDialog()">Cancel</v-btn>
+                                <v-btn color="blue darken-1" text @click="approveDeptHeadPR()">OK</v-btn>
+                                <v-spacer></v-spacer>
+                                </v-card-actions>
+                            </v-card>
+              </v-dialog>
+
         </v-row>
     </div>
 </template>
@@ -977,6 +1010,22 @@
                     { text: 'Supplier 3', value: 'supplier_three', class: "yellow" },
                     { text: 'Target Cost', value: 'target_cost', class: "yellow" },
                     { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
+                ],
+                deptHeadStatusHeaderForViewItem : [
+                    {
+                    text: 'Part Name',
+                    value: 'part_name',
+                    class: "yellow"
+                    },
+                    { text: 'Material', value: 'material', class: "yellow"},
+                    { text: 'Dimension', value: 'dimension', class: "yellow" },
+                    { text: 'Quantity', value: 'quantity', class: "yellow" },
+                    { text: 'Remarks', value: 'remarks', class: "yellow" },
+                    { text: 'UOM', value: 'uom', class: "yellow" },
+                    { text: 'Supplier 1', value: 'supplier_one', class: "yellow" },
+                    { text: 'Supplier 2', value: 'supplier_two', class: "yellow" },
+                    { text: 'Supplier 3', value: 'supplier_three', class: "yellow" },
+                    { text: 'Target Cost', value: 'target_cost', class: "yellow" },
                 ],
                 addPRdialog : false,
                 dialogDeletePR : false,
@@ -1085,7 +1134,9 @@
                 selectedItemByItemCode : null,
                 missingPR: false,
 
-                canEdit: null
+                canEdit: null,
+                approveDeptHeadDialog: false,
+                selectedForDepHeadApprove : []
     }),
 
     created: function(){
@@ -1186,9 +1237,19 @@
                         this.canChoose = this.headersForViewItem
                     } else {
                         this.canChoose = this.defHeaderForViewItem
+                        if(response.data[2] == 'FOR DEPT. HEAD APPROVAL'){
+                            this.canChoose = this.deptHeadStatusHeaderForViewItem
+                        }
                     }
 
-                    this.canEdit = ( response.data[3] == 'PR APPROVED' ? 'NO' : 'YES')
+                    this.canEdit = ( (response.data[3] == 'PR APPROVED' ||
+                                      response.data[3] == 'PENDING PRESIDENTIAL APPROVAL' ||
+                                      response.data[3] == 'PENDING CEO APPROVAL' ||
+                                      response.data[3] == 'PR DECLINED BY PRESIDENT' ||
+                                      response.data[3] == 'PR DECLINED BY CEO' ||
+                                      response.data[3] == 'DECLINED BY RTI HEAD APPROVER' ||
+                                      response.data[3] == 'DECLINED BY RSA HEAD APPROVER'
+                                      ) ? 'NO' : 'YES' )
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1737,6 +1798,29 @@
             }).finally(() => {
 
             });
+    },
+
+    approve_dept_head(params){
+            this.approveDeptHeadDialog = true
+            this.selectedForDepHeadApprove = params
+    },
+
+    closeApproveDeptHeadDialog(){
+        this.approveDeptHeadDialog = false
+    },
+
+    approveDeptHeadPR(){
+            axios.post('/approveDeptHeadPR', { params : this.selectedForDepHeadApprove })
+            .then(response =>{
+                //console.log(response.data)
+                this.closeApproveDeptHeadDialog()
+                this.getMyPRlist()
+            })
+            .catch(error =>{
+                console.log(error.response);
+            })
+            .finally(() => {
+        });
     }
 
 

@@ -58,6 +58,13 @@
                                         mdi-account-check
                                     </v-icon>
                         </template>
+                        <template v-slot:item.company="{ item }">
+                                    <span
+                                    :class="(item.company == 'RSA' || item.company == 'RTI') ? '' : 'red--text'"
+                                    >
+                                    {{ item.company }}
+                                    </span>
+                        </template>
                         <template v-slot:top>
                         <v-toolbar
                             flat
@@ -694,6 +701,7 @@
                     value: 'name',
                     class: "yellow"
                     },
+                    { text: 'Company', value: 'company', class: "yellow"},
                     { text: 'Email', value: 'email', class: "yellow"},
                     { text: 'Created at', value: 'created_at', class: "yellow" },
                     { text: 'Updated at', value: 'updated_at', class: "yellow" },

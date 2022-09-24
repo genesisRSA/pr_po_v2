@@ -184,6 +184,7 @@ class DashboardController extends Controller
            return [
                'name' => $query->name,
                'emp_id' => $query->emp_id,
+               'company' => $query->company == null ? 'N/A' : $query->company,
                'email' => $query->email,
                'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
                'updated_at' => Carbon::parse($query->updated_at)->format('Y-m-d'),
@@ -308,9 +309,9 @@ class DashboardController extends Controller
         if(isset($user->user_position)){
             if($user->user_position->count() > 0){
                 $user->user_position()->delete();
-            }    
+            }
         }
-        
+
         $user->delete();
 
         return response()->json('deleted successfully!');
@@ -542,7 +543,7 @@ class DashboardController extends Controller
 
         if($request->params['item_code'] != null){
             if(ItemList::find($request->params['id'])->item_code == $request->params['item_code']){
-        
+
             } else {
                 foreach(ItemList::all() as $item){
                     if(in_array(strtolower($request->params['item_code']),[strtolower($item->item_code)])){
@@ -600,7 +601,7 @@ class DashboardController extends Controller
                         $detection += 1;
                     }
                 }
-           
+
         }
 
             if($detection == 0){
@@ -1246,7 +1247,7 @@ class DashboardController extends Controller
         $path = $request->file('select_item_file')->getRealPath();
 
             Excel::import(new ImportItemList, $path);
- 
+
 
     }
 
@@ -1279,7 +1280,7 @@ class DashboardController extends Controller
 
         return response()->json($dupli);
     }
-    
+
     public function deleteUOM(Request $request){
         UnitOfMeasure::findOrFail($request->id)->delete();
         return response()->json($request);

@@ -166,6 +166,23 @@
                                 </v-tooltip>
                             </div>
 
+                            <div v-if='item.dept_head=="yes" && item.status=="FOR DEPT. HEAD APPROVAL"'>
+                                <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-icon
+                                        small
+                                        class="mr-2"
+                                        @click="approvePresidentialPR(item)"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                       mdi-check-decagram
+                                    </v-icon>
+                                </template>
+                                <span>Approve PR</span>
+                                </v-tooltip>
+                            </div>
+
                             </div>
 
                         </template>
@@ -1103,7 +1120,7 @@
                     this.pr_items.raw_unit_price_for_list_item = null
                     this.selectedItemByItemCode = null
                     return
-                } 
+                }
             });
 
          this.addedItems.push({item : this.addedItems.length + 1,
@@ -1220,6 +1237,7 @@
 
                 axios.post('/ApprovePRPresident', this.selectedForPRChanges )
                 .then(response =>{
+                        console.log(response.data)
                         this.closeApprovePresidentDialog()
                         this.getMyPRlist()
                 })

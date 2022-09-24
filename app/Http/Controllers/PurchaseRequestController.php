@@ -28,6 +28,7 @@ use App\Models\UserPosition;
 use Akaunting\Money\Currency;
 use Akaunting\Money\Money;
 use App\Models\UnitOfMeasure;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 use PDO;
 
 class PurchaseRequestController extends Controller
@@ -56,7 +57,7 @@ class PurchaseRequestController extends Controller
         $myPR = [];
         if($user->role_as == 1){
 
-            $myPR = PurchaseRequestList::all()->map( function($query){
+            $myPR = PurchaseRequestList::orderBy('created_at','DESC')->get()->map( function($query){
                 return[
                     'id' => $query->id,
                     'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
@@ -65,13 +66,14 @@ class PurchaseRequestController extends Controller
                     'department' => strtoupper($query->department),
                     'item_category' => $query->item_category,
                     'status' => strtoupper($query->status),
+                    'is_approver' => 0,
                     'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
                     'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                 ];
             });
 
             if( count($user->departments) > 0 ){
-                $myPR = PurchaseRequestList::whereIn('department',$user->departments->pluck('dept_code'))->orWhereIn('user_id',[Auth::id()])->get()
+                $myPR = PurchaseRequestList::orderBy('created_at','DESC')->whereIn('department',$user->departments->pluck('dept_code'))->orWhereIn('user_id',[Auth::id()])->get()
                     ->map( function($query){
                         return[
                             'id' => $query->id,
@@ -81,6 +83,7 @@ class PurchaseRequestController extends Controller
                             'department' => strtoupper($query->department),
                             'item_category' => $query->item_category,
                             'status' => strtoupper($query->status),
+                            'is_approver' => in_array(strtoupper($query->department),Department::where('dept_head',Auth::id())->pluck('dept_code')->toArray()) ? 1 : 0,
                             'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
                             'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                         ];
@@ -90,7 +93,7 @@ class PurchaseRequestController extends Controller
         } else {
 
             if($user->user_position->position == 'REQUESTOR'){
-                $myPR = $user->purchase_requests->map( function($query){
+                $myPR = $user->purchase_requests()->orderBy('created_at','DESC')->get()->map( function($query){
                     return[
                         'id' => $query->id,
                         'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
@@ -99,13 +102,14 @@ class PurchaseRequestController extends Controller
                         'department' => strtoupper($query->department),
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
+                        'is_approver' => 0,
                         'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
                         'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                     ];
                 });
 
                 if( count($user->departments) > 0 ){
-                $myPR = PurchaseRequestList::whereIn('department',$user->departments->pluck('dept_code'))->orWhereIn('user_id',[Auth::id()])->get()
+                $myPR = PurchaseRequestList::orderBy('created_at','DESC')->whereIn('department',$user->departments->pluck('dept_code'))->orWhereIn('user_id',[Auth::id()])->get()
                     ->map( function($query){
                         return[
                             'id' => $query->id,
@@ -115,6 +119,7 @@ class PurchaseRequestController extends Controller
                             'department' => strtoupper($query->department),
                             'item_category' => $query->item_category,
                             'status' => strtoupper($query->status),
+                            'is_approver' => in_array(strtoupper($query->department),Department::where('dept_head',Auth::id())->pluck('dept_code')->toArray()) ? 1 : 0,
                             'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
                             'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
                         ];
@@ -123,7 +128,7 @@ class PurchaseRequestController extends Controller
             }
 
             if($user->user_position->position == 'CEO'){
-                $myPR = PurchaseRequestList::all()->map( function($query){
+                $myPR = PurchaseRequestList::orderBy('created_at','DESC')->get()->map( function($query){
                     return[
                         'id' => $query->id,
                         'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
@@ -133,13 +138,14 @@ class PurchaseRequestController extends Controller
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
                         'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
-                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
+                        'dept_head'=> in_array(strtoupper($query->department),Department::where('dept_head',Auth::id())->pluck('dept_code')->toArray()) ? 'yes' : 'no'
                     ];
                 });
             }
 
             if($user->user_position->position == 'PRESIDENT'){
-                $myPR = PurchaseRequestList::all()->map( function($query){
+                $myPR = PurchaseRequestList::orderBy('created_at','DESC')->get()->map( function($query){
                     return[
                         'id' => $query->id,
                         'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
@@ -149,13 +155,14 @@ class PurchaseRequestController extends Controller
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
                         'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
-                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
+                        'dept_head'=> in_array(strtoupper($query->department),Department::where('dept_head',Auth::id())->pluck('dept_code')->toArray()) ? 'yes' : 'no'
                     ];
                 });
             }
 
             if($user->user_position->position == 'PURCHASE MNGR.'){
-                $myPR = PurchaseRequestList::all()->map( function($query){
+                $myPR = PurchaseRequestList::orderBy('created_at','DESC')->get()->map( function($query){
                     return[
                         'id' => $query->id,
                         'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
@@ -165,14 +172,15 @@ class PurchaseRequestController extends Controller
                         'item_category' => $query->item_category,
                         'status' => strtoupper($query->status),
                         'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
-                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d')
+                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
+                        'dept_head'=> in_array(strtoupper($query->department),Department::where('dept_head',Auth::id())->pluck('dept_code')->toArray()) ? 'yes' : 'no'
                     ];
                 });
             }
 
             if($user->user_position->position == 'BUYER'){
 
-                $myPR = PurchaseRequestList::all()->map( function($query){
+                $myPR = PurchaseRequestList::orderBy('created_at','DESC')->get()->map( function($query){
                     return[
                         'id' => $query->id,
                         'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
@@ -395,8 +403,13 @@ class PurchaseRequestController extends Controller
         });
 
         if($list->status == 'FOR CANVASSING'){
-            $canChoose = false;
-        } else {
+            $canChoose = 'FOR CANVASSING';
+        }
+        else if($list->status == 'FOR DEPT. HEAD APPROVAL')
+        {
+            $canChoose = 'FOR DEPT. HEAD APPROVAL';
+        }
+        else {
             $canChoose = true;
         }
 
@@ -654,13 +667,52 @@ class PurchaseRequestController extends Controller
 
     public function ApprovePRPresident(Request $request){
 
-        $price = json_decode(str_replace(['₱',','],'',$request->item_category));
+        if($request->status == 'FOR DEPT. HEAD APPROVAL'){
 
-        if($price > 50000){
-            PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PENDING CEO APPROVAL']);
+            PurchaseRequestList::where('id',$request->id)->update(['status'=>'FOR CANVASSING']);
+
         } else {
-            PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR APPROVED']);
 
+            $price = json_decode(str_replace(['₱',','],'',$request->item_category));
+
+            if($price > 50000){
+                PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PENDING CEO APPROVAL']);
+            } else {
+                PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR APPROVED']);
+
+                $list = PurchaseRequestList::findOrFail($request->id);
+                PurchaseOrderList::create([
+                    'pr_id'=>$list->id,
+                    'user_id'=>$list->user_id,
+                    'pr_no'=>$list->pr_no,
+                    'so_no'=>$list->so_no,
+                    'department'=>$list->department,
+                    'item_category'=>$list->item_category,
+                    'status'=>'PENDING APPROVAL',
+                    'created_at'=>Carbon::now()
+                ]);
+            }
+
+        }
+
+
+        return response()->json($request->status);
+    }
+
+    public function DeclinePRPresident(Request $request){
+        PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR DECLINED BY PRESIDENT']);
+        return response()->json($request);
+    }
+
+    public function ApprovePRCEO(Request $request){
+
+        if($request->status == 'FOR DEPT. HEAD APPROVAL'){
+
+            PurchaseRequestList::where('id',$request->id)->update(['status'=>'FOR CANVASSING']);
+
+        } else {
+
+            PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR APPROVED']);
             $list = PurchaseRequestList::findOrFail($request->id);
             PurchaseOrderList::create([
                 'pr_id'=>$list->id,
@@ -672,29 +724,8 @@ class PurchaseRequestController extends Controller
                 'status'=>'PENDING APPROVAL',
                 'created_at'=>Carbon::now()
             ]);
+
         }
-
-        return response()->json();
-    }
-
-    public function DeclinePRPresident(Request $request){
-        PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR DECLINED BY PRESIDENT']);
-        return response()->json($request);
-    }
-
-    public function ApprovePRCEO(Request $request){
-        PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR APPROVED']);
-        $list = PurchaseRequestList::findOrFail($request->id);
-        PurchaseOrderList::create([
-            'pr_id'=>$list->id,
-            'user_id'=>$list->user_id,
-            'pr_no'=>$list->pr_no,
-            'so_no'=>$list->so_no,
-            'department'=>$list->department,
-            'item_category'=>$list->item_category,
-            'status'=>'PENDING APPROVAL',
-            'created_at'=>Carbon::now()
-        ]);
     }
     public function DeclinePRCEO(Request $request){
         PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR DECLINED BY CEO']);

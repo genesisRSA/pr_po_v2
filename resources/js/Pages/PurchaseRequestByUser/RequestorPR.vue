@@ -117,7 +117,7 @@
                             <span>View PR</span>
                             </v-tooltip>
 
-                            <div v-if='item.status=="FOR DEPT. HEAD APPROVAL"'>
+                            <div v-if='item.status=="FOR DEPT. HEAD APPROVAL" && item.is_approver==1'>
                             <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon
@@ -712,6 +712,7 @@
                     value: 'so_no',
                     class: "yellow"
                     },
+                    { text: 'Requestor', value: 'user_id', class: "yellow"},
                     { text: 'Department', value: 'department', class: "yellow"},
                     { text: 'Remarks', value: 'remarks', class: "yellow"},
                     { text: 'Target Cost', value: 'item_category', class: "yellow" },

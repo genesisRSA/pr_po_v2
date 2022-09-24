@@ -29,6 +29,13 @@
                             ></v-text-field>
 
                             <v-select
+                                v-model="form.emp_company"
+                                label="Employee Company"
+                                :items="company_designation"
+                                :rules="company_designation_Rules"
+                            ></v-select>
+
+                            <v-select
                             label='Department'
                             :items="deptItem"
                             v-model="form.dept"
@@ -95,6 +102,7 @@
                 valid : true,
                 form: this.$inertia.form({
                     emp_id: '',
+                    emp_company: '',
                     dept: '',
                     name: '',
                     email: '',
@@ -122,8 +130,14 @@
                     v => (v && v.length >= 8) || 'Password must be atleast 8 characters',
                 ],
 
+                company_designation_Rules: [
+                    v => !!v || 'Company designation is required',
+                ],
+
                 deptItem : [],
-                selectedDept : null
+                selectedDept : null,
+
+                company_designation : ['RTI','RSA']
             }
         },
 

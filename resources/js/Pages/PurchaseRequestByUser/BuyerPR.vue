@@ -590,7 +590,7 @@
                                 <v-card-title class="text-h5"><span style='color:red;'>PR No : </span><span style='position:relative; left:5px;'>{{ prIdViewDialog }}</span><v-spacer></v-spacer>{{ dateCreated }}</v-card-title>
                                 <v-card-text>
                                         <v-data-table
-                                            :headers="headersForViewItem"
+                                            :headers="optionalHeader"
                                             hide-default-footer
                                             :items="viewedItems"
                                             class="elevation-1"
@@ -633,6 +633,7 @@
                                                                     class="mr-2"
                                                                     color="blue"
                                                                     @click="getSuppInfo([item,'SUPPLIER ONE'])"
+                                                                    :disabled="canEdit == 'NO' ? true : false"
                                                                 >
                                                                     mdi-information
                                                                 </v-icon>
@@ -675,6 +676,7 @@
                                                                     class="mr-2"
                                                                     color="blue"
                                                                     @click="getSuppInfo([item,'SUPPLIER TWO'])"
+                                                                    :disabled="canEdit == 'NO' ? true : false"
                                                                 >
                                                                     mdi-information
                                                                 </v-icon>
@@ -717,6 +719,7 @@
                                                                     class="mr-2"
                                                                     color="blue"
                                                                     @click="getSuppInfo([item,'SUPPLIER THREE'])"
+                                                                    :disabled="canEdit == 'NO' ? true : false"
                                                                 >
                                                                     mdi-information
                                                                 </v-icon>
@@ -735,7 +738,7 @@
                                                             </v-icon>
                                                 </div>
                                                 <div v-else>
-                                                <v-icon 
+                                                <v-icon
                                                     :disabled="canEdit == 'NO' ? true : false"
                                                     small
                                                     @click="editSupplier(item)"
@@ -961,6 +964,24 @@
                     { text: 'Target Cost', value: 'target_cost', class: "yellow" },
                     { text: 'Actions', value: 'actions', sortable: false, class: "yellow" },
                 ],
+
+                deptHeadStatusHeaderForViewItem : [
+                    {
+                    text: 'Part Name',
+                    value: 'part_name',
+                    class: "yellow"
+                    },
+                    { text: 'Material', value: 'material', class: "yellow"},
+                    { text: 'Dimension', value: 'dimension', class: "yellow" },
+                    { text: 'Quantity', value: 'quantity', class: "yellow" },
+                    { text: 'Remarks', value: 'remarks', class: "yellow" },
+                    { text: 'UOM', value: 'uom', class: "yellow" },
+                    { text: 'Supplier 1', value: 'supplier_one', class: "yellow" },
+                    { text: 'Supplier 2', value: 'supplier_two', class: "yellow" },
+                    { text: 'Supplier 3', value: 'supplier_three', class: "yellow" },
+                    { text: 'Target Cost', value: 'target_cost', class: "yellow" },
+                ],
+
                 addPRdialog : false,
                 dialogDeletePR : false,
                 options: {
@@ -1055,7 +1076,8 @@
                 id_pr : null,
 
                 approveDeptHeadDialog: false,
-                selectedForDepHeadApprove : []
+                selectedForDepHeadApprove : [],
+                optionalHeader: null
     }),
 
     created: function(){
@@ -1158,7 +1180,21 @@
                     this.supplier_list = response.data[1]
                     this.dateCreated = localItem.created_at
 
-                    this.canEdit = ( response.data[3] == 'PR APPROVED' ? 'NO' : 'YES')
+                    if(response.data[2] == 'FOR DEPT. HEAD APPROVAL'){
+                        this.optionalHeader = this.deptHeadStatusHeaderForViewItem
+                    } else {
+                        this.optionalHeader = this.headersForViewItem
+                    }
+
+                    this.canEdit = ( (response.data[3] == 'PR APPROVED' ||
+                                      response.data[3] == 'FOR SUPPLIER APPROVAL' ||
+                                      response.data[3] == 'PENDING PRESIDENTIAL APPROVAL' ||
+                                      response.data[3] == 'PENDING CEO APPROVAL' ||
+                                      response.data[3] == 'PR DECLINED BY PRESIDENT' ||
+                                      response.data[3] == 'PR DECLINED BY CEO' ||
+                                      response.data[3] == 'DECLINED BY RTI HEAD APPROVER' ||
+                                      response.data[3] == 'DECLINED BY RSA HEAD APPROVER'
+                                      ) ? 'NO' : 'YES' )
               })
               .catch(error =>{
                     console.log(error.response);
@@ -1367,7 +1403,7 @@
                     this.pr_items.raw_unit_price_for_list_item = null
                     this.selectedItemByItemCode = null
                     return
-                } 
+                }
             });
 
          this.addedItems.push({item : this.addedItems.length + 1,

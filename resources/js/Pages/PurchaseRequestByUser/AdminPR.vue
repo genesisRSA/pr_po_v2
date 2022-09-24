@@ -102,6 +102,7 @@
 
                         <template v-slot:item.actions="{ item }">
 
+                            <v-row>
                             <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon
@@ -116,6 +117,7 @@
                             </template>
                             <span>View PR</span>
                             </v-tooltip>
+
 
                             <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
@@ -132,7 +134,7 @@
                             <span>Delete PR</span>
                             </v-tooltip>
 
-                            <div v-if='item.status=="FOR DEPT. HEAD APPROVAL"'>
+                            <div v-if='item.status=="FOR DEPT. HEAD APPROVAL" && item.is_approver==1'>
                             <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon
@@ -148,6 +150,7 @@
                             <span>Approve by Dept. Head</span>
                             </v-tooltip>
                             </div>
+                            </v-row>
 
                         </template>
 
@@ -645,7 +648,7 @@
                                                         {{ item.supplier_three}}
                                                     </div>
                                                 </template>
-                                                
+
                                         </v-data-table>
                                 </v-card-text>
                             </v-card>
@@ -1055,7 +1058,7 @@
                     this.pr_items.raw_unit_price_for_list_item = null
                     this.selectedItemByItemCode = null
                     return
-                } 
+                }
             });
 
          this.addedItems.push({item : this.addedItems.length + 1,
