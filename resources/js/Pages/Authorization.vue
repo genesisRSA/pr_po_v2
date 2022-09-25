@@ -48,7 +48,7 @@
                                     >
                                     {{ item.name }}
                                     </span>
-                                    <v-icon v-if="item.position != null && (item.position.position =='PRESIDENT' || item.position.position =='CEO' || item.position.position =='PURCHASE MNGR.')"
+                                    <v-icon v-if="item.position != null && (item.position.position =='PRESIDENT' || item.position.position =='CEO' || item.position.position =='PURCHASE MNGR.' || item.position.position =='RTI APPROVER' || item.position.position =='RSA APPROVER')"
                                         small
                                         class="mr-2"
                                         v-bind="attrs"
@@ -776,7 +776,7 @@
 
                 selectedDept:{},
 
-                itemsForUserConfig: ['REQUESTOR','BUYER','ADMIN MNGR.','PRESIDENT','CEO'],
+                itemsForUserConfig: ['REQUESTOR','BUYER','ADMIN MNGR.','RTI APPROVER','RSA APPROVER','PRESIDENT','CEO'],
                 selectedUserConfig: '',
 
                 deptHeadOptions : []
@@ -1186,10 +1186,54 @@
           this.checkbox[3].update_dm = true;
           this.checkbox[3].delete_dm = true;
         }
+
+        if(params=='RTI APPROVER'){
+          this.checkbox[0].view_rfq = false;
+          this.checkbox[0].add_rfq= false;
+          this.checkbox[0].update_rfq = false;
+          this.checkbox[0].delete_rfq = false;
+
+          this.checkbox[1].view_pr = true;
+          this.checkbox[1].add_pr = true;
+          this.checkbox[1].update_pr = true;
+          this.checkbox[1].delete_pr = true;
+
+          this.checkbox[2].view_po = true;
+          this.checkbox[2].add_po = true;
+          this.checkbox[2].update_po = true;
+          this.checkbox[2].delete_po = true;
+
+          this.checkbox[3].view_dm = false;
+          this.checkbox[3].add_dm = false;
+          this.checkbox[3].update_dm = false;
+          this.checkbox[3].delete_dm = false;
+        }
+
+        if(params=='RSA APPROVER'){
+          this.checkbox[0].view_rfq = false;
+          this.checkbox[0].add_rfq= false;
+          this.checkbox[0].update_rfq = false;
+          this.checkbox[0].delete_rfq = false;
+
+          this.checkbox[1].view_pr = true;
+          this.checkbox[1].add_pr = true;
+          this.checkbox[1].update_pr = true;
+          this.checkbox[1].delete_pr = true;
+
+          this.checkbox[2].view_po = true;
+          this.checkbox[2].add_po = true;
+          this.checkbox[2].update_po = true;
+          this.checkbox[2].delete_po = true;
+
+          this.checkbox[3].view_dm = false;
+          this.checkbox[3].add_dm = false;
+          this.checkbox[3].update_dm = false;
+          this.checkbox[3].delete_dm = false;
+        }
       },
      getColor (calories) {
 
-            if (calories != null && (calories.position =='PRESIDENT' || calories.position =='CEO' || calories.position =='PURCHASE MNGR.')) return 'blue--text'
+            if (calories != null && (calories.position =='PRESIDENT' || calories.position =='CEO' || calories.position =='PURCHASE MNGR.' || calories.position =='RTI APPROVER' || calories.position =='RSA APPROVER')) return 'blue--text'
             else return
      },
 

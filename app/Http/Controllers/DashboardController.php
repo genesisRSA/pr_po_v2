@@ -247,6 +247,16 @@ class DashboardController extends Controller
                 return response()->json();
             }
         }
+        if($request['params']['selected'] == 'RTI APPROVER'){
+            if(UserPosition::where('position','RTI APPROVER')->count() > 0){
+                return response()->json();
+            }
+        }
+        if($request['params']['selected'] == 'RSA APPROVER'){
+            if(UserPosition::where('position','RSA APPROVER')->count() > 0){
+                return response()->json();
+            }
+        }
 
             UserPosition::updateOrCreate([
                 'user_id' => $user->id
@@ -1195,7 +1205,7 @@ class DashboardController extends Controller
         } else {
 
 
-            if($user->user_position->position == 'PURCHASE MNGR.' || $user->user_position->position == 'BUYER' || $user->user_position->position == 'PRESIDENT' || $user->user_position->position == 'CEO'){
+            if($user->user_position->position == 'PURCHASE MNGR.' || $user->user_position->position == 'BUYER' || $user->user_position->position == 'PRESIDENT' || $user->user_position->position == 'CEO' || $user->user_position->position == 'RTI APPROVER' || $user->user_position->position == 'RSA APPROVER'){
 
                 foreach(PurchaseRequestList::all() as $pr){
                     if(str_contains($pr->status,'PR APPROVED')){

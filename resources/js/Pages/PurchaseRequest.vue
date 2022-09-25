@@ -18,6 +18,12 @@
         <div v-if="userType=='CEO'">
             <ceo></ceo>
         </div>
+        <div v-if="userType=='RTI APPROVER'">
+            <rti-approver></rti-approver>
+        </div>
+        <div v-if="userType=='RSA APPROVER'">
+            <rsa-approver></rsa-approver>
+        </div>
    </app-layout>
 </template>
 
@@ -29,6 +35,8 @@
     import Purchase from './PurchaseRequestByUser/ManagerPR'
     import President from './PurchaseRequestByUser/PresidentPR'
     import Ceo from './PurchaseRequestByUser/CeoPR'
+    import RtiApprover from './PurchaseRequestByUser/RTI_ApproverPR'
+    import RsaApprover from './PurchaseRequestByUser/RSA_ApproverPR'
     export default {
         components: {
             AppLayout,
@@ -36,6 +44,8 @@
             Requestor,
             Admin,
             Buyer,
+            RtiApprover,
+            RsaApprover,
             President,
             Ceo
         },
