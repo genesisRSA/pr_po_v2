@@ -196,6 +196,40 @@ class PurchaseRequestController extends Controller
                 });
             }
 
+            if($user->user_position->position == 'RTI APPROVER'){
+                $myPR = PurchaseRequestList::orderBy('created_at','DESC')->get()->map( function($query){
+                    return[
+                        'id' => $query->id,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
+                        'pr_no' => strtoupper($query->pr_no),
+                        'so_no' => $query->so_no == '' ? 'N/A' : strtoupper($query->so_no),
+                        'department' => strtoupper($query->department),
+                        'item_category' => $query->item_category,
+                        'status' => strtoupper($query->status),
+                        'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
+                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
+                        'dept_head'=> in_array(strtoupper($query->department),Department::where('dept_head',Auth::id())->pluck('dept_code')->toArray()) ? 'yes' : 'no'
+                    ];
+                });
+            }
+
+            if($user->user_position->position == 'RSA APPROVER'){
+                $myPR = PurchaseRequestList::orderBy('created_at','DESC')->get()->map( function($query){
+                    return[
+                        'id' => $query->id,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
+                        'pr_no' => strtoupper($query->pr_no),
+                        'so_no' => $query->so_no == '' ? 'N/A' : strtoupper($query->so_no),
+                        'department' => strtoupper($query->department),
+                        'item_category' => $query->item_category,
+                        'status' => strtoupper($query->status),
+                        'remarks' => $query->remarks == ''? 'N/A' : $query->remarks,
+                        'created_at' => Carbon::parse($query->created_at)->format('Y-m-d'),
+                        'dept_head'=> in_array(strtoupper($query->department),Department::where('dept_head',Auth::id())->pluck('dept_code')->toArray()) ? 'yes' : 'no'
+                    ];
+                });
+            }
+
         }
 
         return response()->json($myPR);
@@ -615,11 +649,34 @@ class PurchaseRequestController extends Controller
                 if(PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR APPROVED' ||
                    PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PENDING PRESIDENTIAL APPROVAL' ||
                    PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PENDING CEO APPROVAL' ||
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PENDING RTI APPROVER' ||
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PENDING RSA APPROVER' ||
                    PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR DECLINED BY CEO' ||
-                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR DECLINED BY PRESIDENT' ){
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR DECLINED BY PRESIDENT' ||
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR DECLINED BY RTI APPROVER' ||
+                   PurchaseRequestList::findOrFail($getSelected->purchase_request_list_id)->status=='PR DECLINED BY RSA APPROVER' ){
                     return response()->json();
                 }
-                $list->update(['status'=>'PENDING PRESIDENTIAL APPROVAL']);
+
+
+                if(count(User::where('id',$list->user_id)->get()) == 0){
+                    $list->update(['status'=>'PENDING PRESIDENTIAL APPROVAL']);
+                } else{
+                    if(User::where('id',$list->user_id)->first()->company == 'RTI'){
+                        if(in_array(User::where('id',$list->user_id)->first()->department,['IT','HR','AP'])){
+                            $list->update(['status'=>'PENDING PRESIDENTIAL APPROVAL']);
+                        } else {
+                            $list->update(['status'=>'PENDING RTI APPROVER']);
+                        }
+                    } else {
+                        if(in_array(User::where('id',$list->user_id)->first()->department,['IT','HR','AP'])){
+                            $list->update(['status'=>'PENDING PRESIDENTIAL APPROVAL']);
+                        } else {
+                            $list->update(['status'=>'PENDING RSA APPROVER']);
+                        }
+                    }
+                }
+
             }
         }
 
@@ -729,6 +786,38 @@ class PurchaseRequestController extends Controller
     }
     public function DeclinePRCEO(Request $request){
         PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR DECLINED BY CEO']);
+    }
+
+    public function ApprovePRRTIApprover(Request $request){
+        if($request->status == 'FOR DEPT. HEAD APPROVAL'){
+
+            PurchaseRequestList::where('id',$request->id)->update(['status'=>'FOR CANVASSING']);
+
+        } else {
+
+            PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PENDING PRESIDENTIAL APPROVAL']);
+
+        }
+    }
+
+    public function DeclinePRRTIApprover(Request $request){
+        PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR DECLINED BY RTI APPROVER']);
+    }
+
+    public function ApprovePRRSAApprover(Request $request){
+        if($request->status == 'FOR DEPT. HEAD APPROVAL'){
+
+            PurchaseRequestList::where('id',$request->id)->update(['status'=>'FOR CANVASSING']);
+
+        } else {
+
+            PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PENDING PRESIDENTIAL APPROVAL']);
+
+        }
+    }
+
+    public function DeclinePRRSAApprover(Request $request){
+        PurchaseRequestList::findOrFail($request->id)->update(['status'=>'PR DECLINED BY RSA APPROVER']);
     }
 
     public function repeatPR(Request $request){

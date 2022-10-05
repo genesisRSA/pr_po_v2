@@ -610,7 +610,7 @@
         getColorForStatus(params){
             if(params == 'PO APPROVED'){
                 return 'green'
-            } else if ( params == 'DECLINED BY MANAGER' || params == 'DECLINED BY PRESIDENT' || params == 'DECLINED BY CEO') {
+            } else if(params.includes('DECLINED')){
                 return 'red'
             } else {
                 return 'orange'

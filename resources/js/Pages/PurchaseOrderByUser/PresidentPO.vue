@@ -77,7 +77,7 @@
                             <span>View PR</span>
                             </v-tooltip>
 
-                            <div v-if='item.status=="PENDING PRESIDENT APPROVAL"'>
+                            <div v-if='item.status=="PENDING PRESIDENT APPROVAL" || item.status=="PENDING PRESIDENTIAL APPROVAL"'>
                                 <v-tooltip bottom>
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-icon
@@ -95,7 +95,7 @@
 
                             </div>
 
-                            <div v-if='item.status=="PENDING PRESIDENT APPROVAL" || item.status=="PO APPROVED"'>
+                            <div v-if='item.status=="PENDING PRESIDENT APPROVAL" || item.status=="PO APPROVED" || item.status=="PENDING PRESIDENTIAL APPROVAL"'>
                                 <v-tooltip bottom>
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-icon
@@ -689,7 +689,7 @@
         getColorForStatus(params){
             if(params == 'PO APPROVED'){
                 return 'green'
-            } else if ( params == 'DECLINED BY MANAGER' || params == 'DECLINED BY PRESIDENT' || params == 'DECLINED BY CEO') {
+            } else if(params.includes('DECLINED')){
                 return 'red'
             } else {
                 return 'orange'

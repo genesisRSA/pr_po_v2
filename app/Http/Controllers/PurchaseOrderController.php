@@ -101,6 +101,38 @@ class PurchaseOrderController extends Controller
                 });
             }
 
+            if($user->user_position->position == 'RTI APPROVER'){
+                $myPR = PurchaseOrderList::all()->map( function($query){
+                    return[
+                        'id' => $query->id,
+                        'pr_id' => $query->pr_id,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
+                        'pr_no' => str_replace('PR','PO',strtoupper($query->pr_no)),
+                        'so_no' => strtoupper($query->so_no),
+                        'department' => strtoupper($query->department),
+                        'item_category' => $query->item_category,
+                        'status' => strtoupper($query->status),
+                        'created_at' => $query->created_at->toDayDateTimeString()
+                    ];
+                });
+            }
+
+            if($user->user_position->position == 'RSA APPROVER'){
+                $myPR = PurchaseOrderList::all()->map( function($query){
+                    return[
+                        'id' => $query->id,
+                        'pr_id' => $query->pr_id,
+                        'user_id' => isset(User::where('id',$query->user_id)->first()->name) ? User::where('id',$query->user_id)->first()->name : 'Unknown',
+                        'pr_no' => str_replace('PR','PO',strtoupper($query->pr_no)),
+                        'so_no' => strtoupper($query->so_no),
+                        'department' => strtoupper($query->department),
+                        'item_category' => $query->item_category,
+                        'status' => strtoupper($query->status),
+                        'created_at' => $query->created_at->toDayDateTimeString()
+                    ];
+                });
+            }
+
             if($user->user_position->position == 'PURCHASE MNGR.'){
                 $myPR = PurchaseOrderList::all()->map( function($query){
                     return[
@@ -212,7 +244,25 @@ class PurchaseOrderController extends Controller
         if($price <= 10000){
             PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PO APPROVED','pr_approved_date'=>Carbon::now()]);
         } else {
-            PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING PRESIDENT APPROVAL']);
+            //PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING PRESIDENT APPROVAL']);
+
+            if(count(User::where('name',$request->user_id)->get()) == 0){
+                PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING PRESIDENTIAL APPROVAL']);
+            } else{
+                if(User::where('name',$request->user_id)->first()->company == 'RTI'){
+                    if(in_array(User::where('name',$request->user_id)->first()->department,['IT','HR','AP'])){
+                        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING PRESIDENTIAL APPROVAL']);
+                    } else {
+                        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING RTI APPROVER']);
+                    }
+                } else {
+                    if(in_array(User::where('name',$request->user_id)->first()->department,['IT','HR','AP'])){
+                        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING PRESIDENTIAL APPROVAL']);
+                    } else {
+                        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING RSA APPROVER']);
+                    }
+                }
+            }
         }
 
         return response()->json($request);
@@ -248,6 +298,26 @@ class PurchaseOrderController extends Controller
 
     public function DeclinePOCeo(Request $request){
         PurchaseOrderList::findOrFail($request->id)->update(['status'=>'DECLINED BY CEO','pr_approved_date'=>Carbon::now()]);
+        return response()->json($request);
+    }
+
+    public function ApprovePORTIApprover(Request $request){
+        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING PRESIDENTIAL APPROVAL','pr_approved_date'=>Carbon::now()]);
+        return response()->json($request);
+    }
+
+    public function DeclinePORTIApprover(Request $request){
+        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'DECLINED BY RTI APPROVER','pr_approved_date'=>Carbon::now()]);
+        return response()->json($request);
+    }
+
+    public function ApprovePORSAApprover(Request $request){
+        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'PENDING PRESIDENTIAL APPROVAL','pr_approved_date'=>Carbon::now()]);
+        return response()->json($request);
+    }
+
+    public function DeclinePORSAApprover(Request $request){
+        PurchaseOrderList::findOrFail($request->id)->update(['status'=>'DECLINED BY RSA APPROVER','pr_approved_date'=>Carbon::now()]);
         return response()->json($request);
     }
 
@@ -356,20 +426,20 @@ class PurchaseOrderController extends Controller
                 'chosen_supp_cost'=> $query->chosen_supp_cost,
                 'quantity'        => $query->quantity,
                 'company_address' => isset(Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->address) ?
-                                     Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->address : 
+                                     Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->address :
                                     '(No matching address)',
                  'contact'        => isset(Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->contact_number) ?
-                                     Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->contact_number : 
+                                     Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->contact_number :
                                     '(No matching contact #)',
                  'contact_person' => isset(Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->contact_person) ?
-                                     Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->contact_person : 
+                                     Vendor::where('company_name',$query->chosen_supplier == 1 ? $query->supplier_one : ($query->chosen_supplier == 2 ? $query->supplier_two : $query->supplier_three))->first()->contact_person :
                                     '(No matching contact person)',
-                 'date_of_order'  => isset(PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->status) ? 
-                                     (PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->status == 'PO APPROVED' ? 
+                 'date_of_order'  => isset(PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->status) ?
+                                     (PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->status == 'PO APPROVED' ?
                                      PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->pr_approved_date : '(No Date found)' ) : '(No Date found)',
-                 'pr_no'          => isset(PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->pr_no) ? 
+                 'pr_no'          => isset(PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->pr_no) ?
                                      PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->pr_no : '(No PR # found)',
-                 'user_requestor' => isset(User::where('id',PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->user_id)->first()->name) ? 
+                 'user_requestor' => isset(User::where('id',PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->user_id)->first()->name) ?
                                      User::where('id',PurchaseOrderList::where('pr_id',$query->purchase_request_list_id)->first()->user_id)->first()->name : '(User not found)',
                  'payment_method' => isset(PaymentTerm::where('id',$query->supplier_details->first()->payment_method)->first()->payment_term) ? PaymentTerm::where('id',$query->supplier_details->first()->payment_method)->first()->payment_term : '(No Payment Term found)',
                  'so_number'      => isset($query->pr_list->so_no) ? $query->pr_list->so_no : 'No SO number'

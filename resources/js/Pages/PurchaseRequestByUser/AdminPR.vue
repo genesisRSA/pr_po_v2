@@ -1167,6 +1167,8 @@
         getColorForStatus(params){
             if(params == 'PR APPROVED'){
                 return 'green'
+            } else if(params.includes('DECLINED')){
+                return 'red'
             } else {
                 return 'orange'
             }

@@ -47,7 +47,6 @@ Route::get('/testing', function(){
     // })->groupBy('chosen_supplier');
 
     // return $getSupp;
-
 });
 
 Route::get('/query', function(){
@@ -390,7 +389,14 @@ Route::middleware(['auth:sanctum'])->group( function(){
     Route::post('/ApprovePRCEO',[PurchaseRequestController::class, 'ApprovePRCEO'])->name('ApprovePRCEO');
     Route::post('/DeclinePRCEO',[PurchaseRequestController::class, 'DeclinePRCEO'])->name('DeclinePRCEO');
 
+    ////////RTI APPROVER//////////////
+    Route::post('/ApprovePRRTIApprover',[PurchaseRequestController::class, 'ApprovePRRTIApprover'])->name('ApprovePRRTIApprover');
+    Route::post('/DeclinePRRTIApprover',[PurchaseRequestController::class, 'DeclinePRRTIApprover'])->name('DeclinePRRTIApprover');
 
+
+    ////////RSA APPROVER//////////////
+    Route::post('/ApprovePRRSAApprover',[PurchaseRequestController::class, 'ApprovePRRSAApprover'])->name('ApprovePRRSAApprover');
+    Route::post('/DeclinePRRSAApprover',[PurchaseRequestController::class, 'DeclinePRRSAApprover'])->name('DeclinePRRSAApprover');
 
 
 
@@ -419,6 +425,12 @@ Route::middleware(['auth:sanctum'])->group( function(){
 
     Route::post('/ApprovePOCeo', [PurchaseOrderController::class, 'ApprovePOCeo'])->name('ApprovePOCeo');
     Route::post('/DeclinePOCeo',[PurchaseOrderController::class,'DeclinePOCeo'])->name('DeclinePOCeo');
+
+    Route::post('/ApprovePORTIApprover', [PurchaseOrderController::class, 'ApprovePORTIApprover'])->name('ApprovePORTIApprover');
+    Route::post('/DeclinePORTIApprover',[PurchaseOrderController::class,'DeclinePORTIApprover'])->name('DeclinePORTIApprover');
+
+    Route::post('/ApprovePORSAApprover', [PurchaseOrderController::class, 'ApprovePORSAApprover'])->name('ApprovePORSAApprover');
+    Route::post('/ApprovePORSAApprover',[PurchaseOrderController::class,'ApprovePORSAApprover'])->name('ApprovePORSAApprover');
 
     Route::post('/repeatPRConfirm',[PurchaseOrderController::class,'repeatPRConfirm'])->name('repeatPRConfirm');
 
